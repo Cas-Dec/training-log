@@ -1,0 +1,644 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Training Log</title>
+<style>
+  :root {
+    --bg: #0f0f0f;
+    --bg2: #1a1a1a;
+    --bg3: #242424;
+    --border: #2e2e2e;
+    --text: #e8e6e0;
+    --muted: #7a7872;
+    --accent: #c8f542;
+    --accent-dim: rgba(200,245,66,0.12);
+    --red: #ff6b6b;
+    --font-mono: 'DM Mono', 'Fira Mono', 'Courier New', monospace;
+    --font-sans: 'DM Sans', system-ui, -apple-system, sans-serif;
+    --radius: 10px;
+  }
+  @import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Sans:wght@400;500;600&display=swap');
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--font-sans);
+    font-size: 15px;
+    line-height: 1.6;
+    min-height: 100dvh;
+  }
+
+  /* NAV */
+  nav {
+    position: sticky; top: 0; z-index: 100;
+    background: rgba(15,15,15,0.9);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 20px; height: 52px;
+  }
+  .nav-logo { font-family: var(--font-mono); font-size: 13px; color: var(--accent); letter-spacing: .08em; }
+  .nav-tabs { display: flex; gap: 2px; }
+  .nav-tab {
+    background: none; border: none; color: var(--muted); cursor: pointer;
+    font-family: var(--font-sans); font-size: 13px; font-weight: 500;
+    padding: 6px 14px; border-radius: 6px; transition: all .15s;
+  }
+  .nav-tab:hover { color: var(--text); background: var(--bg3); }
+  .nav-tab.active { color: var(--accent); background: var(--accent-dim); }
+
+  /* PAGES */
+  .page { display: none; max-width: 640px; margin: 0 auto; padding: 28px 20px 80px; }
+  .page.active { display: block; }
+
+  /* TYPOGRAPHY */
+  h2 { font-size: 18px; font-weight: 600; margin-bottom: 6px; }
+  .page-subtitle { color: var(--muted); font-size: 13px; margin-bottom: 28px; }
+
+  /* FORM */
+  .field { margin-bottom: 18px; }
+  label { display: block; font-size: 12px; font-family: var(--font-mono); color: var(--muted); text-transform: uppercase; letter-spacing: .06em; margin-bottom: 6px; }
+  input, select, textarea {
+    width: 100%; padding: 10px 13px;
+    background: var(--bg2); border: 1px solid var(--border);
+    border-radius: var(--radius); color: var(--text);
+    font-family: var(--font-sans); font-size: 15px; outline: none;
+    transition: border-color .15s;
+    -webkit-appearance: none;
+  }
+  input:focus, select:focus, textarea:focus { border-color: var(--accent); }
+  select { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' fill='none'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%237a7872' stroke-width='1.5' stroke-linecap='round'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 12px center; padding-right: 32px; cursor: pointer; }
+  textarea { resize: vertical; min-height: 90px; }
+  .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .grid3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; }
+
+  /* EXERCISE TABLE */
+  .ex-head { display: grid; grid-template-columns: 2fr 1.4fr 1fr 28px; gap: 8px; margin-bottom: 6px; }
+  .ex-head span { font-size: 11px; font-family: var(--font-mono); color: var(--muted); text-transform: uppercase; letter-spacing: .05em; }
+  .ex-row { display: grid; grid-template-columns: 2fr 1.4fr 1fr 28px; gap: 8px; margin-bottom: 6px; align-items: center; }
+  .ex-row input { padding: 8px 10px; font-size: 14px; }
+  .rm-btn { background: none; border: 1px solid var(--border); color: var(--muted); border-radius: 6px; width: 28px; height: 36px; cursor: pointer; font-size: 16px; display: flex; align-items: center; justify-content: center; transition: all .15s; flex-shrink: 0; }
+  .rm-btn:hover { border-color: var(--red); color: var(--red); }
+  .add-ex { background: none; border: 1px dashed var(--border); color: var(--muted); border-radius: var(--radius); width: 100%; padding: 8px; cursor: pointer; font-size: 13px; font-family: var(--font-sans); margin-bottom: 18px; transition: all .15s; }
+  .add-ex:hover { border-color: var(--accent); color: var(--accent); }
+
+  /* KPS */
+  .kps-row { display: grid; grid-template-columns: 1fr auto 1fr; gap: 10px; align-items: end; }
+  .kps-arrow { color: var(--muted); padding-bottom: 11px; text-align: center; }
+
+  /* BUTTONS */
+  .btn { padding: 11px 22px; border-radius: var(--radius); border: none; cursor: pointer; font-size: 15px; font-weight: 500; font-family: var(--font-sans); transition: all .15s; display: inline-flex; align-items: center; gap: 8px; }
+  .btn-primary { background: var(--accent); color: #0f0f0f; }
+  .btn-primary:hover { background: #d4f55e; }
+  .btn-primary:disabled { opacity: .4; cursor: not-allowed; }
+  .btn-secondary { background: var(--bg3); color: var(--text); border: 1px solid var(--border); }
+  .btn-secondary:hover { border-color: var(--muted); }
+  .btn-ghost { background: none; border: 1px solid var(--border); color: var(--muted); font-size: 13px; padding: 7px 14px; }
+  .btn-full { width: 100%; justify-content: center; }
+
+  /* STATUS */
+  #save-status { font-size: 13px; font-family: var(--font-mono); margin-top: 12px; min-height: 20px; }
+  .status-ok { color: var(--accent); }
+  .status-err { color: var(--red); }
+  .status-pending { color: var(--muted); }
+
+  /* SETUP BANNER */
+  .setup-banner {
+    background: var(--accent-dim); border: 1px solid rgba(200,245,66,0.25);
+    border-radius: var(--radius); padding: 14px 16px; margin-bottom: 24px;
+    font-size: 13px; line-height: 1.7;
+  }
+  .setup-banner strong { color: var(--accent); }
+  .setup-banner code { font-family: var(--font-mono); background: rgba(200,245,66,0.1); padding: 1px 5px; border-radius: 4px; font-size: 12px; }
+
+  /* HISTORY */
+  .session-card {
+    background: var(--bg2); border: 1px solid var(--border);
+    border-radius: var(--radius); padding: 16px; margin-bottom: 10px;
+    transition: border-color .15s;
+  }
+  .session-card:hover { border-color: var(--bg3); }
+  .card-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+  .card-date { font-family: var(--font-mono); font-size: 13px; color: var(--muted); }
+  .badge { font-size: 11px; font-family: var(--font-mono); padding: 2px 9px; border-radius: 20px; font-weight: 500; }
+  .badge-Pull  { background: rgba(59,130,246,.18); color: #93c5fd; }
+  .badge-Push  { background: rgba(236,72,153,.18); color: #f9a8d4; }
+  .badge-Legs  { background: rgba(34,197,94,.18);  color: #86efac; }
+  .badge-Full  { background: rgba(168,85,247,.18); color: #d8b4fe; }
+  .badge-Cardio{ background: rgba(234,179,8,.18);  color: #fde047; }
+  .badge-Rest  { background: var(--bg3); color: var(--muted); }
+
+  .ex-chips { display: flex; flex-wrap: wrap; gap: 5px; margin-bottom: 8px; }
+  .ex-chip { font-family: var(--font-mono); font-size: 11px; background: var(--bg3); border: 1px solid var(--border); border-radius: 5px; padding: 2px 8px; color: var(--muted); }
+  .card-meta { font-size: 12px; color: var(--muted); display: flex; gap: 16px; flex-wrap: wrap; }
+  .card-notes { font-size: 13px; color: var(--muted); margin-top: 8px; font-style: italic; }
+
+  .stats-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 24px; }
+  .stat-box { background: var(--bg2); border: 1px solid var(--border); border-radius: var(--radius); padding: 14px; }
+  .stat-val { font-size: 24px; font-weight: 600; font-family: var(--font-mono); color: var(--accent); }
+  .stat-lbl { font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: .05em; margin-top: 2px; }
+
+  /* COACH */
+  .coach-input-row { display: flex; gap: 10px; margin-bottom: 12px; }
+  .coach-input-row input { flex: 1; }
+  .quick-btns { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 20px; }
+  .quick-btn { background: var(--bg3); border: 1px solid var(--border); color: var(--muted); border-radius: 20px; padding: 5px 13px; font-size: 12px; cursor: pointer; font-family: var(--font-sans); transition: all .15s; }
+  .quick-btn:hover { border-color: var(--accent); color: var(--accent); }
+
+  .ai-output {
+    background: var(--bg2); border: 1px solid var(--border);
+    border-radius: var(--radius); padding: 18px;
+    font-size: 14px; line-height: 1.75; min-height: 120px;
+    white-space: pre-wrap; color: var(--text);
+  }
+  .ai-placeholder { color: var(--muted); font-style: italic; }
+
+  .config-section { margin-top: 32px; border-top: 1px solid var(--border); padding-top: 24px; }
+  .config-section h3 { font-size: 14px; font-weight: 600; margin-bottom: 4px; }
+  .config-section p  { font-size: 13px; color: var(--muted); margin-bottom: 14px; }
+
+  /* EMPTY */
+  .empty { text-align: center; padding: 60px 20px; color: var(--muted); font-size: 14px; }
+
+  /* DIVIDER */
+  .divider { border: none; border-top: 1px solid var(--border); margin: 24px 0; }
+
+  @media (max-width: 420px) {
+    .grid3 { grid-template-columns: 1fr 1fr; }
+    .ex-head span:nth-child(3), .ex-row input:nth-child(3) { display: none; }
+    .ex-head { grid-template-columns: 2fr 1.4fr 28px; }
+    .ex-row { grid-template-columns: 2fr 1.4fr 28px; }
+    .stats-row { grid-template-columns: 1fr 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <span class="nav-logo">⚡ TRAINING</span>
+  <div class="nav-tabs">
+    <button class="nav-tab active" onclick="showPage('log')">Log</button>
+    <button class="nav-tab" onclick="showPage('history')">History</button>
+    <button class="nav-tab" onclick="showPage('coach')">Coach</button>
+  </div>
+</nav>
+
+<!-- ── LOG ── -->
+<div id="page-log" class="page active">
+  <div id="setup-banner" class="setup-banner" style="display:none">
+    <strong>First-time setup needed.</strong><br>
+    Open <strong>Settings</strong> (bottom of Coach tab) and enter your GitHub token + repo details.
+    Until then, sessions are saved locally only and won't sync to your repo.
+  </div>
+
+  <h2>Log session</h2>
+  <p class="page-subtitle">Today's training</p>
+
+  <div class="grid2">
+    <div class="field">
+      <label>Date</label>
+      <input type="date" id="date">
+    </div>
+    <div class="field">
+      <label>Session type</label>
+      <select id="session-type">
+        <option>Pull</option><option>Push</option><option>Legs</option>
+        <option>Full body</option><option>Cardio</option><option>Rest</option>
+      </select>
+    </div>
+  </div>
+
+  <div class="field">
+    <label>Exercises</label>
+    <div class="ex-head">
+      <span>Exercise</span><span>Sets × reps @ weight</span><span>RPE</span><span></span>
+    </div>
+    <div id="exercises"></div>
+    <button class="add-ex" onclick="addExercise()">+ add exercise</button>
+  </div>
+
+  <div class="field">
+    <label>Knee Pain Score (KPS)</label>
+    <div class="kps-row">
+      <div>
+        <label style="margin-bottom:4px;font-size:11px">Morning</label>
+        <input type="number" id="kps-morning" min="0" max="10" step="0.5" placeholder="0–10">
+      </div>
+      <div class="kps-arrow">→</div>
+      <div>
+        <label style="margin-bottom:4px;font-size:11px">Post-training</label>
+        <input type="number" id="kps-post" min="0" max="10" step="0.5" placeholder="0–10">
+      </div>
+    </div>
+  </div>
+
+  <div class="grid2">
+    <div class="field">
+      <label>Energy level</label>
+      <select id="energy">
+        <option value="above-average">Above average</option>
+        <option value="average" selected>Average</option>
+        <option value="below-average">Below average</option>
+      </select>
+    </div>
+    <div class="field">
+      <label>Sleep quality</label>
+      <select id="sleep">
+        <option value="good">Good</option>
+        <option value="average" selected>Average</option>
+        <option value="poor">Poor</option>
+      </select>
+    </div>
+  </div>
+
+  <div class="field">
+    <label>Notes</label>
+    <textarea id="notes" placeholder="How did it feel? Soreness, injuries, life stress…"></textarea>
+  </div>
+
+  <button class="btn btn-primary btn-full" id="save-btn" onclick="saveSession()">Save session</button>
+  <div id="save-status"></div>
+</div>
+
+<!-- ── HISTORY ── -->
+<div id="page-history" class="page">
+  <h2>History</h2>
+  <p class="page-subtitle">All logged sessions</p>
+  <div class="stats-row" id="stats-row"></div>
+  <div id="history-list"></div>
+  <div style="display:flex;gap:10px;margin-top:16px;flex-wrap:wrap">
+    <button class="btn btn-ghost" onclick="exportJSON()">Export JSON</button>
+    <button class="btn btn-ghost" onclick="exportCSV()">Export CSV</button>
+  </div>
+</div>
+
+<!-- ── COACH ── -->
+<div id="page-coach" class="page">
+  <h2>AI coach</h2>
+  <p class="page-subtitle">Ask about your training, progression, or next session</p>
+
+  <div class="coach-input-row">
+    <input type="text" id="coach-q" placeholder="Ask anything about your training…" onkeydown="if(event.key==='Enter')askCoach()">
+    <button class="btn btn-primary" id="coach-btn" onclick="askCoach()">Ask</button>
+  </div>
+  <div class="quick-btns">
+    <button class="quick-btn" onclick="quick('Analyse my progression over recent sessions. Flag any plateaus, regressions, or concerning trends.')">Progression check</button>
+    <button class="quick-btn" onclick="quick('Review my knee pain scores (KPS) over time. Is it trending up, stable, or down? Should I reduce load?')">Knee pain trend</button>
+    <button class="quick-btn" onclick="quick('Based on my recent sessions and recovery, what should I train in my next session and at what volume/intensity?')">Next session</button>
+    <button class="quick-btn" onclick="quick('Audit my weekly training volume per muscle group. What is over- or under-trained?')">Volume audit</button>
+    <button class="quick-btn" onclick="quick('Looking at my RPE scores, where am I consistently training too hard or leaving too much in the tank?')">RPE analysis</button>
+  </div>
+
+  <div id="ai-output" class="ai-output">
+    <span class="ai-placeholder">Your coach's response will appear here.</span>
+  </div>
+
+  <!-- CONFIG -->
+  <div class="config-section">
+    <h3>Settings</h3>
+    <p>These are stored in your browser only — never sent anywhere except GitHub and Anthropic directly.</p>
+
+    <div class="field">
+      <label>Anthropic API key</label>
+      <input type="password" id="cfg-api-key" placeholder="sk-ant-…" oninput="saveCfg()">
+    </div>
+    <div class="field">
+      <label>GitHub personal access token</label>
+      <input type="password" id="cfg-gh-token" placeholder="github_pat_…" oninput="saveCfg()">
+    </div>
+    <div class="grid2">
+      <div class="field">
+        <label>GitHub username</label>
+        <input type="text" id="cfg-gh-user" placeholder="your-username" oninput="saveCfg()">
+      </div>
+      <div class="field">
+        <label>Repo name</label>
+        <input type="text" id="cfg-gh-repo" placeholder="training-log" oninput="saveCfg()">
+      </div>
+    </div>
+
+    <div class="field">
+      <label>Coach instructions (your goals & context)</label>
+      <textarea id="cfg-instructions" rows="5" placeholder="e.g. I'm training for hypertrophy. My main goals are: weighted pull-ups to +40kg, manage knee pain below KPS 5. Deload when weekly average KPS exceeds 6. I train 4x per week PPL+Full." oninput="saveCfg()"></textarea>
+    </div>
+
+    <button class="btn btn-secondary" onclick="testGitHub()">Test GitHub connection</button>
+    <div id="cfg-status" style="font-size:13px;font-family:var(--font-mono);margin-top:10px;color:var(--muted)"></div>
+  </div>
+</div>
+
+<script>
+// ── STATE ──────────────────────────────────────────────────────────
+let sessions = [];
+let cfg = {};
+
+function loadAll() {
+  try { sessions = JSON.parse(localStorage.getItem('tl_sessions') || '[]'); } catch(e) { sessions = []; }
+  try { cfg = JSON.parse(localStorage.getItem('tl_cfg') || '{}'); } catch(e) { cfg = {}; }
+  if (cfg.apiKey) document.getElementById('cfg-api-key').value = cfg.apiKey;
+  if (cfg.ghToken) document.getElementById('cfg-gh-token').value = cfg.ghToken;
+  if (cfg.ghUser) document.getElementById('cfg-gh-user').value = cfg.ghUser;
+  if (cfg.ghRepo) document.getElementById('cfg-gh-repo').value = cfg.ghRepo;
+  if (cfg.instructions) document.getElementById('cfg-instructions').value = cfg.instructions;
+  if (!cfg.ghToken || !cfg.ghUser || !cfg.ghRepo) {
+    document.getElementById('setup-banner').style.display = 'block';
+  }
+}
+
+function saveCfg() {
+  cfg = {
+    apiKey: document.getElementById('cfg-api-key').value.trim(),
+    ghToken: document.getElementById('cfg-gh-token').value.trim(),
+    ghUser: document.getElementById('cfg-gh-user').value.trim(),
+    ghRepo: document.getElementById('cfg-gh-repo').value.trim(),
+    instructions: document.getElementById('cfg-instructions').value.trim(),
+  };
+  localStorage.setItem('tl_cfg', JSON.stringify(cfg));
+  if (cfg.ghToken && cfg.ghUser && cfg.ghRepo) {
+    document.getElementById('setup-banner').style.display = 'none';
+  }
+}
+
+// ── NAVIGATION ─────────────────────────────────────────────────────
+function showPage(p) {
+  document.querySelectorAll('.page').forEach(el => el.classList.remove('active'));
+  document.querySelectorAll('.nav-tab').forEach(el => el.classList.remove('active'));
+  document.getElementById('page-'+p).classList.add('active');
+  document.querySelectorAll('.nav-tab')[['log','history','coach'].indexOf(p)].classList.add('active');
+  if (p==='history') renderHistory();
+}
+
+// ── EXERCISES ──────────────────────────────────────────────────────
+let exCount = 0;
+function addExercise(d={}) {
+  const id = exCount++;
+  const row = document.createElement('div');
+  row.className = 'ex-row'; row.id = 'ex-'+id;
+  row.innerHTML = `
+    <input type="text" placeholder="e.g. pull-ups" value="${d.name||''}">
+    <input type="text" placeholder="4x8@20kg" value="${d.loading||''}">
+    <input type="text" placeholder="RPE8" value="${d.rpe||''}">
+    <button class="rm-btn" onclick="document.getElementById('ex-${id}').remove()">×</button>`;
+  document.getElementById('exercises').appendChild(row);
+}
+
+function getExercises() {
+  return [...document.querySelectorAll('#exercises .ex-row')].map(row => {
+    const ins = row.querySelectorAll('input');
+    return { name: ins[0].value.trim(), loading: ins[1].value.trim(), rpe: ins[2].value.trim() };
+  }).filter(e => e.name);
+}
+
+// ── SAVE SESSION ───────────────────────────────────────────────────
+async function saveSession() {
+  const date = document.getElementById('date').value;
+  if (!date) { setStatus('Please set a date.', 'err'); return; }
+
+  const session = {
+    id: Date.now(),
+    date,
+    type: document.getElementById('session-type').value,
+    exercises: getExercises(),
+    energy: document.getElementById('energy').value,
+    sleep: document.getElementById('sleep').value,
+    kps: {
+      morning: document.getElementById('kps-morning').value || null,
+      post: document.getElementById('kps-post').value || null,
+    },
+    notes: document.getElementById('notes').value.trim(),
+  };
+
+  // Save locally first
+  sessions.unshift(session);
+  localStorage.setItem('tl_sessions', JSON.stringify(sessions));
+  setStatus('Saved locally…', 'pending');
+
+  // Sync to GitHub
+  if (cfg.ghToken && cfg.ghUser && cfg.ghRepo) {
+    const ok = await syncToGitHub();
+    if (ok) setStatus('✓ Synced to GitHub', 'ok');
+    else setStatus('Saved locally. GitHub sync failed — check settings.', 'err');
+  } else {
+    setStatus('✓ Saved locally (no GitHub configured)', 'ok');
+  }
+
+  resetForm();
+}
+
+function setStatus(msg, type) {
+  const el = document.getElementById('save-status');
+  el.textContent = msg;
+  el.className = 'status-'+type;
+}
+
+function resetForm() {
+  document.getElementById('exercises').innerHTML = '';
+  exCount = 0; addExercise();
+  document.getElementById('notes').value = '';
+  document.getElementById('kps-morning').value = '';
+  document.getElementById('kps-post').value = '';
+}
+
+// ── GITHUB SYNC ────────────────────────────────────────────────────
+async function syncToGitHub() {
+  try {
+    const { ghToken, ghUser, ghRepo } = cfg;
+    const path = 'log.json';
+    const apiBase = `https://api.github.com/repos/${ghUser}/${ghRepo}/contents/${path}`;
+    const headers = {
+      'Authorization': `Bearer ${ghToken}`,
+      'Accept': 'application/vnd.github+json',
+      'X-GitHub-Api-Version': '2022-11-28',
+      'Content-Type': 'application/json',
+    };
+
+    // Get current file (for SHA)
+    let sha = null;
+    try {
+      const existing = await fetch(apiBase, { headers });
+      if (existing.ok) {
+        const data = await existing.json();
+        sha = data.sha;
+        // Merge: load remote sessions and merge with local
+        const remoteContent = JSON.parse(atob(data.content.replace(/\n/g,'')));
+        const remoteIds = new Set(remoteContent.map(s => s.id));
+        const merged = [...sessions.filter(s => !remoteIds.has(s.id)), ...remoteContent];
+        merged.sort((a,b) => b.date.localeCompare(a.date));
+        sessions = merged;
+        localStorage.setItem('tl_sessions', JSON.stringify(sessions));
+      }
+    } catch(e) {}
+
+    const content = btoa(unescape(encodeURIComponent(JSON.stringify(sessions, null, 2))));
+    const body = { message: `Add session ${sessions[0]?.date || ''}`, content, ...(sha ? { sha } : {}) };
+    const res = await fetch(apiBase, { method: 'PUT', headers, body: JSON.stringify(body) });
+    return res.ok;
+  } catch(e) { return false; }
+}
+
+async function pullFromGitHub() {
+  try {
+    const { ghToken, ghUser, ghRepo } = cfg;
+    if (!ghToken||!ghUser||!ghRepo) return;
+    const apiBase = `https://api.github.com/repos/${ghUser}/${ghRepo}/contents/log.json`;
+    const res = await fetch(apiBase, { headers: { 'Authorization': `Bearer ${ghToken}`, 'Accept': 'application/vnd.github+json' }});
+    if (!res.ok) return;
+    const data = await res.json();
+    const remote = JSON.parse(atob(data.content.replace(/\n/g,'')));
+    const localIds = new Set(sessions.map(s => s.id));
+    const merged = [...sessions, ...remote.filter(s => !localIds.has(s.id))];
+    merged.sort((a,b) => b.date.localeCompare(a.date));
+    sessions = merged;
+    localStorage.setItem('tl_sessions', JSON.stringify(sessions));
+  } catch(e) {}
+}
+
+async function testGitHub() {
+  const st = document.getElementById('cfg-status');
+  st.textContent = 'Testing…';
+  const { ghToken, ghUser, ghRepo } = cfg;
+  if (!ghToken||!ghUser||!ghRepo) { st.textContent = '⚠ Fill in all GitHub fields first.'; return; }
+  try {
+    const res = await fetch(`https://api.github.com/repos/${ghUser}/${ghRepo}`, {
+      headers: { 'Authorization': `Bearer ${ghToken}`, 'Accept': 'application/vnd.github+json' }
+    });
+    if (res.ok) st.style.color = 'var(--accent)', st.textContent = '✓ Connected to repo successfully.';
+    else st.style.color = 'var(--red)', st.textContent = `✗ Error ${res.status}. Check token and repo name.`;
+  } catch(e) { st.style.color = 'var(--red)', st.textContent = '✗ Network error.'; }
+}
+
+// ── HISTORY ────────────────────────────────────────────────────────
+function renderHistory() {
+  const n = sessions.length;
+  const last7 = sessions.filter(s => (Date.now()-new Date(s.date))/864e5 <= 7).length;
+  const kpsAll = sessions.flatMap(s => s.kps?.post ? [+s.kps.post] : []).filter(x=>!isNaN(x));
+  const avgKPS = kpsAll.length ? (kpsAll.reduce((a,b)=>a+b)/kpsAll.length).toFixed(1) : '–';
+
+  document.getElementById('stats-row').innerHTML = `
+    <div class="stat-box"><div class="stat-val">${n}</div><div class="stat-lbl">Total sessions</div></div>
+    <div class="stat-box"><div class="stat-val">${last7}</div><div class="stat-lbl">Last 7 days</div></div>
+    <div class="stat-box"><div class="stat-val">${avgKPS}</div><div class="stat-lbl">Avg KPS (post)</div></div>`;
+
+  const list = document.getElementById('history-list');
+  if (!n) { list.innerHTML = '<div class="empty">No sessions yet. Log your first one.</div>'; return; }
+
+  list.innerHTML = sessions.map(s => `
+    <div class="session-card">
+      <div class="card-top">
+        <span class="card-date">${s.date}</span>
+        <span class="badge badge-${s.type.replace(' ','')}">${s.type}</span>
+      </div>
+      ${s.exercises.length ? `<div class="ex-chips">${s.exercises.map(e=>`<span class="ex-chip">${e.name} ${e.loading}${e.rpe?' '+e.rpe:''}</span>`).join('')}</div>` : ''}
+      <div class="card-meta">
+        ${s.kps?.morning||s.kps?.post ? `<span>KPS ${s.kps.morning||'?'} → ${s.kps.post||'?'}</span>` : ''}
+        ${s.energy ? `<span>Energy: ${s.energy}</span>` : ''}
+        ${s.sleep ? `<span>Sleep: ${s.sleep}</span>` : ''}
+      </div>
+      ${s.notes ? `<div class="card-notes">${s.notes}</div>` : ''}
+    </div>`).join('');
+}
+
+// ── EXPORT ─────────────────────────────────────────────────────────
+function exportJSON() {
+  dl(JSON.stringify(sessions, null, 2), 'training-log.json', 'application/json');
+}
+function exportCSV() {
+  const rows = [['date','type','energy','sleep','kps_morning','kps_post','exercises','notes']];
+  sessions.forEach(s => rows.push([s.date, s.type, s.energy||'', s.sleep||'',
+    s.kps?.morning||'', s.kps?.post||'',
+    s.exercises.map(e=>`${e.name} ${e.loading} ${e.rpe}`).join('; '),
+    (s.notes||'').replace(/"/g,"'")]));
+  dl(rows.map(r=>r.map(c=>`"${c}"`).join(',')).join('\n'), 'training-log.csv', 'text/csv');
+}
+function dl(content, filename, type) {
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(new Blob([content], {type}));
+  a.download = filename; a.click();
+}
+
+// ── AI COACH ───────────────────────────────────────────────────────
+function buildContext() {
+  const userCtx = cfg.instructions ? `\n\nATHLETE GOALS & CONTEXT:\n${cfg.instructions}` : '';
+  if (!sessions.length) return 'No sessions logged yet.' + userCtx;
+  return `TRAINING LOG (${sessions.length} sessions, newest first):\n\n` +
+    sessions.slice(0,50).map(s =>
+      `${s.date} | ${s.type} | Energy: ${s.energy} | Sleep: ${s.sleep||'?'}
+Exercises: ${s.exercises.map(e=>`${e.name} ${e.loading} ${e.rpe}`).join(' · ')||'none'}
+KPS: ${s.kps?.morning||'?'} → ${s.kps?.post||'?'}
+Notes: ${s.notes||'—'}`).join('\n\n') + userCtx;
+}
+
+const SYSTEM_PROMPT = `You are an expert strength & conditioning coach specialising in progressive overload, training load management, and injury prevention (especially knee health).
+
+You have access to the athlete's complete training log below. Your role:
+- Identify real trends from the data — progression, stagnation, volume spikes, RPE patterns
+- Flag concerns: rising KPS, insufficient recovery, repeated RPE10 efforts, imbalanced volume
+- Make specific, actionable recommendations using actual numbers from the log
+- Be concise. Use short paragraphs — no bullet lists unless genuinely listing distinct items.
+- If data is sparse, say so and offer sensible defaults.`;
+
+async function askCoach(q) {
+  q = q || document.getElementById('coach-q').value.trim();
+  if (!q) return;
+  if (!cfg.apiKey) {
+    document.getElementById('ai-output').textContent = '⚠ Add your Anthropic API key in Settings below.';
+    return;
+  }
+  const out = document.getElementById('ai-output');
+  const btn = document.getElementById('coach-btn');
+  out.textContent = 'Thinking…'; out.classList.add('ai-placeholder');
+  btn.disabled = true;
+
+  try {
+    const res = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'x-api-key': cfg.apiKey, 'anthropic-version': '2023-06-01' },
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-6', max_tokens: 1024,
+        system: SYSTEM_PROMPT + '\n\n' + buildContext(),
+        messages: [{ role: 'user', content: q }]
+      })
+    });
+    const data = await res.json();
+    out.classList.remove('ai-placeholder');
+    out.textContent = data.content?.map(c=>c.text||'').join('') || JSON.stringify(data);
+  } catch(e) {
+    out.textContent = 'Error: ' + e.message;
+  }
+  btn.disabled = false;
+}
+
+function quick(q) { document.getElementById('coach-q').value = q; showPage('coach'); askCoach(q); }
+
+// ── INIT ───────────────────────────────────────────────────────────
+loadAll();
+document.getElementById('date').value = new Date().toISOString().split('T')[0];
+addExercise();
+
+// Seed example session if empty
+if (!sessions.length) {
+  sessions.push({
+    id: 1, date: '2026-06-12', type: 'Pull',
+    exercises: [
+      {name:'weighted pull-ups',loading:'4x8@20kg',rpe:'RPE10'},
+      {name:'romanian deadlifts',loading:'3x8@140kg',rpe:'RPE8'},
+      {name:'bulgarian split squats',loading:'3x8@80kg',rpe:'RPE6.5'},
+      {name:'dumbbell rows',loading:'3x15@40kg',rpe:'RPE9'},
+      {name:'bicep curls',loading:'3x6@18kg',rpe:'RPE9'},
+    ],
+    energy:'below-average', sleep:'average',
+    kps:{morning:'4.5',post:'4.5'},
+    notes:'Below-average energy. Solei muscles too sore to run. Will cycle instead.'
+  });
+  localStorage.setItem('tl_sessions', JSON.stringify(sessions));
+}
+
+// Pull from GitHub on load (silently)
+if (cfg.ghToken) pullFromGitHub().then(() => { if (document.getElementById('page-history').classList.contains('active')) renderHistory(); });
+</script>
+</body>
+</html>
