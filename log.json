@@ -1,5 +1,44 @@
 [
   {
+    "id": 1781516170264,
+    "date": "2026-06-14",
+    "type": "Full body",
+    "exercises": [
+      {
+        "name": "pull-ups",
+        "loading": "4x8@20kg",
+        "rpe": "RPE9"
+      },
+      {
+        "name": "pauze power clean + jerk",
+        "loading": "3x3@100kg",
+        "rpe": "RPE8"
+      },
+      {
+        "name": "back extensions",
+        "loading": "3x10@50kg",
+        "rpe": "RPE8"
+      },
+      {
+        "name": "leg extensions",
+        "loading": "4x30@40kg",
+        "rpe": "RPE5"
+      },
+      {
+        "name": "vertical jumps",
+        "loading": "4x3",
+        "rpe": "RPE9"
+      }
+    ],
+    "energy": "average",
+    "sleep": "average",
+    "kps": {
+      "morning": "2",
+      "post": "4"
+    },
+    "notes": ""
+  },
+  {
     "id": 1781376695963,
     "date": "2026-06-12",
     "type": "Pull",
