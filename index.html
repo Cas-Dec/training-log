@@ -167,6 +167,18 @@
   /* DIVIDER */
   .divider { border: none; border-top: 1px solid var(--border); margin: 24px 0; }
 
+  /* USER TOGGLE */
+  .user-toggle { display: flex; gap: 2px; background: var(--bg3); border-radius: 8px; padding: 2px; }
+  .user-btn { background: none; border: none; color: var(--muted); cursor: pointer; font-family: var(--font-sans); font-size: 13px; font-weight: 500; padding: 4px 12px; border-radius: 6px; transition: all .15s; }
+  .user-btn.active { background: var(--bg2); color: var(--text); box-shadow: 0 1px 3px rgba(0,0,0,.4); }
+
+  /* BADGE — new types */
+  .badge-Upperbody { background: rgba(249,115,22,.18); color: #fdba74; }
+  .badge-Fullbody  { background: rgba(168,85,247,.18); color: #d8b4fe; }
+  .badge-Accessory { background: rgba(20,184,166,.18);  color: #5eead4; }
+  .badge-Rugby     { background: rgba(239,68,68,.18);   color: #fca5a5; }
+  .badge-Badminton { background: rgba(163,230,53,.18);  color: #bef264; }
+
   @media (max-width: 420px) {
     .grid3 { grid-template-columns: 1fr 1fr; }
     .ex-head span:nth-child(3), .ex-row input:nth-child(3) { display: none; }
@@ -180,6 +192,10 @@
 
 <nav>
   <span class="nav-logo">⚡ TRAINING</span>
+  <div class="user-toggle">
+    <button class="user-btn active" id="user-btn-cas" onclick="setUser('Cas')">Cas</button>
+    <button class="user-btn" id="user-btn-dries" onclick="setUser('Dries')">Dries</button>
+  </div>
   <div class="nav-tabs">
     <button class="nav-tab active" onclick="showPage('log')">Log</button>
     <button class="nav-tab" onclick="showPage('history')">History</button>
@@ -205,33 +221,55 @@
     </div>
     <div class="field">
       <label>Session type</label>
-      <select id="session-type">
+      <select id="session-type" onchange="onTypeChange()">
         <option>Pull</option><option>Push</option><option>Legs</option>
-        <option>Full body</option><option>Cardio</option><option>Rest</option>
+        <option>Upper body</option><option>Full body</option><option>Accessory</option>
+        <option>Rugby</option><option>Badminton</option><option>Cardio</option>
       </select>
     </div>
   </div>
 
-  <div class="field">
-    <label>Exercises</label>
-    <div class="ex-head">
-      <span>Exercise</span><span>Sets × reps @ weight</span><span>RPE</span><span></span>
+  <div id="exercises-section">
+    <div class="field">
+      <label>Exercises</label>
+      <div class="ex-head">
+        <span>Exercise</span><span>Sets × reps @ weight</span><span>RPE</span><span></span>
+      </div>
+      <div id="exercises"></div>
+      <button class="add-ex" onclick="addExercise()">+ add exercise</button>
     </div>
-    <div id="exercises"></div>
-    <button class="add-ex" onclick="addExercise()">+ add exercise</button>
   </div>
 
-  <div class="field">
-    <label>Knee Pain Score (KPS)</label>
-    <div class="kps-row">
-      <div>
-        <label style="margin-bottom:4px;font-size:11px">Morning</label>
-        <input type="number" id="kps-morning" min="0" max="10" step="0.5" placeholder="0–10">
+  <div id="cardio-section" style="display:none">
+    <div class="grid2">
+      <div class="field">
+        <label>Duration (min)</label>
+        <input type="number" id="cardio-duration" min="1" placeholder="e.g. 60">
       </div>
-      <div class="kps-arrow">→</div>
-      <div>
-        <label style="margin-bottom:4px;font-size:11px">Post-training</label>
-        <input type="number" id="kps-post" min="0" max="10" step="0.5" placeholder="0–10">
+      <div class="field">
+        <label>Intensity</label>
+        <select id="cardio-intensity">
+          <option value="low">Low</option>
+          <option value="medium" selected>Medium</option>
+          <option value="high">High</option>
+        </select>
+      </div>
+    </div>
+  </div>
+
+  <div id="kps-section">
+    <div class="field">
+      <label>Knee Pain Score (KPS)</label>
+      <div class="kps-row">
+        <div>
+          <label style="margin-bottom:4px;font-size:11px">Morning</label>
+          <input type="number" id="kps-morning" min="0" max="10" step="0.5" placeholder="0–10">
+        </div>
+        <div class="kps-arrow">→</div>
+        <div>
+          <label style="margin-bottom:4px;font-size:11px">Post-training</label>
+          <input type="number" id="kps-post" min="0" max="10" step="0.5" placeholder="0–10">
+        </div>
       </div>
     </div>
   </div>
@@ -335,6 +373,8 @@
 // ── STATE ──────────────────────────────────────────────────────────
 let sessions = [];
 let cfg = {};
+let currentUser = 'Cas';
+const CARDIO_TYPES = ['Rugby', 'Badminton', 'Cardio'];
 
 function loadAll() {
   try { sessions = JSON.parse(localStorage.getItem('tl_sessions') || '[]'); } catch(e) { sessions = []; }
@@ -347,6 +387,7 @@ function loadAll() {
   if (!cfg.ghToken || !cfg.ghUser || !cfg.ghRepo) {
     document.getElementById('setup-banner').style.display = 'block';
   }
+  setUser(localStorage.getItem('tl_user') || 'Cas');
 }
 
 function saveCfg() {
@@ -361,6 +402,25 @@ function saveCfg() {
   if (cfg.ghToken && cfg.ghUser && cfg.ghRepo) {
     document.getElementById('setup-banner').style.display = 'none';
   }
+}
+
+function setUser(u) {
+  currentUser = u;
+  localStorage.setItem('tl_user', u);
+  document.getElementById('user-btn-cas').classList.toggle('active', u === 'Cas');
+  document.getElementById('user-btn-dries').classList.toggle('active', u === 'Dries');
+  updateKPSVisibility();
+  if (document.getElementById('page-history').classList.contains('active')) renderHistory();
+}
+
+function updateKPSVisibility() {
+  document.getElementById('kps-section').style.display = currentUser === 'Cas' ? '' : 'none';
+}
+
+function onTypeChange() {
+  const isCardio = CARDIO_TYPES.includes(document.getElementById('session-type').value);
+  document.getElementById('exercises-section').style.display = isCardio ? 'none' : '';
+  document.getElementById('cardio-section').style.display = isCardio ? '' : 'none';
 }
 
 // ── NAVIGATION ─────────────────────────────────────────────────────
@@ -398,17 +458,28 @@ async function saveSession() {
   const date = document.getElementById('date').value;
   if (!date) { setStatus('Please set a date.', 'err'); return; }
 
+  const type = document.getElementById('session-type').value;
+  const isCardio = CARDIO_TYPES.includes(type);
   const session = {
     id: Date.now(),
+    user: currentUser,
     date,
-    type: document.getElementById('session-type').value,
-    exercises: getExercises(),
+    type,
+    ...(isCardio ? {
+      duration: document.getElementById('cardio-duration').value || null,
+      intensity: document.getElementById('cardio-intensity').value || null,
+      exercises: [],
+    } : {
+      exercises: getExercises(),
+    }),
     energy: document.getElementById('energy').value,
     sleep: document.getElementById('sleep').value,
-    kps: {
-      morning: document.getElementById('kps-morning').value || null,
-      post: document.getElementById('kps-post').value || null,
-    },
+    ...(currentUser === 'Cas' ? {
+      kps: {
+        morning: document.getElementById('kps-morning').value || null,
+        post: document.getElementById('kps-post').value || null,
+      }
+    } : {}),
     notes: document.getElementById('notes').value.trim(),
   };
 
@@ -441,6 +512,8 @@ function resetForm() {
   document.getElementById('notes').value = '';
   document.getElementById('kps-morning').value = '';
   document.getElementById('kps-post').value = '';
+  document.getElementById('cardio-duration').value = '';
+  document.getElementById('cardio-intensity').value = 'medium';
 }
 
 // ── GITHUB SYNC ────────────────────────────────────────────────────
@@ -513,33 +586,43 @@ async function testGitHub() {
 
 // ── HISTORY ────────────────────────────────────────────────────────
 function renderHistory() {
-  const n = sessions.length;
-  const last7 = sessions.filter(s => (Date.now()-new Date(s.date))/864e5 <= 7).length;
-  const kpsAll = sessions.flatMap(s => s.kps?.post ? [+s.kps.post] : []).filter(x=>!isNaN(x));
+  const filtered = sessions.filter(s => (s.user || 'Cas') === currentUser);
+  const n = filtered.length;
+  const last7 = filtered.filter(s => (Date.now()-new Date(s.date))/864e5 <= 7).length;
+  const kpsAll = filtered.flatMap(s => s.kps?.post ? [+s.kps.post] : []).filter(x=>!isNaN(x));
   const avgKPS = kpsAll.length ? (kpsAll.reduce((a,b)=>a+b)/kpsAll.length).toFixed(1) : '–';
 
+  const kpsStat = currentUser === 'Cas'
+    ? `<div class="stat-box"><div class="stat-val">${avgKPS}</div><div class="stat-lbl">Avg KPS (post)</div></div>`
+    : '';
   document.getElementById('stats-row').innerHTML = `
     <div class="stat-box"><div class="stat-val">${n}</div><div class="stat-lbl">Total sessions</div></div>
     <div class="stat-box"><div class="stat-val">${last7}</div><div class="stat-lbl">Last 7 days</div></div>
-    <div class="stat-box"><div class="stat-val">${avgKPS}</div><div class="stat-lbl">Avg KPS (post)</div></div>`;
+    ${kpsStat}`;
 
   const list = document.getElementById('history-list');
   if (!n) { list.innerHTML = '<div class="empty">No sessions yet. Log your first one.</div>'; return; }
 
-  list.innerHTML = sessions.map(s => `
+  list.innerHTML = filtered.map(s => {
+    const isCardio = CARDIO_TYPES.includes(s.type);
+    const activityHtml = isCardio
+      ? `<div class="card-meta" style="margin-bottom:6px">${s.duration ? `<span>${s.duration} min</span>` : ''}${s.intensity ? `<span>Intensity: ${s.intensity}</span>` : ''}</div>`
+      : (s.exercises?.length ? `<div class="ex-chips">${s.exercises.map(e=>`<span class="ex-chip">${e.name} ${e.loading}${e.rpe?' '+e.rpe:''}</span>`).join('')}</div>` : '');
+    return `
     <div class="session-card">
       <div class="card-top">
         <span class="card-date">${s.date}</span>
-        <span class="badge badge-${s.type.replace(' ','')}">${s.type}</span>
+        <span class="badge badge-${s.type.replace(/\s+/g,'')}">${s.type}</span>
       </div>
-      ${s.exercises.length ? `<div class="ex-chips">${s.exercises.map(e=>`<span class="ex-chip">${e.name} ${e.loading}${e.rpe?' '+e.rpe:''}</span>`).join('')}</div>` : ''}
+      ${activityHtml}
       <div class="card-meta">
-        ${s.kps?.morning||s.kps?.post ? `<span>KPS ${s.kps.morning||'?'} → ${s.kps.post||'?'}</span>` : ''}
+        ${currentUser === 'Cas' && (s.kps?.morning||s.kps?.post) ? `<span>KPS ${s.kps.morning||'?'} → ${s.kps.post||'?'}</span>` : ''}
         ${s.energy ? `<span>Energy: ${s.energy}</span>` : ''}
         ${s.sleep ? `<span>Sleep: ${s.sleep}</span>` : ''}
       </div>
       ${s.notes ? `<div class="card-notes">${s.notes}</div>` : ''}
-    </div>`).join('');
+    </div>`;
+  }).join('');
 }
 
 // ── EXPORT ─────────────────────────────────────────────────────────
@@ -563,13 +646,19 @@ function dl(content, filename, type) {
 // ── AI COACH ───────────────────────────────────────────────────────
 function buildContext() {
   const userCtx = cfg.instructions ? `\n\nATHLETE GOALS & CONTEXT:\n${cfg.instructions}` : '';
-  if (!sessions.length) return 'No sessions logged yet.' + userCtx;
-  return `TRAINING LOG (${sessions.length} sessions, newest first):\n\n` +
-    sessions.slice(0,50).map(s =>
-      `${s.date} | ${s.type} | Energy: ${s.energy} | Sleep: ${s.sleep||'?'}
-Exercises: ${s.exercises.map(e=>`${e.name} ${e.loading} ${e.rpe}`).join(' · ')||'none'}
-KPS: ${s.kps?.morning||'?'} → ${s.kps?.post||'?'}
-Notes: ${s.notes||'—'}`).join('\n\n') + userCtx;
+  const userSessions = sessions.filter(s => (s.user || 'Cas') === currentUser);
+  if (!userSessions.length) return `No sessions logged yet for ${currentUser}.` + userCtx;
+  return `TRAINING LOG for ${currentUser} (${userSessions.length} sessions, newest first):\n\n` +
+    userSessions.slice(0,50).map(s => {
+      const isCardio = CARDIO_TYPES.includes(s.type);
+      const activityLine = isCardio
+        ? `Duration: ${s.duration||'?'}min | Intensity: ${s.intensity||'?'}`
+        : `Exercises: ${s.exercises?.map(e=>`${e.name} ${e.loading} ${e.rpe}`).join(' · ')||'none'}`;
+      const kpsLine = currentUser === 'Cas' ? `\nKPS: ${s.kps?.morning||'?'} → ${s.kps?.post||'?'}` : '';
+      return `${s.date} | ${s.type} | Energy: ${s.energy} | Sleep: ${s.sleep||'?'}
+${activityLine}${kpsLine}
+Notes: ${s.notes||'—'}`;
+    }).join('\n\n') + userCtx;
 }
 
 const SYSTEM_PROMPT = `You are an expert strength & conditioning coach specialising in progressive overload, training load management, and injury prevention (especially knee health).
@@ -618,11 +707,12 @@ function quick(q) { document.getElementById('coach-q').value = q; showPage('coac
 loadAll();
 document.getElementById('date').value = new Date().toISOString().split('T')[0];
 addExercise();
+onTypeChange();
 
 // Seed example session if empty
 if (!sessions.length) {
   sessions.push({
-    id: 1, date: '2026-06-12', type: 'Pull',
+    id: 1, user: 'Cas', date: '2026-06-12', type: 'Pull',
     exercises: [
       {name:'weighted pull-ups',loading:'4x8@20kg',rpe:'RPE10'},
       {name:'romanian deadlifts',loading:'3x8@140kg',rpe:'RPE8'},
