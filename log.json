@@ -1,5 +1,49 @@
 [
   {
+    "id": 1781532918051,
+    "date": "2026-06-15",
+    "type": "Push",
+    "exercises": [
+      {
+        "name": "incline dumbbell press",
+        "loading": "3x8@42kg",
+        "rpe": "RPE9"
+      },
+      {
+        "name": "dips",
+        "loading": "3x12@20kg",
+        "rpe": "RPE9"
+      },
+      {
+        "name": "strict press",
+        "loading": "3x8@50kg",
+        "rpe": "RPE9"
+      },
+      {
+        "name": "chest fly",
+        "loading": "3x12@100kg",
+        "rpe": "RPE8"
+      },
+      {
+        "name": "lateral raise",
+        "loading": "3x12@16kg",
+        "rpe": "RPE8"
+      },
+      {
+        "name": "skullcrushers",
+        "loading": "3x12@38kg",
+        "rpe": "RPE8"
+      }
+    ],
+    "energy": "average",
+    "sleep": "average",
+    "kps": {
+      "morning": "4",
+      "post": "4"
+    },
+    "notes": ""
+  },
+  {
     "id": 1781516170264,
     "date": "2026-06-14",
     "type": "Full body",
