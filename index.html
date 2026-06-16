@@ -204,6 +204,17 @@
   .modal-close:hover { color: var(--text); }
   .modal-panel p { font-size: 13px; color: var(--muted); margin-bottom: 14px; }
 
+  /* SECRET INPUT (masked, but not type=password — avoids browser save-password prompts) */
+  .secret-input { position: relative; }
+  .secret-input input { padding-right: 40px; }
+  .mask-secret { -webkit-text-security: disc; }
+  .secret-toggle {
+    position: absolute; right: 6px; top: 50%; transform: translateY(-50%);
+    background: none; border: none; color: var(--muted); cursor: pointer;
+    font-size: 15px; padding: 6px; line-height: 1;
+  }
+  .secret-toggle:hover { color: var(--text); }
+
   /* EMPTY */
   .empty { text-align: center; padding: 60px 20px; color: var(--muted); font-size: 14px; }
 
@@ -418,11 +429,17 @@
 
     <div class="field">
       <label>Anthropic API key</label>
-      <input type="password" id="cfg-api-key" placeholder="sk-ant-…" oninput="saveCfg()">
+      <div class="secret-input">
+        <input type="text" class="mask-secret" id="cfg-api-key" placeholder="sk-ant-…" autocomplete="off" oninput="saveCfg()">
+        <button type="button" class="secret-toggle" onclick="toggleSecret('cfg-api-key', this)" aria-label="Show/hide">👁</button>
+      </div>
     </div>
     <div class="field">
       <label>GitHub personal access token</label>
-      <input type="password" id="cfg-gh-token" placeholder="github_pat_…" oninput="saveCfg()">
+      <div class="secret-input">
+        <input type="text" class="mask-secret" id="cfg-gh-token" placeholder="github_pat_…" autocomplete="off" oninput="saveCfg()">
+        <button type="button" class="secret-toggle" onclick="toggleSecret('cfg-gh-token', this)" aria-label="Show/hide">👁</button>
+      </div>
     </div>
     <div class="grid2">
       <div class="field">
@@ -497,6 +514,13 @@ function updateKPSVisibility() {
 
 function openSettings() { document.getElementById('settings-modal').classList.add('active'); }
 function closeSettings() { document.getElementById('settings-modal').classList.remove('active'); }
+
+function toggleSecret(id, btn) {
+  const input = document.getElementById(id);
+  const revealed = input.style.webkitTextSecurity === 'none';
+  input.style.webkitTextSecurity = revealed ? 'disc' : 'none';
+  btn.textContent = revealed ? '👁' : '🙈';
+}
 
 function onTypeChange() {
   const isCardio = CARDIO_TYPES.includes(document.getElementById('session-type').value);
