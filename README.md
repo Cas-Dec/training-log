@@ -1,24 +1,9 @@
 # Training Log
 
-A lightweight training tracker with an AI coaching layer. Logs to a JSON file in this repo, accessible from any browser including mobile.
+A lightweight training tracker with an AI coaching layer. Logs to a JSON file in this repo, accessible from any browser including mobile. Check it out: https://cas-dec.github.io/training-log/
 
-## Setup (5 minutes)
-
-### 1. Enable GitHub Pages
-Go to **Settings → Pages → Source** and select `main` branch, `/ (root)`. Your app will be live at `https://YOUR-USERNAME.github.io/training-log/`.
-
-### 2. Get a GitHub Personal Access Token
-Go to **GitHub → Settings → Developer settings → Personal access tokens → Fine-grained tokens**.
-- Repository access: this repo only
-- Permissions: **Contents → Read and write**
-
-Copy the token.
-
-### 3. Get an Anthropic API key
-Sign up at [console.anthropic.com](https://console.anthropic.com) and create an API key.
-
-### 4. Configure the app
-Open your GitHub Pages URL, go to the **Coach** tab, scroll to **Settings**, and fill in:
+## Setup
+Go to the **Coach** tab, scroll to **Settings**, and fill in:
 - Anthropic API key
 - GitHub token
 - GitHub username
@@ -50,4 +35,4 @@ All sessions live in `log.json` at the root of this repo. It's plain JSON — yo
 
 ## Privacy
 
-Your API keys and GitHub token are stored in your browser's localStorage only. They are sent directly to Anthropic and GitHub respectively — never to any third party.
+API keys and GitHub token are stored in your browser's localStorage only. They are sent directly to Anthropic and GitHub respectively — never to any third party.
