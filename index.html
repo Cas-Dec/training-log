@@ -683,7 +683,7 @@ async function askCoach(q) {
   btn.disabled = true;
 
   try {
-    const res = await fetch('claude-proxy.casdecancq.workers.dev', {
+    const res = await fetch('https://claude-proxy.casdecancq.workers.dev', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', 'x-api-key': cfg.apiKey, 'anthropic-version': '2023-06-01' },
       body: JSON.stringify({
