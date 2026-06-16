@@ -1,5 +1,17 @@
 [
   {
+    "id": 1781646790206,
+    "user": "Dries",
+    "date": "2026-06-16",
+    "type": "Cardio",
+    "duration": "45",
+    "intensity": "high",
+    "exercises": [],
+    "energy": "below-average",
+    "sleep": "poor",
+    "notes": "25 minute warm up, running around Blaarmeersen\n2x4 hill sprints at rpe 9. Length, about 120m duration 20-30 seconds with 1m30 of rest between Intervals and 3 min rest between the two sets."
+  },
+  {
     "id": 1781646655248,
     "user": "Dries",
     "date": "2026-06-16",
