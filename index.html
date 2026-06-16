@@ -365,6 +365,17 @@
   </div>
   <div class="empty" id="progression-empty" style="display:none"></div>
 
+  <div id="kps-sensitivity-section" style="display:none">
+    <div class="field">
+      <label>Knee pain sensitivity to patellar load (last 12 weeks)</label>
+      <p class="page-subtitle" style="margin-bottom:10px">Per session: (post − morning KPS) ÷ patellar-tendon loading volume. Rising = knee getting more reactive per unit load; falling/negative = better load tolerance.</p>
+    </div>
+    <div class="chart-wrap" id="kps-sensitivity-chart-wrap">
+      <canvas id="kps-sensitivity-chart"></canvas>
+    </div>
+    <div class="empty" id="kps-sensitivity-empty" style="display:none"></div>
+  </div>
+
   <hr class="divider">
 
   <div id="history-list"></div>
@@ -678,6 +689,8 @@ async function testGitHub() {
 }
 
 // ── HISTORY ────────────────────────────────────────────────────────
+const TWELVE_WEEKS_MS = 84 * 864e5;
+
 // ── PROGRESSION CHART ─────────────────────────────────────────────
 let progressionChart = null;
 let progressionMetric = 'weight';
@@ -720,7 +733,7 @@ function renderProgressionChart() {
   const wrap = document.getElementById('progression-chart-wrap');
   const empty = document.getElementById('progression-empty');
 
-  const cutoff = Date.now() - 84 * 864e5; // 12 weeks
+  const cutoff = Date.now() - TWELVE_WEEKS_MS;
   const points = sessions
     .filter(s => (s.user || 'Cas') === currentUser && new Date(s.date).getTime() >= cutoff)
     .flatMap(s => (s.exercises || [])
@@ -772,6 +785,84 @@ function renderProgressionChart() {
   });
 }
 
+// ── KNEE PAIN SENSITIVITY CHART ────────────────────────────────────
+// Exercises that load the patellar tendon (knee-flexion-under-load movements).
+const PATELLAR_KEYWORDS = ['squat', 'lunge', 'step up', 'step-up', 'leg press', 'jump'];
+// Sports with documented heavy eccentric patellar loading (see CAS-specs.md). Plain "Cardio"
+// is excluded since its modality (running vs. cycling) isn't tracked and cycling is low-impact.
+const PATELLAR_CARDIO_TYPES = ['Badminton', 'Rugby'];
+const CARDIO_INTENSITY_WEIGHT = { low: 1, medium: 2, high: 3 };
+
+function sessionPatellarVolume(s) {
+  const strengthVolume = (s.exercises || [])
+    .filter(e => PATELLAR_KEYWORDS.some(k => e.name.toLowerCase().includes(k)))
+    .reduce((sum, e) => {
+      const { sets, reps, weight } = parseLoading(e.loading);
+      return sum + (sets !== null && reps !== null && weight !== null ? sets * reps * weight : 0);
+    }, 0);
+
+  const cardioVolume = PATELLAR_CARDIO_TYPES.includes(s.type) && s.duration
+    ? +s.duration * (CARDIO_INTENSITY_WEIGHT[s.intensity] || 1)
+    : 0;
+
+  return strengthVolume + cardioVolume;
+}
+
+let kpsSensitivityChart = null;
+
+function renderKpsSensitivityChart() {
+  const wrap = document.getElementById('kps-sensitivity-chart-wrap');
+  const empty = document.getElementById('kps-sensitivity-empty');
+
+  const cutoff = Date.now() - TWELVE_WEEKS_MS;
+  const points = sessions
+    .filter(s => (s.user || 'Cas') === 'Cas' && new Date(s.date).getTime() >= cutoff
+      && s.kps?.morning != null && s.kps?.post != null && s.kps.morning !== '' && s.kps.post !== '')
+    .map(s => {
+      const volume = sessionPatellarVolume(s);
+      const deltaKps = (+s.kps.post) - (+s.kps.morning);
+      return { date: s.date, value: volume > 0 ? deltaKps / volume : null };
+    })
+    .filter(p => p.value !== null && !isNaN(p.value))
+    .sort((a, b) => a.date.localeCompare(b.date));
+
+  if (kpsSensitivityChart) { kpsSensitivityChart.destroy(); kpsSensitivityChart = null; }
+
+  if (!points.length) {
+    wrap.style.display = 'none';
+    empty.style.display = '';
+    empty.textContent = 'No sessions with both KPS and patellar-tendon loading in the last 12 weeks.';
+    return;
+  }
+  wrap.style.display = '';
+  empty.style.display = 'none';
+
+  kpsSensitivityChart = new Chart(document.getElementById('kps-sensitivity-chart'), {
+    type: 'line',
+    data: {
+      labels: points.map(p => p.date),
+      datasets: [{
+        label: 'ΔKPS / loading volume',
+        data: points.map(p => p.value),
+        borderColor: '#ff6b6b',
+        backgroundColor: 'rgba(255,107,107,0.12)',
+        pointBackgroundColor: '#ff6b6b',
+        tension: 0.25,
+        fill: true,
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: { legend: { display: false } },
+      scales: {
+        x: { ticks: { color: '#7a7872', font: { size: 11 } }, grid: { color: '#2e2e2e' } },
+        y: { ticks: { color: '#7a7872', font: { size: 11 } }, grid: { color: '#2e2e2e' } },
+      }
+    }
+  });
+}
+
 function renderHistory() {
   const filtered = sessions.filter(s => (s.user || 'Cas') === currentUser);
   const n = filtered.length;
@@ -789,6 +880,10 @@ function renderHistory() {
 
   populateProgressionSelect();
   renderProgressionChart();
+
+  const sensitivitySection = document.getElementById('kps-sensitivity-section');
+  sensitivitySection.style.display = currentUser === 'Cas' ? '' : 'none';
+  if (currentUser === 'Cas') renderKpsSensitivityChart();
 
   const list = document.getElementById('history-list');
   if (!n) { list.innerHTML = '<div class="empty">No sessions yet. Log your first one.</div>'; return; }
