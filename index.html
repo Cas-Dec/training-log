@@ -38,10 +38,17 @@
     background: rgba(15,15,15,0.9);
     backdrop-filter: blur(12px);
     border-bottom: 1px solid var(--border);
-    display: flex; align-items: center; justify-content: space-between;
-    padding: 0 20px; height: 52px;
+    padding: 10px 20px;
   }
+  .nav-row { display: flex; align-items: center; justify-content: space-between; }
+  .nav-row + .nav-row { margin-top: 8px; }
   .nav-logo { font-family: var(--font-mono); font-size: 13px; color: var(--accent); letter-spacing: .08em; }
+  .gear-btn {
+    background: none; border: 1px solid var(--border); color: var(--muted); cursor: pointer;
+    border-radius: 8px; width: 30px; height: 30px; font-size: 15px;
+    display: flex; align-items: center; justify-content: center; transition: all .15s;
+  }
+  .gear-btn:hover { border-color: var(--accent); color: var(--accent); }
   .nav-tabs { display: flex; gap: 2px; }
   .nav-tab {
     background: none; border: none; color: var(--muted); cursor: pointer;
@@ -161,9 +168,22 @@
   }
   .ai-placeholder { color: var(--muted); font-style: italic; }
 
-  .config-section { margin-top: 32px; border-top: 1px solid var(--border); padding-top: 24px; }
-  .config-section h3 { font-size: 14px; font-weight: 600; margin-bottom: 4px; }
-  .config-section p  { font-size: 13px; color: var(--muted); margin-bottom: 14px; }
+  /* SETTINGS MODAL */
+  .modal-overlay {
+    display: none; position: fixed; inset: 0; z-index: 200;
+    background: rgba(0,0,0,.6); padding: 20px;
+    align-items: center; justify-content: center;
+  }
+  .modal-overlay.active { display: flex; }
+  .modal-panel {
+    background: var(--bg2); border: 1px solid var(--border); border-radius: var(--radius);
+    padding: 24px; max-width: 480px; width: 100%; max-height: 85vh; overflow-y: auto;
+  }
+  .modal-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 4px; }
+  .modal-header h3 { font-size: 16px; font-weight: 600; }
+  .modal-close { background: none; border: none; color: var(--muted); font-size: 22px; line-height: 1; cursor: pointer; }
+  .modal-close:hover { color: var(--text); }
+  .modal-panel p { font-size: 13px; color: var(--muted); margin-bottom: 14px; }
 
   /* EMPTY */
   .empty { text-align: center; padding: 60px 20px; color: var(--muted); font-size: 14px; }
@@ -192,15 +212,20 @@
 <body>
 
 <nav>
-  <span class="nav-logo">⚡ TRAINING</span>
-  <div class="user-toggle">
-    <button class="user-btn active" id="user-btn-cas" onclick="setUser('Cas')">Cas</button>
-    <button class="user-btn" id="user-btn-dries" onclick="setUser('Dries')">Dries</button>
+  <div class="nav-row">
+    <span class="nav-logo">⚡ TRAINING</span>
+    <button class="gear-btn" onclick="openSettings()" aria-label="Settings">⚙</button>
   </div>
-  <div class="nav-tabs">
-    <button class="nav-tab active" onclick="showPage('log')">Log</button>
-    <button class="nav-tab" onclick="showPage('history')">History</button>
-    <button class="nav-tab" onclick="showPage('coach')">Coach</button>
+  <div class="nav-row">
+    <div class="user-toggle">
+      <button class="user-btn active" id="user-btn-cas" onclick="setUser('Cas')">Cas</button>
+      <button class="user-btn" id="user-btn-dries" onclick="setUser('Dries')">Dries</button>
+    </div>
+    <div class="nav-tabs">
+      <button class="nav-tab active" onclick="showPage('log')">Log</button>
+      <button class="nav-tab" onclick="showPage('history')">History</button>
+      <button class="nav-tab" onclick="showPage('coach')">Coach</button>
+    </div>
   </div>
 </nav>
 
@@ -208,7 +233,7 @@
 <div id="page-log" class="page active">
   <div id="setup-banner" class="setup-banner" style="display:none">
     <strong>First-time setup needed.</strong><br>
-    Open <strong>Settings</strong> (bottom of Coach tab) and enter your GitHub token + repo details.
+    Tap the <strong>⚙</strong> icon (top right) and enter your GitHub token + repo details.
     Until then, sessions are saved locally only and won't sync to your repo.
   </div>
 
@@ -332,10 +357,15 @@
   <div id="ai-output" class="ai-output">
     <span class="ai-placeholder">Your coach's response will appear here.</span>
   </div>
+</div>
 
-  <!-- CONFIG -->
-  <div class="config-section">
-    <h3>Settings</h3>
+<!-- ── SETTINGS MODAL ── -->
+<div id="settings-modal" class="modal-overlay" onclick="if(event.target===this) closeSettings()">
+  <div class="modal-panel">
+    <div class="modal-header">
+      <h3>Settings</h3>
+      <button class="modal-close" onclick="closeSettings()" aria-label="Close">×</button>
+    </div>
     <p>These are stored in your browser only — never sent anywhere except GitHub and Anthropic directly.</p>
 
     <div class="field">
@@ -414,6 +444,9 @@ function setUser(u) {
 function updateKPSVisibility() {
   document.getElementById('kps-section').style.display = currentUser === 'Cas' ? '' : 'none';
 }
+
+function openSettings() { document.getElementById('settings-modal').classList.add('active'); }
+function closeSettings() { document.getElementById('settings-modal').classList.remove('active'); }
 
 function onTypeChange() {
   const isCardio = CARDIO_TYPES.includes(document.getElementById('session-type').value);
@@ -695,7 +728,7 @@ async function askCoach(q) {
   q = q || document.getElementById('coach-q').value.trim();
   if (!q) return;
   if (!cfg.apiKey) {
-    document.getElementById('ai-output').textContent = '⚠ Add your Anthropic API key in Settings below.';
+    document.getElementById('ai-output').textContent = '⚠ Add your Anthropic API key in Settings (⚙ icon, top right).';
     return;
   }
   const out = document.getElementById('ai-output');
