@@ -1,5 +1,21 @@
 [
   {
+    "id": 1781645429544,
+    "user": "Cas",
+    "date": "2026-06-16",
+    "type": "Cardio",
+    "duration": "30",
+    "intensity": "high",
+    "exercises": [],
+    "energy": "above-average",
+    "sleep": "average",
+    "kps": {
+      "morning": "2.5",
+      "post": "3"
+    },
+    "notes": "Slow run followed by hill sprints. 8 short intervals close to max heart rate."
+  },
+  {
     "id": 1781611764056,
     "user": "Cas",
     "date": "2026-06-16",
