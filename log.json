@@ -1,5 +1,21 @@
 [
   {
+    "id": 1781603488709,
+    "user": "Cas",
+    "date": "2026-06-15",
+    "type": "Cardio",
+    "duration": "110",
+    "intensity": "low",
+    "exercises": [],
+    "energy": "average",
+    "sleep": "average",
+    "kps": {
+      "morning": "4",
+      "post": "2.5"
+    },
+    "notes": ""
+  },
+  {
     "id": 1781532918051,
     "date": "2026-06-15",
     "type": "Push",
