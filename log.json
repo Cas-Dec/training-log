@@ -1,5 +1,26 @@
 [
   {
+    "id": 1781646655248,
+    "user": "Dries",
+    "date": "2026-06-16",
+    "type": "Legs",
+    "exercises": [
+      {
+        "name": "Squat",
+        "loading": "4x6@152kg",
+        "rpe": "RPE8"
+      },
+      {
+        "name": "Romanian deadlift",
+        "loading": "3x8@165",
+        "rpe": "RPE6"
+      }
+    ],
+    "energy": "below-average",
+    "sleep": "poor",
+    "notes": "I felt tired after my exam and my tensor fascia latea or hurting whilst doing my warm ups NRS 2/10"
+  },
+  {
     "id": 1781645429544,
     "user": "Cas",
     "date": "2026-06-16",
