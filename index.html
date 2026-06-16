@@ -148,6 +148,13 @@
   .card-meta { font-size: 12px; color: var(--muted); display: flex; gap: 16px; flex-wrap: wrap; }
   .card-notes { font-size: 13px; color: var(--muted); margin-top: 8px; font-style: italic; }
 
+  .chart-wrap { background: var(--bg2); border: 1px solid var(--border); border-radius: var(--radius); padding: 12px; height: 240px; margin-bottom: 4px; }
+  .progression-controls { display: flex; gap: 8px; flex-wrap: wrap; }
+  .progression-controls select { flex: 1; min-width: 140px; }
+  .metric-toggle { display: flex; gap: 2px; background: var(--bg3); border-radius: 8px; padding: 2px; flex-shrink: 0; }
+  .metric-btn { background: none; border: none; color: var(--muted); cursor: pointer; font-family: var(--font-sans); font-size: 13px; font-weight: 500; padding: 4px 12px; border-radius: 6px; transition: all .15s; }
+  .metric-btn.active { background: var(--bg2); color: var(--text); box-shadow: 0 1px 3px rgba(0,0,0,.4); }
+
   .stats-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 24px; }
   .stat-box { background: var(--bg2); border: 1px solid var(--border); border-radius: var(--radius); padding: 14px; }
   .stat-val { font-size: 24px; font-weight: 600; font-family: var(--font-mono); color: var(--accent); }
@@ -342,6 +349,24 @@
   <h2>History</h2>
   <p class="page-subtitle">All logged sessions</p>
   <div class="stats-row" id="stats-row"></div>
+
+  <div class="field">
+    <label>Exercise progression (last 12 weeks)</label>
+    <div class="progression-controls">
+      <select id="progression-exercise" onchange="renderProgressionChart()"></select>
+      <div class="metric-toggle">
+        <button class="metric-btn active" id="metric-btn-weight" onclick="setProgressionMetric('weight')">Max weight</button>
+        <button class="metric-btn" id="metric-btn-volume" onclick="setProgressionMetric('volume')">Volume</button>
+      </div>
+    </div>
+  </div>
+  <div class="chart-wrap" id="progression-chart-wrap">
+    <canvas id="progression-chart"></canvas>
+  </div>
+  <div class="empty" id="progression-empty" style="display:none"></div>
+
+  <hr class="divider">
+
   <div id="history-list"></div>
   <div style="display:flex;gap:10px;margin-top:16px;flex-wrap:wrap">
     <button class="btn btn-ghost" onclick="exportJSON()">Export JSON</button>
@@ -410,6 +435,7 @@
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/marked@12/marked.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4/dist/chart.umd.min.js"></script>
 <script>
 // ── STATE ──────────────────────────────────────────────────────────
 let sessions = [];
@@ -652,6 +678,100 @@ async function testGitHub() {
 }
 
 // ── HISTORY ────────────────────────────────────────────────────────
+// ── PROGRESSION CHART ─────────────────────────────────────────────
+let progressionChart = null;
+let progressionMetric = 'weight';
+
+function parseLoading(loading) {
+  loading = loading || '';
+  const sr = loading.match(/^([\d.]+)\s*x\s*([\d.]+)/i);
+  const w = loading.match(/@\s*([\d.]+)/);
+  return {
+    sets: sr ? parseFloat(sr[1]) : null,
+    reps: sr ? parseFloat(sr[2]) : null,
+    weight: w ? parseFloat(w[1]) : null,
+  };
+}
+
+function setProgressionMetric(metric) {
+  progressionMetric = metric;
+  document.getElementById('metric-btn-weight').classList.toggle('active', metric === 'weight');
+  document.getElementById('metric-btn-volume').classList.toggle('active', metric === 'volume');
+  renderProgressionChart();
+}
+
+function populateProgressionSelect() {
+  const sel = document.getElementById('progression-exercise');
+  const names = [...new Set(
+    sessions.filter(s => (s.user || 'Cas') === currentUser)
+      .flatMap(s => (s.exercises || []).map(e => e.name))
+      .filter(Boolean)
+  )].sort((a, b) => a.localeCompare(b));
+
+  const prev = sel.value;
+  sel.innerHTML = names.length
+    ? names.map(n => `<option value="${n}">${n}</option>`).join('')
+    : '<option value="">No exercises logged yet</option>';
+  if (names.includes(prev)) sel.value = prev;
+}
+
+function renderProgressionChart() {
+  const exercise = document.getElementById('progression-exercise').value;
+  const wrap = document.getElementById('progression-chart-wrap');
+  const empty = document.getElementById('progression-empty');
+
+  const cutoff = Date.now() - 84 * 864e5; // 12 weeks
+  const points = sessions
+    .filter(s => (s.user || 'Cas') === currentUser && new Date(s.date).getTime() >= cutoff)
+    .flatMap(s => (s.exercises || [])
+      .filter(e => e.name === exercise)
+      .map(e => {
+        const { sets, reps, weight } = parseLoading(e.loading);
+        const value = progressionMetric === 'volume'
+          ? (sets !== null && reps !== null && weight !== null ? sets * reps * weight : null)
+          : weight;
+        return { date: s.date, value };
+      }))
+    .filter(p => p.value !== null)
+    .sort((a, b) => a.date.localeCompare(b.date));
+
+  if (progressionChart) { progressionChart.destroy(); progressionChart = null; }
+
+  if (!exercise || !points.length) {
+    wrap.style.display = 'none';
+    empty.style.display = '';
+    empty.textContent = `No ${progressionMetric} data for this exercise in the last 12 weeks.`;
+    return;
+  }
+  wrap.style.display = '';
+  empty.style.display = 'none';
+
+  progressionChart = new Chart(document.getElementById('progression-chart'), {
+    type: 'line',
+    data: {
+      labels: points.map(p => p.date),
+      datasets: [{
+        label: exercise,
+        data: points.map(p => p.value),
+        borderColor: '#c8f542',
+        backgroundColor: 'rgba(200,245,66,0.12)',
+        pointBackgroundColor: '#c8f542',
+        tension: 0.25,
+        fill: true,
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: { legend: { display: false } },
+      scales: {
+        x: { ticks: { color: '#7a7872', font: { size: 11 } }, grid: { color: '#2e2e2e' } },
+        y: { ticks: { color: '#7a7872', font: { size: 11 } }, grid: { color: '#2e2e2e' } },
+      }
+    }
+  });
+}
+
 function renderHistory() {
   const filtered = sessions.filter(s => (s.user || 'Cas') === currentUser);
   const n = filtered.length;
@@ -666,6 +786,9 @@ function renderHistory() {
     <div class="stat-box"><div class="stat-val">${n}</div><div class="stat-lbl">Total sessions</div></div>
     <div class="stat-box"><div class="stat-val">${last7}</div><div class="stat-lbl">Last 7 days</div></div>
     ${kpsStat}`;
+
+  populateProgressionSelect();
+  renderProgressionChart();
 
   const list = document.getElementById('history-list');
   if (!n) { list.innerHTML = '<div class="empty">No sessions yet. Log your first one.</div>'; return; }
