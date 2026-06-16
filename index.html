@@ -76,11 +76,15 @@
   .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
   .grid3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; }
 
-  /* EXERCISE TABLE */
-  .ex-head { display: grid; grid-template-columns: 2fr 1.4fr 1fr 28px; gap: 8px; margin-bottom: 6px; }
-  .ex-head span { font-size: 11px; font-family: var(--font-mono); color: var(--muted); text-transform: uppercase; letter-spacing: .05em; }
-  .ex-row { display: grid; grid-template-columns: 2fr 1.4fr 1fr 28px; gap: 8px; margin-bottom: 6px; align-items: center; }
-  .ex-row input { padding: 8px 10px; font-size: 14px; }
+  /* EXERCISE CARDS */
+  .ex-card { background: var(--bg2); border: 1px solid var(--border); border-radius: var(--radius); padding: 10px; margin-bottom: 8px; }
+  .ex-name-row { display: flex; gap: 8px; margin-bottom: 8px; }
+  .ex-name-row input { padding: 8px 10px; font-size: 14px; }
+  .ex-detail-row { display: flex; gap: 6px; align-items: center; }
+  .ex-detail-row select, .ex-detail-row input { padding: 8px 6px; font-size: 13px; }
+  .ex-sets, .ex-reps, .ex-rpe { flex: 1; min-width: 0; padding-right: 22px; }
+  .ex-weight { flex: 1.3; min-width: 0; }
+  .ex-x, .ex-at { color: var(--muted); font-size: 13px; flex-shrink: 0; }
   .rm-btn { background: none; border: 1px solid var(--border); color: var(--muted); border-radius: 6px; width: 28px; height: 36px; cursor: pointer; font-size: 16px; display: flex; align-items: center; justify-content: center; transition: all .15s; flex-shrink: 0; }
   .rm-btn:hover { border-color: var(--red); color: var(--red); }
   .add-ex { background: none; border: 1px dashed var(--border); color: var(--muted); border-radius: var(--radius); width: 100%; padding: 8px; cursor: pointer; font-size: 13px; font-family: var(--font-sans); margin-bottom: 18px; transition: all .15s; }
@@ -181,9 +185,6 @@
 
   @media (max-width: 420px) {
     .grid3 { grid-template-columns: 1fr 1fr; }
-    .ex-head span:nth-child(3), .ex-row input:nth-child(3) { display: none; }
-    .ex-head { grid-template-columns: 2fr 1.4fr 28px; }
-    .ex-row { grid-template-columns: 2fr 1.4fr 28px; }
     .stats-row { grid-template-columns: 1fr 1fr; }
   }
 </style>
@@ -232,9 +233,6 @@
   <div id="exercises-section">
     <div class="field">
       <label>Exercises</label>
-      <div class="ex-head">
-        <span>Exercise</span><span>Sets × reps @ weight</span><span>RPE</span><span></span>
-      </div>
       <div id="exercises"></div>
       <button class="add-ex" onclick="addExercise()">+ add exercise</button>
     </div>
@@ -434,22 +432,45 @@ function showPage(p) {
 
 // ── EXERCISES ──────────────────────────────────────────────────────
 let exCount = 0;
+function numOptions(label, max) {
+  let o = `<option value="">${label}</option>`;
+  for (let i = 1; i <= max; i++) o += `<option value="${i}">${i}</option>`;
+  return o;
+}
+function rpeOptions() {
+  let o = '<option value="">RPE</option>';
+  for (let i = 5; i <= 10; i += 0.5) o += `<option value="${i}">${i}</option>`;
+  return o;
+}
 function addExercise(d={}) {
   const id = exCount++;
   const row = document.createElement('div');
-  row.className = 'ex-row'; row.id = 'ex-'+id;
+  row.className = 'ex-card'; row.id = 'ex-'+id;
   row.innerHTML = `
-    <input type="text" placeholder="e.g. pull-ups" value="${d.name||''}">
-    <input type="text" placeholder="4x8@20kg" value="${d.loading||''}">
-    <input type="text" placeholder="RPE8" value="${d.rpe||''}">
-    <button class="rm-btn" onclick="document.getElementById('ex-${id}').remove()">×</button>`;
+    <div class="ex-name-row">
+      <input type="text" placeholder="e.g. pull-ups" value="${d.name||''}">
+      <button class="rm-btn" onclick="document.getElementById('ex-${id}').remove()">×</button>
+    </div>
+    <div class="ex-detail-row">
+      <select class="ex-sets">${numOptions('Sets', 10)}</select>
+      <span class="ex-x">×</span>
+      <select class="ex-reps">${numOptions('Reps', 30)}</select>
+      <span class="ex-at">@</span>
+      <input type="text" class="ex-weight" placeholder="20kg" value="${d.weight||''}">
+      <select class="ex-rpe">${rpeOptions()}</select>
+    </div>`;
   document.getElementById('exercises').appendChild(row);
 }
 
 function getExercises() {
-  return [...document.querySelectorAll('#exercises .ex-row')].map(row => {
-    const ins = row.querySelectorAll('input');
-    return { name: ins[0].value.trim(), loading: ins[1].value.trim(), rpe: ins[2].value.trim() };
+  return [...document.querySelectorAll('#exercises .ex-card')].map(row => {
+    const name = row.querySelector('.ex-name-row input').value.trim();
+    const sets = row.querySelector('.ex-sets').value;
+    const reps = row.querySelector('.ex-reps').value;
+    const weight = row.querySelector('.ex-weight').value.trim();
+    const rpe = row.querySelector('.ex-rpe').value;
+    const loading = (sets && reps ? `${sets}x${reps}` : (sets || reps || '')) + (weight ? `@${weight}` : '');
+    return { name, loading, rpe: rpe ? `RPE${rpe}` : '' };
   }).filter(e => e.name);
 }
 
