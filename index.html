@@ -85,8 +85,11 @@
 
   /* EXERCISE CARDS */
   .ex-card { background: var(--bg2); border: 1px solid var(--border); border-radius: var(--radius); padding: 10px; margin-bottom: 8px; }
-  .ex-name-row { display: flex; gap: 8px; margin-bottom: 8px; }
+  .ex-name-row { display: flex; gap: 8px; margin-bottom: 8px; position: relative; }
   .ex-name-row input { padding: 8px 10px; font-size: 14px; }
+  .ex-suggestions { position: absolute; top: 100%; left: 0; right: 36px; background: var(--bg2); border: 1px solid var(--border); border-radius: var(--radius); z-index: 100; overflow: hidden; }
+  .ex-suggestion { padding: 7px 10px; font-size: 14px; cursor: pointer; }
+  .ex-suggestion:hover, .ex-suggestion.active { background: var(--accent); color: #fff; }
   .ex-detail-row { display: flex; gap: 6px; align-items: center; }
   .ex-detail-row select, .ex-detail-row input { padding: 8px 6px; font-size: 13px; }
   .ex-sets, .ex-reps, .ex-rpe { flex: 1; min-width: 0; padding-right: 22px; }
@@ -712,6 +715,68 @@ function removeSetGroup(btn) {
   const row = btn.closest('.ex-set-row');
   if (row.parentElement.children.length > 1) row.remove();
 }
+function knownExerciseNames() {
+  const names = new Set();
+  sessions.forEach(s => (s.exercises || []).forEach(e => { if (e.name) names.add(e.name.toLowerCase()); }));
+  return [...names].sort();
+}
+
+function wireExerciseAutocomplete(input) {
+  const row = input.closest('.ex-name-row');
+  let activeIdx = -1;
+
+  function removeSuggestions() {
+    const el = row.querySelector('.ex-suggestions');
+    if (el) el.remove();
+    activeIdx = -1;
+  }
+
+  function showSuggestions(matches) {
+    removeSuggestions();
+    if (!matches.length) return;
+    const box = document.createElement('div');
+    box.className = 'ex-suggestions';
+    matches.forEach((m, i) => {
+      const item = document.createElement('div');
+      item.className = 'ex-suggestion';
+      item.textContent = m;
+      item.addEventListener('mousedown', e => { e.preventDefault(); input.value = m; removeSuggestions(); });
+      box.appendChild(item);
+    });
+    row.appendChild(box);
+  }
+
+  input.addEventListener('input', () => {
+    const q = input.value.toLowerCase().trim();
+    if (!q) { removeSuggestions(); return; }
+    const matches = knownExerciseNames().filter(n => n.includes(q) && n !== q);
+    showSuggestions(matches.slice(0, 6));
+    activeIdx = -1;
+  });
+
+  input.addEventListener('keydown', e => {
+    const items = [...(row.querySelectorAll('.ex-suggestion') || [])];
+    if (!items.length) return;
+    if (e.key === 'ArrowDown') {
+      e.preventDefault();
+      activeIdx = Math.min(activeIdx + 1, items.length - 1);
+    } else if (e.key === 'ArrowUp') {
+      e.preventDefault();
+      activeIdx = Math.max(activeIdx - 1, -1);
+    } else if (e.key === 'Enter' && activeIdx >= 0) {
+      e.preventDefault();
+      input.value = items[activeIdx].textContent;
+      removeSuggestions();
+      return;
+    } else if (e.key === 'Escape') {
+      removeSuggestions(); return;
+    } else { return; }
+    items.forEach((el, i) => el.classList.toggle('active', i === activeIdx));
+  });
+
+  input.addEventListener('blur', () => setTimeout(removeSuggestions, 150));
+}
+
 function addExercise(d={}) {
   const id = exCount++;
   const groupsId = `ex-${id}-groups`;
@@ -728,6 +793,7 @@ function addExercise(d={}) {
       <select class="ex-rpe">${rpeOptions()}</select>
     </div>`;
   document.getElementById('exercises').appendChild(card);
+  wireExerciseAutocomplete(card.querySelector('.ex-name-row input'));
   const parts = d.loading ? d.loading.split(',').map(p => p.trim()).filter(Boolean) : [];
   if (parts.length) parts.forEach(p => addSetGroup(groupsId, p));
   else addSetGroup(groupsId);
@@ -736,7 +802,7 @@ function addExercise(d={}) {
 
 function getExercises() {
   return [...document.querySelectorAll('#exercises .ex-card')].map(card => {
-    const name = card.querySelector('.ex-name-row input').value.trim();
+    const name = card.querySelector('.ex-name-row input').value.trim().toLowerCase();
     const rpe = card.querySelector('.ex-rpe').value;
     const loadings = [...card.querySelectorAll('.ex-set-row')].map(sr => {
       const sets = sr.querySelector('.ex-sets').value;

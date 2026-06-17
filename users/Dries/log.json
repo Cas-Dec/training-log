@@ -17,8 +17,8 @@
     "date": "2026-06-16",
     "type": "Legs",
     "exercises": [
-      { "name": "Squat", "loading": "4x6@152kg", "rpe": "RPE8" },
-      { "name": "Romanian deadlift", "loading": "3x8@165", "rpe": "RPE6" }
+      { "name": "squat", "loading": "4x6@152kg", "rpe": "RPE8" },
+      { "name": "romanian deadlift", "loading": "3x8@165", "rpe": "RPE6" }
     ],
     "energy": "below-average",
     "sleep": "poor",
