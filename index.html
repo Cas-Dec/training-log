@@ -131,7 +131,6 @@
   .badge-Push  { background: rgba(236,72,153,.18); color: #f9a8d4; }
   .badge-Legs  { background: rgba(34,197,94,.18);  color: #86efac; }
   .badge-Full  { background: rgba(168,85,247,.18); color: #d8b4fe; }
-  .badge-Cardio{ background: rgba(234,179,8,.18);  color: #fde047; }
   .badge-Rest  { background: var(--bg3); color: var(--muted); }
 
   .ex-chips { display: flex; flex-wrap: wrap; gap: 5px; margin-bottom: 8px; }
@@ -587,6 +586,7 @@ async function resetLookup() {
   localStorage.setItem('tl_lookup', JSON.stringify(lookup));
   syncLookupToGitHub();
   closeSettings();
+  if (document.getElementById('page-history').classList.contains('active')) renderHistory();
 }
 
 function applyLookupUpdate(update) {
@@ -605,8 +605,16 @@ async function loadAll() {
   try { sessions = JSON.parse(localStorage.getItem('tl_sessions') || '[]'); } catch(e) { sessions = []; }
   try { cfg = JSON.parse(localStorage.getItem('tl_cfg') || '{}'); } catch(e) { cfg = {}; }
   if (cfg.instructions) document.getElementById('cfg-instructions').value = cfg.instructions;
-  // Seed lookup from localStorage while we wait for the worker
-  try { const s = localStorage.getItem('tl_lookup'); if (s) lookup = JSON.parse(s); } catch(e) {}
+  // Seed lookup from localStorage while we wait for the worker; discard stale pre-Running/Cycling cache
+  try {
+    const s = localStorage.getItem('tl_lookup');
+    if (s) {
+      const cached = JSON.parse(s);
+      const isStale = cached.cardio?.Cardio && !cached.cardio?.Running;
+      if (isStale) localStorage.removeItem('tl_lookup');
+      else lookup = cached;
+    }
+  } catch(e) {}
 
   const payload = getTokenPayload();
   if (!payload) { document.getElementById('login-overlay').style.display = 'flex'; return; }
@@ -632,10 +640,9 @@ function initApp() {
   document.getElementById('exercises').innerHTML = '';
   exCount = 0; addExercise();
   onTypeChange();
-  // Fire background loads in parallel — UI is not blocked
   loadContextFiles();
-  syncLookupFromWorker();
-  pullFromGitHub().then(() => {
+  // Render history only after BOTH lookup and sessions are ready, so patellar loads are correct
+  Promise.all([syncLookupFromWorker(), pullFromGitHub()]).then(() => {
     if (document.getElementById('page-history').classList.contains('active')) renderHistory();
   });
 }
