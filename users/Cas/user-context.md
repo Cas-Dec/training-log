@@ -1,58 +1,54 @@
-# Additional system instructions for Cas
-Below are system instructions to follow on top of core-instructions.md, specifically when analyzing data or coaching for the Cas user profile.
+# Cas — User Context
 
----
+## Training architecture
+Weekly microcycle: **Push/Pull resistance split (4×/week)** + **4 cardio/sport units**.
 
-## 1. Patellar Tendonitis Protocol & Pain Tracking
-Cas inputs also contain knee pain data. These data have to be tracked, and linked to specific structural toll on the patellar tendons from exercises. Based on this empirical feedback, the Coach role also includes managing mechanical joint fatigue. Managing and progressively reversing patellar tendinopathy is a primary objective of this system.
+**Pull days (2×/week) — primary tracking lifts:**
+- Weighted pull-ups (added load + reps)
+- Romanian deadlifts (posterior chain load)
+- Dumbbell rows (unilateral pulling strength)
 
-### A. The Daily Pain & Inflammation Scale
-Every daily log will track a **Knee Pain Score (KPS)** on a 0–10 scale:
-* **0:** Pain-free, structurally resilient.
-* **1–3 (Mild):** Dull ache or stiffness that warms up during activity. Acceptable for training; does not warrant programmatic reduction unless it worsens post-session.
-* **4–5 (Moderate):** Noticeable localized pain during movement. Requires immediate volume/intensity stabilization or minor exercise modifications.
-* **6+ (Severe):** Sharp or throbbing pain during standard daily tasks (e.g., walking down stairs). Triggers immediate autoregulation protocols.
+**Push days (2×/week) — primary tracking lifts:**
+- Incline dumbbell press (upper chest)
+- Weighted dips (load + sternal/tricep)
+- Strict overhead press (vertical pressing)
 
-### B. Autoregulation & Load Adaptation Rules
-When generating or adjusting a training day, evaluate the previous 24–48 hours of KPS data and use the following programmatic overrides:
-* **The 24-Hour Pain Rule:** If a training session or badminton match causes a spike in KPS that does not return to baseline (or ≤ 3) within 24 hours, the subsequent lower-body loading volume must be decreased by 30-50% or substituted with isometric holds.
-* **Bulgarian Split Squat Auto-Regulation:**
-    * *KPS 1–3:* Perform full range-of-motion (ROM) dynamic BSS, weighted.
-    * *KPS 4–5:* Reduce loading weight by 20%. Transition to a slower, controlled eccentric phase (3–4 seconds) to promote tendon remodeling.
-    * *KPS 6+:* Eliminate dynamic quad loading. Substitute with **Patellar Tendon Isometrics** (e.g., Spanish squat holds or single-leg isometric leg press holds at 60–90 degrees knee flexion, 4–5 sets of 45 seconds at high effort) to induce tendon analgesia.
-* **Zone 2 Modality Selection:**
-    * *KPS ≤ 3:* User may select running, provided the terrain is forgiving and mechanics are sound.
-    * *KPS ≥ 4:* Force **Cycling** as the mandatory Zone 2 modality to preserve cardiovascular conditioning without joint impact.
+**Lower body integration:** Bulgarian split squats (leg strength — constrained by knee protocol below).
 
----
+**Cardio/sport units (4×/week):**
+- Badminton ×2 — fixed external sessions, treat as unmodifiable high-fatigue boulders. Extreme eccentric patellar load via deep lunges and jumps.
+- VO2max ×1 — hill sprints, group sessions, max-intensity intervals.
+- Zone 2 ×1 — Running if cumulative KPS allows; Cycling otherwise (default fallback).
 
-## 2. Weekly Training Architecture
-Additional to the microcycle specified in core-instructions.md, Cas' weekly schedule consists of **4 additional training units** aimed at improving cardiovascular performance.
+Separate high-impact knee days (Badminton, hill sprints) from lower-body resistance days by at least 24–48 hours where possible.
 
-### Sport & Cardiovascular Training (4x/Week)
-* **Badminton (2x/Week):**
-    * *Characteristics:* High-duration, highly fatiguing, chaotic multi-directional movement. Extreme eccentric loading on the patellar tendons via deep lunges, decelerations, and jumps.
-    * *Constraint:* Fixed external sessions (not self-designed). Treat these as unmodifiable high-fatigue boulders in the weekly schedule.
-* **VO2 Max Session (1x/Week - Hill Sprints):**
-    * *Characteristics:* Group sessions. Max-intensity metabolic intervals.
-    * *Biomechanical Benefit:* Hill sprints naturally limit absolute knee extension velocity and ground reaction forces compared to flat-surface sprinting, making them slightly friendlier on patellar tendons while highly demanding on the posterior chain and cardiovascular system.
-* **Zone 2 Session (1x/Week):**
-    * *Characteristics:* Pure aerobic base building. Strictly constrained by heart rate boundaries (typically 60–70% of HRmax or lactate threshold 1).
-    * *Modality Rules:*
-        * **Running:** Permitted *only* if the cumulative weekly Knee Pain Score allows and joint structural integrity is high.
-        * **Cycling:** The default fallback or preferred modality whenever knee inflammation or joint soreness crosses established thresholds, providing low-impact metabolic flushing.
+## Nutrition
+High-protein, largely vegetarian. Factor in as exceptional muscular recovery capacity.
+- Morning: whey shake (fast leucine bolus post-fast)
+- Post-workout: ~30g RTD protein shake
+- Pre-sleep: casein shake (sustained overnight amino acid pool for tendon remodeling)
 
-* Ensure that high-impact knee days (Badminton, VO2 Max Hill Sprints) are strategically separated by lower-impact or pure upper-body days (Push/Pull focus) to allow the patellar tendon a minimum of 24–48 hours of mechanical reset when possible.
+If strength stalls or tendon healing is poor despite optimal loading, probe total energy availability and collagen-synthesis micronutrients (Vitamin C, glycine).
 
----
+## Patellar tendonitis protocol
 
-## 3. Patellar Loading Model
-The app computes a patellar loading score for each session using the formula:
+### Knee Pain Score (KPS) — 0–10 daily scale
+- **0:** Pain-free.
+- **1–3 (Mild):** Dull ache that warms up. Acceptable for training; monitor for post-session worsening.
+- **4–5 (Moderate):** Noticeable pain during movement. Stabilise or reduce volume; consider exercise modifications.
+- **6+ (Severe):** Sharp/throbbing pain in daily tasks (e.g., stairs). Trigger immediate autoregulation protocols.
 
-**Loading = leg_factor × speed_factor × loading_factor × weight × log₁₀(10 + sets × reps)**
+### Autoregulation rules
+- **24-hour pain rule:** If KPS does not return to ≤3 within 24h post-session, cut subsequent lower-body volume 30–50% or substitute isometric holds.
+- **BSS autoregulation:**
+  - KPS 1–3: Full ROM dynamic BSS, weighted.
+  - KPS 4–5: Reduce load 20%; slow eccentric (3–4s) for tendon remodeling.
+  - KPS 6+: Eliminate dynamic quad loading. Replace with patellar isometrics (Spanish squat holds or single-leg isometric leg press at 60–90° knee flexion, 4–5×45s high effort).
+- **Zone 2 modality:** KPS ≤3 → Running permitted. KPS ≥4 → Cycling mandatory.
 
-Where bodyweight (85 kg) is added to free-weight exercises but not machine exercises.
+## Patellar loading model
+Formula: `leg_factor × speed_factor × loading_factor × weight × log₁₀(10 + sets × reps)` (bodyweight = 85 kg added for free-weight exercises).
 
-$IMPACT scale: maximal ≥ 100 | very-high 65–100 | high 40–65 | medium-to-high 22–40 | medium 12–22 | low-to-medium 6–12 | low 2–6 | very-low 0.5–2 | none < 0.5
+$IMPACT scale: maximal ≥100 | very-high 65–100 | high 40–65 | medium-to-high 22–40 | medium 12–22 | low-to-medium 6–12 | low 2–6 | very-low 0.5–2 | none <0.5
 
 Sessions can include `$IMPACT=<level>` in notes to override the computed value.
