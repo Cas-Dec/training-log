@@ -441,11 +441,6 @@
       <h3>Settings</h3>
       <button class="modal-close" onclick="closeSettings()" aria-label="Close">×</button>
     </div>
-    <div class="field">
-      <label>Coach instructions (your goals & context)</label>
-      <textarea id="cfg-instructions" rows="5" placeholder="e.g. I'm training for hypertrophy. My main goals are: weighted pull-ups to +40kg, manage knee pain below KPS 5. Deload when weekly average KPS exceeds 6. I train 4x per week PPL+Full." oninput="saveCfg()"></textarea>
-    </div>
-    <hr class="divider">
     <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:4px">
       <h3 style="font-size:15px;font-weight:600">User context</h3>
       <button class="btn btn-ghost" style="font-size:12px;padding:5px 12px" onclick="editUserContext()">Edit with Coach →</button>
@@ -464,7 +459,6 @@
 // ── STATE ──────────────────────────────────────────────────────────
 const WORKER = 'https://claude-proxy.casdecancq.workers.dev';
 let sessions = [];
-let cfg = {};
 let currentUser = 'Cas';
 const CARDIO_TYPES = ['Rugby', 'Badminton', 'Running', 'Cycling'];
 const BODYWEIGHT_KG = 85;
@@ -603,8 +597,6 @@ function applyLookupUpdate(update) {
 
 async function loadAll() {
   try { sessions = JSON.parse(localStorage.getItem('tl_sessions') || '[]'); } catch(e) { sessions = []; }
-  try { cfg = JSON.parse(localStorage.getItem('tl_cfg') || '{}'); } catch(e) { cfg = {}; }
-  if (cfg.instructions) document.getElementById('cfg-instructions').value = cfg.instructions;
   // Seed lookup from localStorage while we wait for the worker; discard stale pre-Running/Cycling cache
   try {
     const s = localStorage.getItem('tl_lookup');
@@ -637,19 +629,12 @@ function initApp() {
   document.getElementById('nav-user').textContent = currentUser;
   updateKPSVisibility();
   document.getElementById('date').value = new Date().toISOString().split('T')[0];
-  document.getElementById('exercises').innerHTML = '';
-  exCount = 0; addExercise();
   onTypeChange();
   loadContextFiles();
   // Render history only after BOTH lookup and sessions are ready, so patellar loads are correct
   Promise.all([syncLookupFromWorker(), pullFromGitHub()]).then(() => {
     if (document.getElementById('page-history').classList.contains('active')) renderHistory();
   });
-}
-
-function saveCfg() {
-  cfg = { instructions: document.getElementById('cfg-instructions').value.trim() };
-  localStorage.setItem('tl_cfg', JSON.stringify(cfg));
 }
 
 function updateKPSVisibility() {
@@ -668,9 +653,19 @@ function openSettings() {
 function closeSettings() { document.getElementById('settings-modal').classList.remove('active'); }
 
 function onTypeChange() {
-  const isCardio = CARDIO_TYPES.includes(document.getElementById('session-type').value);
+  const type = document.getElementById('session-type').value;
+  const isCardio = CARDIO_TYPES.includes(type);
   document.getElementById('exercises-section').style.display = isCardio ? 'none' : '';
   document.getElementById('cardio-section').style.display = isCardio ? '' : 'none';
+  const last = sessions.filter(s => (s.user || 'Cas') === currentUser && s.type === type)[0];
+  if (isCardio) {
+    if (last?.duration)  document.getElementById('cardio-duration').value  = last.duration;
+    if (last?.intensity) document.getElementById('cardio-intensity').value = last.intensity;
+  } else {
+    document.getElementById('exercises').innerHTML = '';
+    exCount = 0;
+    (last?.exercises?.length ? last.exercises : [{}]).forEach(e => addExercise(e));
+  }
 }
 
 // ── NAVIGATION ─────────────────────────────────────────────────────
@@ -694,18 +689,24 @@ function rpeOptions() {
   for (let i = 5; i <= 10; i += 0.5) o += `<option value="${i}">${i}</option>`;
   return o;
 }
-function addSetGroup(containerId) {
+function addSetGroup(containerId, loading='') {
   const container = document.getElementById(containerId);
   const row = document.createElement('div');
   row.className = 'ex-set-row';
+  const wMatch = loading ? loading.match(/@\s*(\S+)/) : null;
+  const weight = wMatch ? wMatch[1] : '';
   row.innerHTML = `
     <select class="ex-sets">${numOptions('Sets', 10)}</select>
     <span class="ex-x">×</span>
     <select class="ex-reps">${numOptions('Reps', 30)}</select>
     <span class="ex-at">@</span>
-    <input type="text" class="ex-weight" placeholder="20kg">
+    <input type="text" class="ex-weight" placeholder="20kg" value="${weight}">
     <button class="rm-set-btn" onclick="removeSetGroup(this)">−</button>`;
   container.appendChild(row);
+  if (loading) {
+    const sr = loading.match(/^([\d.]+)\s*x\s*([\d.]+)/i);
+    if (sr) { row.querySelector('.ex-sets').value = sr[1]; row.querySelector('.ex-reps').value = sr[2]; }
+  }
 }
 function removeSetGroup(btn) {
   const row = btn.closest('.ex-set-row');
@@ -727,7 +728,10 @@ function addExercise(d={}) {
       <select class="ex-rpe">${rpeOptions()}</select>
     </div>`;
   document.getElementById('exercises').appendChild(card);
-  addSetGroup(groupsId);
+  const parts = d.loading ? d.loading.split(',').map(p => p.trim()).filter(Boolean) : [];
+  if (parts.length) parts.forEach(p => addSetGroup(groupsId, p));
+  else addSetGroup(groupsId);
+  if (d.rpe) card.querySelector('.ex-rpe').value = d.rpe.replace('RPE', '');
 }
 
 function getExercises() {
@@ -795,13 +799,12 @@ function setStatus(msg, type) {
 }
 
 function resetForm() {
-  document.getElementById('exercises').innerHTML = '';
-  exCount = 0; addExercise();
   document.getElementById('notes').value = '';
   document.getElementById('kps-morning').value = '';
   document.getElementById('kps-post').value = '';
   document.getElementById('cardio-duration').value = '';
   document.getElementById('cardio-intensity').value = 'medium';
+  onTypeChange(); // resets exercise section and pre-fills from last session of this type
 }
 
 // ── GITHUB SYNC (via Worker) ────────────────────────────────────────
@@ -1152,9 +1155,8 @@ function impactLabel(v) {
 }
 
 function buildContext() {
-  const userCtx = cfg.instructions ? `\n\nATHLETE PERSONAL NOTES:\n${cfg.instructions}` : '';
   const userSessions = sessions.filter(s => (s.user || 'Cas') === currentUser);
-  if (!userSessions.length) return `No sessions logged yet for ${currentUser}.` + userCtx;
+  if (!userSessions.length) return `No sessions logged yet for ${currentUser}.`;
 
   const sessionLines = userSessions.slice(0,50).map(s => {
     const isCardio = CARDIO_TYPES.includes(s.type);
@@ -1185,7 +1187,7 @@ When suggesting factor adjustments, output a JSON code block:
   }
 
   return `TRAINING LOG for ${currentUser} (${userSessions.length} sessions, newest first):\n\n` +
-    sessionLines + loadingCtx + userCtx;
+    sessionLines + loadingCtx;
 }
 
 const SYSTEM_PROMPT_FALLBACK = `You are an expert strength & conditioning coach specialising in progressive overload, training load management, and injury prevention (especially knee health).

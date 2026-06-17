@@ -4,7 +4,7 @@
 Reduce patellar tendonitis > strength development > cardiovascular endurance > muscle growth
 
 ## Training architecture
-Weekly microcycle: **Push/Pull resistance split (3-6×/week)** + **3-5 sport units**.
+Weekly microcycle: **3-6 resistance training units** + **3-5 sports units**.
 
 **Primary tracking lifts:**
 - Weighted pull-ups
