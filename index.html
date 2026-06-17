@@ -207,6 +207,8 @@
   .badge-Accessory { background: rgba(20,184,166,.18);  color: #5eead4; }
   .badge-Rugby     { background: rgba(239,68,68,.18);   color: #fca5a5; }
   .badge-Badminton { background: rgba(163,230,53,.18);  color: #bef264; }
+  .badge-Running   { background: rgba(234,179,8,.18);   color: #fde047; }
+  .badge-Cycling   { background: rgba(6,182,212,.18);   color: #67e8f9; }
 
   /* MULTI-SET */
   .ex-set-row { display: flex; gap: 6px; align-items: center; margin-bottom: 4px; }
@@ -288,7 +290,7 @@
       <select id="session-type" onchange="onTypeChange()">
         <option>Pull</option><option>Push</option><option>Legs</option>
         <option>Upper body</option><option>Full body</option><option>Accessory</option>
-        <option>Rugby</option><option>Badminton</option><option>Cardio</option>
+        <option>Rugby</option><option>Badminton</option><option>Running</option><option>Cycling</option>
       </select>
     </div>
   </div>
@@ -458,7 +460,7 @@ const WORKER = 'https://claude-proxy.casdecancq.workers.dev';
 let sessions = [];
 let cfg = {};
 let currentUser = 'Cas';
-const CARDIO_TYPES = ['Rugby', 'Badminton', 'Cardio'];
+const CARDIO_TYPES = ['Rugby', 'Badminton', 'Running', 'Cycling'];
 const BODYWEIGHT_KG = 85;
 const IMPACT_MIDPOINTS = {
   'maximal':120,'very high':80,'very-high':80,'high':52,

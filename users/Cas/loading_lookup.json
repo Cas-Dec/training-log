@@ -24,6 +24,7 @@
   "cardio": {
     "Badminton": { "loading_min": 0.75 },
     "Rugby":     { "loading_min": 0.3 },
-    "Cardio":    { "loading_min": 0.4, "intensity_scale": { "low": 0.25, "medium": 1.0, "high": 2.0 } }
+    "Running":   { "loading_min": 0.5,  "intensity_scale": { "low": 0.4, "medium": 0.7, "high": 1.0 } },
+    "Cycling":   { "loading_min": 0.15, "intensity_scale": { "low": 1.0, "medium": 2.0, "high": 3.5 } }
   }
 }

@@ -71,7 +71,7 @@ Three pages (`log`, `history`, `coach`) are toggled by adding/removing the `acti
   "id": 1234567890,         // Date.now() — used for dedup
   "user": "Cas",            // "Cas" | "Dries"
   "date": "2026-06-15",
-  "type": "Push",           // Pull | Push | Legs | Full body | Cardio | Rest
+  "type": "Push",           // Pull | Push | Legs | Full body | Running | Cycling | Rugby | Badminton | Rest
   "exercises": [
     { "name": "incline dumbbell press", "loading": "3x8@42kg, 1x6@45kg", "rpe": "RPE9" }
   ],
