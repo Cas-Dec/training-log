@@ -427,7 +427,7 @@
     <button class="quick-btn" onclick="quick('Based on my recent sessions and recovery, what should I train in my next session and at what volume/intensity?')">Next session</button>
     <button class="quick-btn" onclick="quick('Audit my weekly training volume per muscle group. What is over- or under-trained?')">Volume audit</button>
     <button class="quick-btn" onclick="quick('Looking at my RPE scores, where am I consistently training too hard or leaving too much in the tank?')">RPE analysis</button>
-    <button class="quick-btn" id="calibrate-btn" style="display:none" onclick="calibrateLoading()">Calibrate loading</button>
+    <button class="quick-btn" id="calibrate-btn" style="display:none" onclick="tuneLoadings()">Tune loadings</button>
   </div>
 
   <div id="ai-output" class="ai-output">
@@ -1269,9 +1269,46 @@ Ask any follow-up questions needed. Once all details are confirmed, output the c
   askCoach(q);
 }
 
-function calibrateLoading() {
-  const q = `Look at my most recent session(s) that included knee-loading exercises (patellar load > 0). For each such exercise list: exercise name, loading string, computed patellar load value, and its $IMPACT level. Then ask me whether each impact level matches how my knee actually felt during and after. When I respond, suggest any factor corrections and output them in this exact JSON block so the app can apply them:\n\`\`\`json\n{"type":"lookup-update","exercises":{"exercise name":{"loading_factor":X}}}\n\`\`\``;
-  document.getElementById('coach-q').value = q;
+function tuneLoadings() {
+  const casSessions = sessions.filter(s => (s.user || 'Cas') === 'Cas');
+  const withKneeLoad = casSessions.filter(s =>
+    !CARDIO_TYPES.includes(s.type) &&
+    (s.exercises || []).some(e => {
+      const entry = lookup.exercises[(e.name || '').toLowerCase().trim()];
+      return entry && entry.leg_factor > 0;
+    })
+  ).slice(0, 4);
+
+  if (!withKneeLoad.length) {
+    showPage('coach');
+    askCoach('There are no recent sessions with knee-loading exercises in my log. Can you help me decide what loading factors to set for exercises I plan to track?');
+    return;
+  }
+
+  const breakdown = withKneeLoad.map(s => {
+    const kps = s.kps ? ` | KPS ${s.kps.morning ?? '?'} → ${s.kps.post ?? '?'}` : '';
+    const exLines = (s.exercises || []).flatMap(e => {
+      const key = (e.name || '').toLowerCase().trim();
+      const entry = lookup.exercises[key];
+      if (!entry || !entry.leg_factor) return [];
+      return (e.loading || '').split(',').map(p => p.trim()).filter(Boolean).map(part => {
+        const sr = part.match(/^([\d.]+)\s*x\s*([\d.]+)/i);
+        const w = part.match(/@\s*([\d.]+)/);
+        const sets = sr ? parseFloat(sr[1]) : null;
+        const reps = sr ? parseFloat(sr[2]) : null;
+        const added = w ? parseFloat(w[1]) : 0;
+        const weight = entry.bodyweight ? BODYWEIGHT_KG + added : added;
+        const load = (sets && reps && weight)
+          ? entry.leg_factor * entry.speed_factor * entry.loading_factor * weight * Math.log10(10 + sets * reps)
+          : 0;
+        return `  • ${e.name}  ${part}  →  ${load.toFixed(1)} (${impactLabel(load)})  [leg=${entry.leg_factor} spd=${entry.speed_factor} lf=${entry.loading_factor}${entry.bodyweight ? ' +BW' : ''}]`;
+      });
+    });
+    return [`${s.date} | ${s.type}${kps}`, ...exLines].join('\n');
+  }).join('\n\n');
+
+  const q = `I want to tune the patellar loading factors for my exercises. The app computed the following loads for my recent sessions using the current lookup factors (shown in brackets):\n\n${breakdown}\n\nFor each exercise, ask me whether the computed impact level matched my actual perceived knee strain. Go one session at a time, starting with the most recent. Based on my answers, suggest updated factors in this format:\n\`\`\`json\n{"type":"lookup-update","exercises":{"exercise name":{"loading_factor":X}}}\n\`\`\``;
+
   showPage('coach');
   askCoach(q);
 }
