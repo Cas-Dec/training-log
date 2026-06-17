@@ -831,8 +831,9 @@ async function pullFromGitHub() {
     const res = await authFetch(`${WORKER}/log`);
     if (!res.ok) return;
     const { sessions: remote } = await res.json();
-    const localIds = new Set(sessions.map(s => s.id));
-    const merged = [...sessions, ...remote.filter(s => !localIds.has(s.id))];
+    // Remote wins on ID conflicts — GitHub is the source of truth for pulls
+    const remoteIds = new Set(remote.map(s => s.id));
+    const merged = [...sessions.filter(s => !remoteIds.has(s.id)), ...remote];
     merged.sort((a,b) => b.date.localeCompare(a.date));
     sessions = merged;
     localStorage.setItem('tl_sessions', JSON.stringify(sessions));
