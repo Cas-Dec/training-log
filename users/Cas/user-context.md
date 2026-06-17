@@ -1,34 +1,27 @@
 # Cas — User Context
 
+## Training goals
+Reduce patellar tendonitis > strength development > cardiovascular endurance > muscle growth
+
 ## Training architecture
-Weekly microcycle: **Push/Pull resistance split (4×/week)** + **4 cardio/sport units**.
+Weekly microcycle: **Push/Pull resistance split (3-6×/week)** + **3-5 sport units**.
 
-**Pull days (2×/week) — primary tracking lifts:**
-- Weighted pull-ups (added load + reps)
-- Romanian deadlifts (posterior chain load)
-- Dumbbell rows (unilateral pulling strength)
+**Primary tracking lifts:**
+- Weighted pull-ups
+- Romanian deadlifts
+- Dumbbell rows
+- Incline dumbbell press
+- Weighted dips
+- Strict overhead press
+- Squats
+- Vertical jumps
 
-**Push days (2×/week) — primary tracking lifts:**
-- Incline dumbbell press (upper chest)
-- Weighted dips (load + sternal/tricep)
-- Strict overhead press (vertical pressing)
-
-**Lower body integration:** Bulgarian split squats (leg strength — constrained by knee protocol below).
-
-**Cardio/sport units (4×/week):**
-- Badminton ×2 — fixed external sessions, treat as unmodifiable high-fatigue boulders. Extreme eccentric patellar load via deep lunges and jumps.
+**Sport units:**
+- Badminton ×1-4 — fixed external sessions, treat as unmodifiable high-fatigue boulders. Extreme eccentric patellar load via deep lunges and jumps.
 - VO2max ×1 — hill sprints, group sessions, max-intensity intervals.
-- Zone 2 ×1 — Running if cumulative KPS allows; Cycling otherwise (default fallback).
+- Zone 2 ×1-2 — Running if cumulative KPS allows; Cycling otherwise (default fallback).
 
 Separate high-impact knee days (Badminton, hill sprints) from lower-body resistance days by at least 24–48 hours where possible.
-
-## Nutrition
-High-protein, largely vegetarian. Factor in as exceptional muscular recovery capacity.
-- Morning: whey shake (fast leucine bolus post-fast)
-- Post-workout: ~30g RTD protein shake
-- Pre-sleep: casein shake (sustained overnight amino acid pool for tendon remodeling)
-
-If strength stalls or tendon healing is poor despite optimal loading, probe total energy availability and collagen-synthesis micronutrients (Vitamin C, glycine).
 
 ## Patellar tendonitis protocol
 
@@ -41,9 +34,9 @@ If strength stalls or tendon healing is poor despite optimal loading, probe tota
 ### Autoregulation rules
 - **24-hour pain rule:** If KPS does not return to ≤3 within 24h post-session, cut subsequent lower-body volume 30–50% or substitute isometric holds.
 - **BSS autoregulation:**
-  - KPS 1–3: Full ROM dynamic BSS, weighted.
+  - KPS 1–3: Full ROM dynamic exercises, weighted.
   - KPS 4–5: Reduce load 20%; slow eccentric (3–4s) for tendon remodeling.
-  - KPS 6+: Eliminate dynamic quad loading. Replace with patellar isometrics (Spanish squat holds or single-leg isometric leg press at 60–90° knee flexion, 4–5×45s high effort).
+  - KPS 6+: Eliminate dynamic quad loading. Replace with patellar isometrics.
 - **Zone 2 modality:** KPS ≤3 → Running permitted. KPS ≥4 → Cycling mandatory.
 
 ## Patellar loading model

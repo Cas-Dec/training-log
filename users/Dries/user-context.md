@@ -1,6 +1,16 @@
-# Additional system instructions for Dries
-Below are system instructions to follow on top of core-instructions.md, specifically when analyzing data or coaching for the Dries user profile.
+# Dries — User Context
 
----
+## Training goals
+Not specified.
 
-*(User-specific context to be added here as coaching requirements develop.)*
+## Training architecture
+Weekly microcycle: not specified.
+
+**Primary tracking lifts:**
+- ...
+
+**Sport units:**
+- ...
+
+## OPTIONAL: additional instructions
+Not specified.
