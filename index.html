@@ -425,6 +425,7 @@
     <button class="quick-btn" onclick="quick('Based on my recent sessions and recovery, what should I train in my next session and at what volume/intensity?')">Next session</button>
     <button class="quick-btn" onclick="quick('Audit my weekly training volume per muscle group. What is over- or under-trained?')">Volume audit</button>
     <button class="quick-btn" onclick="quick('Looking at my RPE scores, where am I consistently training too hard or leaving too much in the tank?')">RPE analysis</button>
+    <button class="quick-btn" id="calibrate-btn" style="display:none" onclick="calibrateLoading()">Calibrate loading</button>
   </div>
 
   <div id="ai-output" class="ai-output">
@@ -443,6 +444,9 @@
       <label>Coach instructions (your goals & context)</label>
       <textarea id="cfg-instructions" rows="5" placeholder="e.g. I'm training for hypertrophy. My main goals are: weighted pull-ups to +40kg, manage knee pain below KPS 5. Deload when weekly average KPS exceeds 6. I train 4x per week PPL+Full." oninput="saveCfg()"></textarea>
     </div>
+    <hr class="divider">
+    <p>Patellar loading factors are stored locally and calibrated via the coach. Reset clears calibrations and reloads defaults from the repo.</p>
+    <button class="btn btn-ghost btn-full" onclick="resetLookup()">Reset loading lookup to defaults</button>
   </div>
 </div>
 
@@ -455,6 +459,13 @@ let sessions = [];
 let cfg = {};
 let currentUser = 'Cas';
 const CARDIO_TYPES = ['Rugby', 'Badminton', 'Cardio'];
+const BODYWEIGHT_KG = 85;
+const IMPACT_MIDPOINTS = {
+  'maximal':120,'very high':80,'very-high':80,'high':52,
+  'medium to high':31,'medium-to-high':31,'medium':17,
+  'low to medium':9,'low-to-medium':9,'low':4,'very low':1,'very-low':1,'none':0,
+};
+let lookup = { exercises: {}, cardio: {} };
 
 // ── AUTH ───────────────────────────────────────────────────────────
 function getTokenPayload() {
@@ -511,7 +522,35 @@ function logout() {
   location.reload();
 }
 
-function loadAll() {
+async function loadLookup() {
+  const stored = localStorage.getItem('tl_lookup');
+  if (stored) { try { lookup = JSON.parse(stored); return; } catch(e) {} }
+  try {
+    const res = await fetch('./loading_lookup.json');
+    if (res.ok) { lookup = await res.json(); localStorage.setItem('tl_lookup', JSON.stringify(lookup)); }
+  } catch(e) {}
+}
+
+async function resetLookup() {
+  localStorage.removeItem('tl_lookup');
+  lookup = { exercises: {}, cardio: {} };
+  await loadLookup();
+  closeSettings();
+}
+
+function applyLookupUpdate(update) {
+  if (update.exercises) Object.entries(update.exercises).forEach(([name, vals]) => {
+    const key = name.toLowerCase().trim();
+    lookup.exercises[key] = { ...(lookup.exercises[key] || {}), ...vals };
+  });
+  if (update.cardio) Object.entries(update.cardio).forEach(([type, vals]) => {
+    lookup.cardio[type] = { ...(lookup.cardio[type] || {}), ...vals };
+  });
+  localStorage.setItem('tl_lookup', JSON.stringify(lookup));
+}
+
+async function loadAll() {
+  await loadLookup();
   try { sessions = JSON.parse(localStorage.getItem('tl_sessions') || '[]'); } catch(e) { sessions = []; }
   try { cfg = JSON.parse(localStorage.getItem('tl_cfg') || '{}'); } catch(e) { cfg = {}; }
   if (cfg.instructions) document.getElementById('cfg-instructions').value = cfg.instructions;
@@ -556,7 +595,9 @@ function saveCfg() {
 }
 
 function updateKPSVisibility() {
-  document.getElementById('kps-section').style.display = currentUser === 'Cas' ? '' : 'none';
+  const isCas = currentUser === 'Cas';
+  document.getElementById('kps-section').style.display = isCas ? '' : 'none';
+  document.getElementById('calibrate-btn').style.display = isCas ? '' : 'none';
 }
 
 function openSettings() { document.getElementById('settings-modal').classList.add('active'); }
@@ -838,26 +879,34 @@ function renderProgressionChart() {
 }
 
 // ── KNEE PAIN SENSITIVITY CHART ────────────────────────────────────
-// Exercises that load the patellar tendon (knee-flexion-under-load movements).
-const PATELLAR_KEYWORDS = ['squat', 'lunge', 'step up', 'step-up', 'leg press', 'jump'];
-// Sports with documented heavy eccentric patellar loading (see CAS-specs.md). Plain "Cardio"
-// is excluded since its modality (running vs. cycling) isn't tracked and cycling is low-impact.
-const PATELLAR_CARDIO_TYPES = ['Badminton', 'Rugby'];
-const CARDIO_INTENSITY_WEIGHT = { low: 1, medium: 2, high: 3 };
 
 function sessionPatellarVolume(s) {
-  const strengthVolume = (s.exercises || [])
-    .filter(e => PATELLAR_KEYWORDS.some(k => e.name.toLowerCase().includes(k)))
-    .reduce((sum, e) => {
-      const { volume } = parseLoading(e.loading);
-      return sum + (volume ?? 0);
+  const impactMatch = (s.notes || '').match(/\$IMPACT=([\w-]+)/i);
+  if (impactMatch) return IMPACT_MIDPOINTS[impactMatch[1].toLowerCase().replace(/_/g,'-')] ?? 0;
+
+  if (CARDIO_TYPES.includes(s.type)) {
+    const entry = lookup.cardio[s.type];
+    if (!entry || !s.duration) return 0;
+    const scale = entry.intensity_scale?.[s.intensity || 'medium'] ?? 1;
+    return entry.loading_min * scale * (+s.duration);
+  }
+
+  return (s.exercises || []).reduce((sum, e) => {
+    const entry = lookup.exercises[(e.name || '').toLowerCase().trim()];
+    if (!entry || !entry.leg_factor) return sum;
+    const parts = (e.loading || '').split(',').map(p => p.trim()).filter(Boolean);
+    return sum + parts.reduce((pSum, part) => {
+      const sr = part.match(/^([\d.]+)\s*x\s*([\d.]+)/i);
+      const w = part.match(/@\s*([\d.]+)/);
+      const sets = sr ? parseFloat(sr[1]) : null;
+      const reps = sr ? parseFloat(sr[2]) : null;
+      if (!sets || !reps) return pSum;
+      const added = w ? parseFloat(w[1]) : 0;
+      const weight = entry.bodyweight ? BODYWEIGHT_KG + added : added;
+      if (!weight) return pSum;
+      return pSum + entry.leg_factor * entry.speed_factor * entry.loading_factor * weight * Math.log10(10 + sets * reps);
     }, 0);
-
-  const cardioVolume = PATELLAR_CARDIO_TYPES.includes(s.type) && s.duration
-    ? +s.duration * (CARDIO_INTENSITY_WEIGHT[s.intensity] || 1)
-    : 0;
-
-  return strengthVolume + cardioVolume;
+  }, 0);
 }
 
 let kpsSensitivityChart = null;
@@ -1025,21 +1074,53 @@ function dl(content, filename, type) {
 }
 
 // ── AI COACH ───────────────────────────────────────────────────────
+function impactLabel(v) {
+  if (v >= 100) return 'maximal';
+  if (v >= 65)  return 'very high';
+  if (v >= 40)  return 'high';
+  if (v >= 22)  return 'medium to high';
+  if (v >= 12)  return 'medium';
+  if (v >= 6)   return 'low to medium';
+  if (v >= 2)   return 'low';
+  if (v >= 0.5) return 'very low';
+  return 'none';
+}
+
 function buildContext() {
   const userCtx = cfg.instructions ? `\n\nATHLETE GOALS & CONTEXT:\n${cfg.instructions}` : '';
   const userSessions = sessions.filter(s => (s.user || 'Cas') === currentUser);
   if (!userSessions.length) return `No sessions logged yet for ${currentUser}.` + userCtx;
-  return `TRAINING LOG for ${currentUser} (${userSessions.length} sessions, newest first):\n\n` +
-    userSessions.slice(0,50).map(s => {
-      const isCardio = CARDIO_TYPES.includes(s.type);
-      const activityLine = isCardio
-        ? `Duration: ${s.duration||'?'}min | Intensity: ${s.intensity||'?'}`
-        : `Exercises: ${s.exercises?.map(e=>`${e.name} ${e.loading} ${e.rpe}`).join(' · ')||'none'}`;
-      const kpsLine = currentUser === 'Cas' ? `\nKPS: ${s.kps?.morning||'?'} → ${s.kps?.post||'?'}` : '';
-      return `${s.date} | ${s.type} | Energy: ${s.energy} | Sleep: ${s.sleep||'?'}
-${activityLine}${kpsLine}
+
+  const sessionLines = userSessions.slice(0,50).map(s => {
+    const isCardio = CARDIO_TYPES.includes(s.type);
+    const activityLine = isCardio
+      ? `Duration: ${s.duration||'?'}min | Intensity: ${s.intensity||'?'}`
+      : `Exercises: ${s.exercises?.map(e=>`${e.name} ${e.loading} ${e.rpe}`).join(' · ')||'none'}`;
+    const kpsLine = currentUser === 'Cas' ? `\nKPS: ${s.kps?.morning||'?'} → ${s.kps?.post||'?'}` : '';
+    const load = sessionPatellarVolume(s);
+    const loadLine = currentUser === 'Cas' ? `\nPatellar load: ${load.toFixed(1)} (${impactLabel(load)})` : '';
+    return `${s.date} | ${s.type} | Energy: ${s.energy} | Sleep: ${s.sleep||'?'}
+${activityLine}${kpsLine}${loadLine}
 Notes: ${s.notes||'—'}`;
-    }).join('\n\n') + userCtx;
+  }).join('\n\n');
+
+  let loadingCtx = '';
+  if (currentUser === 'Cas') {
+    const kneeExercises = Object.entries(lookup.exercises)
+      .filter(([,v]) => v.leg_factor > 0)
+      .map(([name,v]) => `  ${name}: leg=${v.leg_factor} speed=${v.speed_factor} load=${v.loading_factor}${v.bodyweight?' +BW':''}`)
+      .join('\n');
+    loadingCtx = `\n\nPATELLAR LOADING MODEL (formula: leg×speed×load×weight×log₁₀(10+sets×reps), BW=${BODYWEIGHT_KG}kg):
+$IMPACT scale: maximal≥100 | very-high 65-100 | high 40-65 | medium-to-high 22-40 | medium 12-22 | low-to-medium 6-12 | low 2-6 | very-low 0.5-2 | none<0.5
+Knee-loading exercises in lookup:\n${kneeExercises || '  (none)'}
+When suggesting factor adjustments, output a JSON code block:
+\`\`\`json
+{"type":"lookup-update","exercises":{"exercise name":{"loading_factor":X}}}
+\`\`\``;
+  }
+
+  return `TRAINING LOG for ${currentUser} (${userSessions.length} sessions, newest first):\n\n` +
+    sessionLines + loadingCtx + userCtx;
 }
 
 const SYSTEM_PROMPT = `You are an expert strength & conditioning coach specialising in progressive overload, training load management, and injury prevention (especially knee health).
@@ -1073,6 +1154,19 @@ async function askCoach(q) {
     out.classList.remove('ai-placeholder');
     const text = data.content?.map(c=>c.text||'').join('') || JSON.stringify(data);
     out.innerHTML = marked.parse(text);
+    // Detect lookup-update JSON blocks and offer Apply button
+    for (const [, jsonStr] of [...text.matchAll(/```json\n([\s\S]*?)\n```/g)]) {
+      try {
+        const upd = JSON.parse(jsonStr);
+        if (upd.type !== 'lookup-update') continue;
+        const btn = document.createElement('button');
+        btn.className = 'btn btn-secondary';
+        btn.style.marginTop = '12px';
+        btn.textContent = '↻ Apply suggested loading changes';
+        btn.onclick = () => { applyLookupUpdate(upd); btn.textContent = '✓ Applied'; btn.disabled = true; };
+        out.appendChild(btn);
+      } catch(e) {}
+    }
   } catch(e) {
     if (e.message !== 'session-expired') out.textContent = 'Error: ' + e.message;
   }
@@ -1080,6 +1174,13 @@ async function askCoach(q) {
 }
 
 function quick(q) { document.getElementById('coach-q').value = q; showPage('coach'); askCoach(q); }
+
+function calibrateLoading() {
+  const q = `Look at my most recent session(s) that included knee-loading exercises (patellar load > 0). For each such exercise list: exercise name, loading string, computed patellar load value, and its $IMPACT level. Then ask me whether each impact level matches how my knee actually felt during and after. When I respond, suggest any factor corrections and output them in this exact JSON block so the app can apply them:\n\`\`\`json\n{"type":"lookup-update","exercises":{"exercise name":{"loading_factor":X}}}\n\`\`\``;
+  document.getElementById('coach-q').value = q;
+  showPage('coach');
+  askCoach(q);
+}
 
 // ── INIT ───────────────────────────────────────────────────────────
 loadAll();
