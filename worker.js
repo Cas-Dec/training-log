@@ -23,6 +23,9 @@
  *   POST /login   { username, password } → { token, user }   (no auth required)
  *   GET  /log     → { sessions, sha }                        (auth required)
  *   PUT  /log     { sessions, message } → { ok }             (auth required)
+ *   GET  /lookup  → { lookup, sha }                          (auth required)
+ *   PUT  /lookup  { lookup, message } → { ok }               (auth required)
+ *   PUT  /context { content, message } → { ok }              (auth required)
  *   POST /chat    Anthropic messages body → Anthropic response (auth required)
  */
 
@@ -190,6 +193,24 @@ export default {
         method: 'PUT',
         headers: githubHeaders(env.GITHUB_TOKEN),
         body: JSON.stringify({ message: message || 'Update loading lookup', content, ...(sha ? { sha } : {}) }),
+      });
+      return jsonResponse({ ok: res.ok }, res.ok ? 200 : res.status);
+    }
+
+    // ── PUT /context ──────────────────────────────────────────────────
+    if (url.pathname === '/context' && request.method === 'PUT') {
+      const { content, message } = await request.json();
+      const contextUrl = `${GITHUB_API}/repos/${env.GITHUB_USER}/${env.GITHUB_REPO}/contents/users/${session.user}/user-context.md`;
+
+      let sha = null;
+      const existing = await fetch(contextUrl, { headers: githubHeaders(env.GITHUB_TOKEN) });
+      if (existing.ok) sha = (await existing.json()).sha;
+
+      const encoded = toBase64(content);
+      const res = await fetch(contextUrl, {
+        method: 'PUT',
+        headers: githubHeaders(env.GITHUB_TOKEN),
+        body: JSON.stringify({ message: message || 'Update user context', content: encoded, ...(sha ? { sha } : {}) }),
       });
       return jsonResponse({ ok: res.ok }, res.ok ? 200 : res.status);
     }

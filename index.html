@@ -447,6 +447,13 @@
       <textarea id="cfg-instructions" rows="5" placeholder="e.g. I'm training for hypertrophy. My main goals are: weighted pull-ups to +40kg, manage knee pain below KPS 5. Deload when weekly average KPS exceeds 6. I train 4x per week PPL+Full." oninput="saveCfg()"></textarea>
     </div>
     <hr class="divider">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:4px">
+      <h3 style="font-size:15px;font-weight:600">User context</h3>
+      <button class="btn btn-ghost" style="font-size:12px;padding:5px 12px" onclick="editUserContext()">Edit with Coach →</button>
+    </div>
+    <p>Your training profile, injected into every coach prompt.</p>
+    <div id="user-context-preview" class="ai-output" style="font-size:13px;min-height:48px;max-height:280px;overflow-y:auto;margin-bottom:14px"></div>
+    <hr class="divider">
     <p>Patellar loading factors are stored locally and calibrated via the coach. Reset clears calibrations and reloads defaults from the repo.</p>
     <button class="btn btn-ghost btn-full" onclick="resetLookup()">Reset loading lookup to defaults</button>
   </div>
@@ -553,6 +560,23 @@ async function syncLookupToGitHub() {
   } catch(e) {}
 }
 
+async function syncContextToGitHub(content) {
+  try {
+    await authFetch(`${WORKER}/context`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ content, message: 'Update user context' }),
+    });
+  } catch(e) {}
+}
+
+function applyContextUpdate(content) {
+  userContextMd = content;
+  const preview = document.getElementById('user-context-preview');
+  if (preview) preview.innerHTML = marked.parse(userContextMd);
+  syncContextToGitHub(content);
+}
+
 async function resetLookup() {
   localStorage.removeItem('tl_lookup');
   lookup = { exercises: {}, cardio: {} };
@@ -627,7 +651,13 @@ function updateKPSVisibility() {
   document.getElementById('calibrate-btn').style.display = isCas ? '' : 'none';
 }
 
-function openSettings() { document.getElementById('settings-modal').classList.add('active'); }
+function openSettings() {
+  document.getElementById('settings-modal').classList.add('active');
+  const preview = document.getElementById('user-context-preview');
+  preview.innerHTML = userContextMd
+    ? marked.parse(userContextMd)
+    : '<span style="color:var(--muted);font-style:italic">No user context loaded — use Edit with Coach to create one.</span>';
+}
 function closeSettings() { document.getElementById('settings-modal').classList.remove('active'); }
 
 function onTypeChange() {
@@ -1193,13 +1223,22 @@ async function askCoach(q) {
       try {
         const upd = JSON.parse(jsonStr);
         if (upd.type !== 'lookup-update') continue;
-        const btn = document.createElement('button');
-        btn.className = 'btn btn-secondary';
-        btn.style.marginTop = '12px';
-        btn.textContent = '↻ Apply suggested loading changes';
-        btn.onclick = () => { applyLookupUpdate(upd); btn.textContent = '✓ Applied'; btn.disabled = true; };
-        out.appendChild(btn);
+        const applyBtn = document.createElement('button');
+        applyBtn.className = 'btn btn-secondary';
+        applyBtn.style.marginTop = '12px';
+        applyBtn.textContent = '↻ Apply suggested loading changes';
+        applyBtn.onclick = () => { applyLookupUpdate(upd); applyBtn.textContent = '✓ Applied'; applyBtn.disabled = true; };
+        out.appendChild(applyBtn);
       } catch(e) {}
+    }
+    // Detect user-context blocks and offer Apply button
+    for (const [, content] of [...text.matchAll(/```user-context\n([\s\S]*?)\n```/g)]) {
+      const applyBtn = document.createElement('button');
+      applyBtn.className = 'btn btn-secondary';
+      applyBtn.style.marginTop = '12px';
+      applyBtn.textContent = '↻ Apply context update';
+      applyBtn.onclick = () => { applyContextUpdate(content); applyBtn.textContent = '✓ Applied'; applyBtn.disabled = true; };
+      out.appendChild(applyBtn);
     }
   } catch(e) {
     if (e.message !== 'session-expired') out.textContent = 'Error: ' + e.message;
@@ -1208,6 +1247,27 @@ async function askCoach(q) {
 }
 
 function quick(q) { document.getElementById('coach-q').value = q; showPage('coach'); askCoach(q); }
+
+function editUserContext() {
+  const current = userContextMd
+    ? `Here is the current version:\n\`\`\`\n${userContextMd}\n\`\`\``
+    : `There is no user context yet — we need to create one from scratch.`;
+  const q = `You are helping me set up or update my coaching context file. ${current}
+
+Guide me through updating it. At minimum, confirm or update:
+1. Training goals (priority order)
+2. Primary tracking lifts (key compound movements)
+3. Resistance training frequency (sessions/week)
+4. Sport/cardio training types and frequency (sessions/week)
+
+Ask any follow-up questions needed. Once all details are confirmed, output the complete updated file in exactly this format:
+\`\`\`user-context
+[full markdown here]
+\`\`\``;
+  closeSettings();
+  showPage('coach');
+  askCoach(q);
+}
 
 function calibrateLoading() {
   const q = `Look at my most recent session(s) that included knee-loading exercises (patellar load > 0). For each such exercise list: exercise name, loading string, computed patellar load value, and its $IMPACT level. Then ask me whether each impact level matches how my knee actually felt during and after. When I respond, suggest any factor corrections and output them in this exact JSON block so the app can apply them:\n\`\`\`json\n{"type":"lookup-update","exercises":{"exercise name":{"loading_factor":X}}}\n\`\`\``;
