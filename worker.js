@@ -139,7 +139,7 @@ export default {
     // ── GET /log ──────────────────────────────────────────────────────
     if (url.pathname === '/log' && request.method === 'GET') {
       const res = await fetch(
-        `${GITHUB_API}/repos/${env.GITHUB_USER}/${env.GITHUB_REPO}/contents/log.json`,
+        `${GITHUB_API}/repos/${env.GITHUB_USER}/${env.GITHUB_REPO}/contents/users/${session.user}/log.json`,
         { headers: githubHeaders(env.GITHUB_TOKEN) }
       );
       if (!res.ok) return jsonResponse({ sessions: [], sha: null });
@@ -151,7 +151,7 @@ export default {
     // ── PUT /log ──────────────────────────────────────────────────────
     if (url.pathname === '/log' && request.method === 'PUT') {
       const { sessions, message } = await request.json();
-      const logUrl = `${GITHUB_API}/repos/${env.GITHUB_USER}/${env.GITHUB_REPO}/contents/log.json`;
+      const logUrl = `${GITHUB_API}/repos/${env.GITHUB_USER}/${env.GITHUB_REPO}/contents/users/${session.user}/log.json`;
 
       let sha = null;
       const existing = await fetch(logUrl, { headers: githubHeaders(env.GITHUB_TOKEN) });
@@ -162,6 +162,34 @@ export default {
         method: 'PUT',
         headers: githubHeaders(env.GITHUB_TOKEN),
         body: JSON.stringify({ message: message || 'Update log', content, ...(sha ? { sha } : {}) }),
+      });
+      return jsonResponse({ ok: res.ok }, res.ok ? 200 : res.status);
+    }
+
+    // ── GET /lookup ───────────────────────────────────────────────────
+    if (url.pathname === '/lookup' && request.method === 'GET') {
+      const lookupUrl = `${GITHUB_API}/repos/${env.GITHUB_USER}/${env.GITHUB_REPO}/contents/users/${session.user}/loading_lookup.json`;
+      const res = await fetch(lookupUrl, { headers: githubHeaders(env.GITHUB_TOKEN) });
+      if (!res.ok) return jsonResponse({ error: 'Not found' }, 404);
+      const data = await res.json();
+      const lookup = JSON.parse(fromBase64(data.content));
+      return jsonResponse({ lookup, sha: data.sha });
+    }
+
+    // ── PUT /lookup ───────────────────────────────────────────────────
+    if (url.pathname === '/lookup' && request.method === 'PUT') {
+      const { lookup, message } = await request.json();
+      const lookupUrl = `${GITHUB_API}/repos/${env.GITHUB_USER}/${env.GITHUB_REPO}/contents/users/${session.user}/loading_lookup.json`;
+
+      let sha = null;
+      const existing = await fetch(lookupUrl, { headers: githubHeaders(env.GITHUB_TOKEN) });
+      if (existing.ok) sha = (await existing.json()).sha;
+
+      const content = toBase64(JSON.stringify(lookup, null, 2));
+      const res = await fetch(lookupUrl, {
+        method: 'PUT',
+        headers: githubHeaders(env.GITHUB_TOKEN),
+        body: JSON.stringify({ message: message || 'Update loading lookup', content, ...(sha ? { sha } : {}) }),
       });
       return jsonResponse({ ok: res.ok }, res.ok ? 200 : res.status);
     }

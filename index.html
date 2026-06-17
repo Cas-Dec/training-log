@@ -466,6 +466,8 @@ const IMPACT_MIDPOINTS = {
   'low to medium':9,'low-to-medium':9,'low':4,'very low':1,'very-low':1,'none':0,
 };
 let lookup = { exercises: {}, cardio: {} };
+let coreInstructions = '';
+let userContextMd = '';
 
 // ── AUTH ───────────────────────────────────────────────────────────
 function getTokenPayload() {
@@ -522,19 +524,42 @@ function logout() {
   location.reload();
 }
 
-async function loadLookup() {
-  const stored = localStorage.getItem('tl_lookup');
-  if (stored) { try { lookup = JSON.parse(stored); return; } catch(e) {} }
+async function syncLookupFromWorker() {
   try {
-    const res = await fetch('./loading_lookup.json');
+    const res = await authFetch(`${WORKER}/lookup`);
+    if (res.ok) {
+      const { lookup: remote } = await res.json();
+      lookup = remote;
+      localStorage.setItem('tl_lookup', JSON.stringify(lookup));
+      return;
+    }
+  } catch(e) {}
+  // Fallback: user static file
+  try {
+    const res = await fetch(`./users/${currentUser}/loading_lookup.json`);
     if (res.ok) { lookup = await res.json(); localStorage.setItem('tl_lookup', JSON.stringify(lookup)); }
+  } catch(e) {}
+}
+
+async function syncLookupToGitHub() {
+  try {
+    await authFetch(`${WORKER}/lookup`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ lookup, message: 'Update loading lookup' }),
+    });
   } catch(e) {}
 }
 
 async function resetLookup() {
   localStorage.removeItem('tl_lookup');
   lookup = { exercises: {}, cardio: {} };
-  await loadLookup();
+  try {
+    const res = await fetch(`./users/${currentUser}/loading_lookup.json`);
+    if (res.ok) lookup = await res.json();
+  } catch(e) {}
+  localStorage.setItem('tl_lookup', JSON.stringify(lookup));
+  syncLookupToGitHub();
   closeSettings();
 }
 
@@ -547,18 +572,31 @@ function applyLookupUpdate(update) {
     lookup.cardio[type] = { ...(lookup.cardio[type] || {}), ...vals };
   });
   localStorage.setItem('tl_lookup', JSON.stringify(lookup));
+  syncLookupToGitHub();
 }
 
 async function loadAll() {
-  await loadLookup();
   try { sessions = JSON.parse(localStorage.getItem('tl_sessions') || '[]'); } catch(e) { sessions = []; }
   try { cfg = JSON.parse(localStorage.getItem('tl_cfg') || '{}'); } catch(e) { cfg = {}; }
   if (cfg.instructions) document.getElementById('cfg-instructions').value = cfg.instructions;
+  // Seed lookup from localStorage while we wait for the worker
+  try { const s = localStorage.getItem('tl_lookup'); if (s) lookup = JSON.parse(s); } catch(e) {}
 
   const payload = getTokenPayload();
   if (!payload) { document.getElementById('login-overlay').style.display = 'flex'; return; }
   currentUser = payload.user;
   initApp();
+}
+
+async function loadContextFiles() {
+  try {
+    const [coreRes, ctxRes] = await Promise.all([
+      fetch('./core-instructions.md'),
+      fetch(`./users/${currentUser}/user-context.md`),
+    ]);
+    if (coreRes.ok) coreInstructions = await coreRes.text();
+    if (ctxRes.ok) userContextMd = await ctxRes.text();
+  } catch(e) {}
 }
 
 function initApp() {
@@ -568,22 +606,9 @@ function initApp() {
   document.getElementById('exercises').innerHTML = '';
   exCount = 0; addExercise();
   onTypeChange();
-  if (!sessions.length) {
-    sessions.push({
-      id: 1, user: 'Cas', date: '2026-06-12', type: 'Pull',
-      exercises: [
-        {name:'weighted pull-ups',loading:'4x8@20kg',rpe:'RPE10'},
-        {name:'romanian deadlifts',loading:'3x8@140kg',rpe:'RPE8'},
-        {name:'bulgarian split squats',loading:'3x8@80kg',rpe:'RPE6.5'},
-        {name:'dumbbell rows',loading:'3x15@40kg',rpe:'RPE9'},
-        {name:'bicep curls',loading:'3x6@18kg',rpe:'RPE9'},
-      ],
-      energy:'below-average', sleep:'average',
-      kps:{morning:'4.5',post:'4.5'},
-      notes:'Below-average energy. Solei muscles too sore to run. Will cycle instead.'
-    });
-    localStorage.setItem('tl_sessions', JSON.stringify(sessions));
-  }
+  // Fire background loads in parallel — UI is not blocked
+  loadContextFiles();
+  syncLookupFromWorker();
   pullFromGitHub().then(() => {
     if (document.getElementById('page-history').classList.contains('active')) renderHistory();
   });
@@ -1087,7 +1112,7 @@ function impactLabel(v) {
 }
 
 function buildContext() {
-  const userCtx = cfg.instructions ? `\n\nATHLETE GOALS & CONTEXT:\n${cfg.instructions}` : '';
+  const userCtx = cfg.instructions ? `\n\nATHLETE PERSONAL NOTES:\n${cfg.instructions}` : '';
   const userSessions = sessions.filter(s => (s.user || 'Cas') === currentUser);
   if (!userSessions.length) return `No sessions logged yet for ${currentUser}.` + userCtx;
 
@@ -1123,7 +1148,7 @@ When suggesting factor adjustments, output a JSON code block:
     sessionLines + loadingCtx + userCtx;
 }
 
-const SYSTEM_PROMPT = `You are an expert strength & conditioning coach specialising in progressive overload, training load management, and injury prevention (especially knee health).
+const SYSTEM_PROMPT_FALLBACK = `You are an expert strength & conditioning coach specialising in progressive overload, training load management, and injury prevention (especially knee health).
 
 You have access to the athlete's complete training log below. Your role:
 - Identify real trends from the data — progression, stagnation, volume spikes, RPE patterns
@@ -1140,13 +1165,20 @@ async function askCoach(q) {
   out.textContent = 'Thinking…'; out.classList.add('ai-placeholder');
   btn.disabled = true;
 
+  const systemParts = [
+    coreInstructions || SYSTEM_PROMPT_FALLBACK,
+    userContextMd,
+    buildContext(),
+  ].filter(Boolean);
+  const system = systemParts.join('\n\n---\n\n');
+
   try {
     const res = await authFetch(`${WORKER}/chat`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        model: 'claude-sonnet-4-6', max_tokens: 1024,
-        system: SYSTEM_PROMPT + '\n\n' + buildContext(),
+        model: 'claude-sonnet-4-6', max_tokens: 2048,
+        system,
         messages: [{ role: 'user', content: q }]
       })
     });

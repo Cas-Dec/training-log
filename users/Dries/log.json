@@ -1,0 +1,27 @@
+[
+  {
+    "id": 1781646790206,
+    "user": "Dries",
+    "date": "2026-06-16",
+    "type": "Cardio",
+    "duration": "45",
+    "intensity": "high",
+    "exercises": [],
+    "energy": "below-average",
+    "sleep": "poor",
+    "notes": "25 minute warm up, running around Blaarmeersen\n2x4 hill sprints at rpe 9. Length, about 120m duration 20-30 seconds with 1m30 of rest between Intervals and 3 min rest between the two sets."
+  },
+  {
+    "id": 1781646655248,
+    "user": "Dries",
+    "date": "2026-06-16",
+    "type": "Legs",
+    "exercises": [
+      { "name": "Squat", "loading": "4x6@152kg", "rpe": "RPE8" },
+      { "name": "Romanian deadlift", "loading": "3x8@165", "rpe": "RPE6" }
+    ],
+    "energy": "below-average",
+    "sleep": "poor",
+    "notes": "I felt tired after my exam and my tensor fascia latea or hurting whilst doing my warm ups NRS 2/10"
+  }
+]
