@@ -208,6 +208,16 @@
   .badge-Rugby     { background: rgba(239,68,68,.18);   color: #fca5a5; }
   .badge-Badminton { background: rgba(163,230,53,.18);  color: #bef264; }
 
+  /* MULTI-SET */
+  .ex-set-row { display: flex; gap: 6px; align-items: center; margin-bottom: 4px; }
+  .ex-set-row select, .ex-set-row input { padding: 8px 6px; font-size: 13px; }
+  .ex-footer-row { display: flex; align-items: center; gap: 8px; margin-top: 2px; }
+  .ex-footer-row select { padding: 8px 6px; font-size: 13px; padding-right: 22px; max-width: 110px; }
+  .add-set-btn { background: none; border: 1px dashed var(--border); color: var(--muted); border-radius: 6px; padding: 4px 10px; cursor: pointer; font-size: 12px; font-family: var(--font-sans); transition: all .15s; }
+  .add-set-btn:hover { border-color: var(--accent); color: var(--accent); }
+  .rm-set-btn { background: none; border: 1px solid var(--border); color: var(--muted); border-radius: 6px; width: 24px; height: 30px; cursor: pointer; font-size: 14px; display: flex; align-items: center; justify-content: center; transition: all .15s; flex-shrink: 0; }
+  .rm-set-btn:hover { border-color: var(--red); color: var(--red); }
+
   /* LOGIN */
   .login-overlay {
     display: none; position: fixed; inset: 0; z-index: 300;
@@ -573,35 +583,54 @@ function rpeOptions() {
   for (let i = 5; i <= 10; i += 0.5) o += `<option value="${i}">${i}</option>`;
   return o;
 }
+function addSetGroup(containerId) {
+  const container = document.getElementById(containerId);
+  const row = document.createElement('div');
+  row.className = 'ex-set-row';
+  row.innerHTML = `
+    <select class="ex-sets">${numOptions('Sets', 10)}</select>
+    <span class="ex-x">×</span>
+    <select class="ex-reps">${numOptions('Reps', 30)}</select>
+    <span class="ex-at">@</span>
+    <input type="text" class="ex-weight" placeholder="20kg">
+    <button class="rm-set-btn" onclick="removeSetGroup(this)">−</button>`;
+  container.appendChild(row);
+}
+function removeSetGroup(btn) {
+  const row = btn.closest('.ex-set-row');
+  if (row.parentElement.children.length > 1) row.remove();
+}
 function addExercise(d={}) {
   const id = exCount++;
-  const row = document.createElement('div');
-  row.className = 'ex-card'; row.id = 'ex-'+id;
-  row.innerHTML = `
+  const groupsId = `ex-${id}-groups`;
+  const card = document.createElement('div');
+  card.className = 'ex-card'; card.id = 'ex-'+id;
+  card.innerHTML = `
     <div class="ex-name-row">
       <input type="text" placeholder="e.g. pull-ups" value="${d.name||''}">
       <button class="rm-btn" onclick="document.getElementById('ex-${id}').remove()">×</button>
     </div>
-    <div class="ex-detail-row">
-      <select class="ex-sets">${numOptions('Sets', 10)}</select>
-      <span class="ex-x">×</span>
-      <select class="ex-reps">${numOptions('Reps', 30)}</select>
-      <span class="ex-at">@</span>
-      <input type="text" class="ex-weight" placeholder="20kg" value="${d.weight||''}">
+    <div class="ex-set-groups" id="${groupsId}"></div>
+    <div class="ex-footer-row">
+      <button class="add-set-btn" onclick="addSetGroup('${groupsId}')">+ set</button>
       <select class="ex-rpe">${rpeOptions()}</select>
     </div>`;
-  document.getElementById('exercises').appendChild(row);
+  document.getElementById('exercises').appendChild(card);
+  addSetGroup(groupsId);
 }
 
 function getExercises() {
-  return [...document.querySelectorAll('#exercises .ex-card')].map(row => {
-    const name = row.querySelector('.ex-name-row input').value.trim();
-    const sets = row.querySelector('.ex-sets').value;
-    const reps = row.querySelector('.ex-reps').value;
-    const weight = row.querySelector('.ex-weight').value.trim();
-    const rpe = row.querySelector('.ex-rpe').value;
-    const loading = (sets && reps ? `${sets}x${reps}` : (sets || reps || '')) + (weight ? `@${weight}` : '');
-    return { name, loading, rpe: rpe ? `RPE${rpe}` : '' };
+  return [...document.querySelectorAll('#exercises .ex-card')].map(card => {
+    const name = card.querySelector('.ex-name-row input').value.trim();
+    const rpe = card.querySelector('.ex-rpe').value;
+    const loadings = [...card.querySelectorAll('.ex-set-row')].map(sr => {
+      const sets = sr.querySelector('.ex-sets').value;
+      const reps = sr.querySelector('.ex-reps').value;
+      const weight = sr.querySelector('.ex-weight').value.trim();
+      if (!sets && !reps && !weight) return null;
+      return (sets && reps ? `${sets}x${reps}` : (sets || reps || '')) + (weight ? `@${weight}` : '');
+    }).filter(Boolean);
+    return { name, loading: loadings.join(', '), rpe: rpe ? `RPE${rpe}` : '' };
   }).filter(e => e.name);
 }
 
@@ -708,13 +737,21 @@ let progressionMetric = 'weight';
 
 function parseLoading(loading) {
   loading = loading || '';
-  const sr = loading.match(/^([\d.]+)\s*x\s*([\d.]+)/i);
-  const w = loading.match(/@\s*([\d.]+)/);
-  return {
-    sets: sr ? parseFloat(sr[1]) : null,
-    reps: sr ? parseFloat(sr[2]) : null,
-    weight: w ? parseFloat(w[1]) : null,
-  };
+  const parts = loading.split(',').map(p => p.trim()).filter(Boolean);
+  if (!parts.length) return { sets: null, reps: null, weight: null, volume: null };
+  let totalVolume = 0, maxWeight = null, firstSets = null, firstReps = null, volumeValid = true;
+  for (const part of parts) {
+    const sr = part.match(/^([\d.]+)\s*x\s*([\d.]+)/i);
+    const w = part.match(/@\s*([\d.]+)/);
+    const sets = sr ? parseFloat(sr[1]) : null;
+    const reps = sr ? parseFloat(sr[2]) : null;
+    const weight = w ? parseFloat(w[1]) : null;
+    if (firstSets === null) { firstSets = sets; firstReps = reps; }
+    if (weight !== null && (maxWeight === null || weight > maxWeight)) maxWeight = weight;
+    if (sets !== null && reps !== null && weight !== null) totalVolume += sets * reps * weight;
+    else volumeValid = false;
+  }
+  return { sets: firstSets, reps: firstReps, weight: maxWeight, volume: volumeValid && totalVolume > 0 ? totalVolume : null };
 }
 
 function setProgressionMetric(metric) {
@@ -750,10 +787,8 @@ function renderProgressionChart() {
     .flatMap(s => (s.exercises || [])
       .filter(e => e.name === exercise)
       .map(e => {
-        const { sets, reps, weight } = parseLoading(e.loading);
-        const value = progressionMetric === 'volume'
-          ? (sets !== null && reps !== null && weight !== null ? sets * reps * weight : null)
-          : weight;
+        const { weight, volume } = parseLoading(e.loading);
+        const value = progressionMetric === 'volume' ? volume : weight;
         return { date: s.date, value };
       }))
     .filter(p => p.value !== null)
@@ -808,8 +843,8 @@ function sessionPatellarVolume(s) {
   const strengthVolume = (s.exercises || [])
     .filter(e => PATELLAR_KEYWORDS.some(k => e.name.toLowerCase().includes(k)))
     .reduce((sum, e) => {
-      const { sets, reps, weight } = parseLoading(e.loading);
-      return sum + (sets !== null && reps !== null && weight !== null ? sets * reps * weight : 0);
+      const { volume } = parseLoading(e.loading);
+      return sum + (volume ?? 0);
     }, 0);
 
   const cardioVolume = PATELLAR_CARDIO_TYPES.includes(s.type) && s.duration
