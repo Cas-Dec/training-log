@@ -385,9 +385,15 @@
   <div class="empty" id="progression-empty" style="display:none"></div>
 
   <div id="kps-sensitivity-section" style="display:none">
-    <div class="field">
-      <label>Knee pain sensitivity to patellar load (last 12 weeks)</label>
-      <p class="page-subtitle" style="margin-bottom:10px">Per session: (post − morning KPS) ÷ patellar-tendon loading volume. Rising = knee getting more reactive per unit load; falling/negative = better load tolerance.</p>
+    <div class="field" style="margin-bottom:10px">
+      <label>Knee sensitivity to patellar load (last 12 weeks)</label>
+      <div style="display:flex;align-items:center;gap:10px;margin-top:8px;margin-bottom:6px">
+        <div class="metric-toggle">
+          <button class="metric-btn active" id="kps-metric-btn-acute" onclick="setKpsMetric('acute')">Acute</button>
+          <button class="metric-btn" id="kps-metric-btn-morning" onclick="setKpsMetric('morning-after')">Morning-after</button>
+        </div>
+      </div>
+      <p id="kps-chart-desc" class="page-subtitle" style="margin-bottom:0"></p>
     </div>
     <div class="chart-wrap" id="kps-sensitivity-chart-wrap">
       <canvas id="kps-sensitivity-chart"></canvas>
@@ -855,29 +861,73 @@ function sessionPatellarVolume(s) {
 }
 
 let kpsSensitivityChart = null;
+let kpsMetric = 'acute';
+
+const KPS_METRIC_DESC = {
+  'acute': 'Per session: (post − morning KPS) ÷ patellar loading volume. Captures immediate irritation on the day.',
+  'morning-after': 'Per training day: (next-morning KPS − morning KPS) ÷ patellar loading volume. Captures overnight inflammatory response to load; more relevant for tissue adaptation trends.',
+};
+
+function setKpsMetric(metric) {
+  kpsMetric = metric;
+  document.getElementById('kps-metric-btn-acute').classList.toggle('active', metric === 'acute');
+  document.getElementById('kps-metric-btn-morning').classList.toggle('active', metric === 'morning-after');
+  renderKpsSensitivityChart();
+}
 
 function renderKpsSensitivityChart() {
   const wrap = document.getElementById('kps-sensitivity-chart-wrap');
   const empty = document.getElementById('kps-sensitivity-empty');
+  document.getElementById('kps-chart-desc').textContent = KPS_METRIC_DESC[kpsMetric];
 
   const cutoff = Date.now() - TWELVE_WEEKS_MS;
-  const points = sessions
-    .filter(s => (s.user || 'Cas') === 'Cas' && new Date(s.date).getTime() >= cutoff
-      && s.kps?.morning != null && s.kps?.post != null && s.kps.morning !== '' && s.kps.post !== '')
-    .map(s => {
-      const volume = sessionPatellarVolume(s);
-      const deltaKps = (+s.kps.post) - (+s.kps.morning);
-      return { date: s.date, value: volume > 0 ? deltaKps / volume : null };
-    })
-    .filter(p => p.value !== null && !isNaN(p.value))
-    .sort((a, b) => a.date.localeCompare(b.date));
+  let points;
+
+  if (kpsMetric === 'acute') {
+    points = sessions
+      .filter(s => (s.user || 'Cas') === 'Cas' && new Date(s.date).getTime() >= cutoff
+        && s.kps?.morning != null && s.kps?.post != null && s.kps.morning !== '' && s.kps.post !== '')
+      .map(s => {
+        const volume = sessionPatellarVolume(s);
+        const deltaKps = (+s.kps.post) - (+s.kps.morning);
+        return { date: s.date, value: volume > 0 ? deltaKps / volume : null };
+      })
+      .filter(p => p.value !== null && !isNaN(p.value))
+      .sort((a, b) => a.date.localeCompare(b.date));
+  } else {
+    // Build a per-day map: date -> { morningKps, totalPatellarVolume }
+    const dayMap = {};
+    sessions.filter(s => (s.user || 'Cas') === 'Cas').forEach(s => {
+      if (!dayMap[s.date]) dayMap[s.date] = { morningKps: null, patellarVolume: 0 };
+      if (s.kps?.morning != null && s.kps.morning !== '' && dayMap[s.date].morningKps === null)
+        dayMap[s.date].morningKps = +s.kps.morning;
+      dayMap[s.date].patellarVolume += sessionPatellarVolume(s);
+    });
+    const dates = Object.keys(dayMap).sort();
+    points = dates
+      .filter(d => new Date(d).getTime() >= cutoff
+        && dayMap[d].morningKps !== null && dayMap[d].patellarVolume > 0)
+      .map(d => {
+        const dMs = new Date(d).getTime();
+        const nextDate = dates.find(nd => {
+          const diff = (new Date(nd).getTime() - dMs) / 864e5;
+          return diff > 0 && diff <= 3 && dayMap[nd].morningKps !== null;
+        });
+        if (!nextDate) return null;
+        const deltaKps = dayMap[nextDate].morningKps - dayMap[d].morningKps;
+        return { date: d, value: deltaKps / dayMap[d].patellarVolume };
+      })
+      .filter(Boolean);
+  }
 
   if (kpsSensitivityChart) { kpsSensitivityChart.destroy(); kpsSensitivityChart = null; }
 
   if (!points.length) {
     wrap.style.display = 'none';
     empty.style.display = '';
-    empty.textContent = 'No sessions with both KPS and patellar-tendon loading in the last 12 weeks.';
+    empty.textContent = kpsMetric === 'acute'
+      ? 'No sessions with both KPS and patellar loading in the last 12 weeks.'
+      : 'No training days with patellar loading followed by a logged next-morning KPS in the last 12 weeks.';
     return;
   }
   wrap.style.display = '';
@@ -888,7 +938,7 @@ function renderKpsSensitivityChart() {
     data: {
       labels: points.map(p => p.date),
       datasets: [{
-        label: 'ΔKPS / loading volume',
+        label: kpsMetric === 'acute' ? 'ΔKPS (same-day) / volume' : 'Δmorning KPS / volume',
         data: points.map(p => p.value),
         borderColor: '#ff6b6b',
         backgroundColor: 'rgba(255,107,107,0.12)',
