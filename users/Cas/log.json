@@ -1,5 +1,60 @@
 [
   {
+    "id": 1781788834098,
+    "user": "Cas",
+    "date": "2026-06-18",
+    "type": "Upper body",
+    "exercises": [
+      {
+        "name": "incline dumbbell press",
+        "loading": "1x8@42, 2x10@36",
+        "rpe": "RPE8.5"
+      },
+      {
+        "name": "pull-ups",
+        "loading": "3x6@20",
+        "rpe": "RPE7"
+      },
+      {
+        "name": "dumbbell rows",
+        "loading": "3x12@40",
+        "rpe": "RPE7"
+      },
+      {
+        "name": "dips",
+        "loading": "3x10@25",
+        "rpe": "RPE7"
+      },
+      {
+        "name": "skullcrushers",
+        "loading": "3x10@38.5",
+        "rpe": "RPE8.5"
+      },
+      {
+        "name": "lateral raise",
+        "loading": "3x12@18",
+        "rpe": "RPE8"
+      },
+      {
+        "name": "rear delt dumbbell fly",
+        "loading": "3x10@10",
+        "rpe": "RPE8"
+      },
+      {
+        "name": "bicep curls",
+        "loading": "3x8@18",
+        "rpe": "RPE8.5"
+      }
+    ],
+    "energy": "average",
+    "sleep": "poor",
+    "kps": {
+      "morning": "2",
+      "post": "2.5"
+    },
+    "notes": "Relaxed session, body tired from workload past week."
+  },
+  {
     "id": 1781727435527,
     "user": "Cas",
     "date": "2026-06-17",
