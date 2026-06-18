@@ -1,5 +1,36 @@
 [
   {
+    "id": 1781785351602,
+    "user": "Dries",
+    "date": "2026-06-18",
+    "type": "Legs",
+    "exercises": [
+      {
+        "name": "squat",
+        "loading": "4x3@165kg",
+        "rpe": "RPE8.5"
+      },
+      {
+        "name": "romanian deadlift",
+        "loading": "3x8@182kg",
+        "rpe": "RPE8.5"
+      },
+      {
+        "name": "single leg extions",
+        "loading": "3x10@61",
+        "rpe": "RPE7"
+      },
+      {
+        "name": "prone leg curls",
+        "loading": "3x8@88kg",
+        "rpe": "RPE7"
+      }
+    ],
+    "energy": "above-average",
+    "sleep": "good",
+    "notes": "A bit sore from yesterday's rugby session but the body felt good"
+  },
+  {
     "id": 1781727295104,
     "user": "Dries",
     "date": "2026-06-17",
