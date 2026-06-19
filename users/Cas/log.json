@@ -1,5 +1,21 @@
 [
   {
+    "id": 1781896589352,
+    "user": "Cas",
+    "date": "2026-06-19",
+    "type": "Cycling",
+    "duration": "10",
+    "intensity": "low",
+    "exercises": [],
+    "energy": "below-average",
+    "sleep": "poor",
+    "kps": {
+      "morning": "3.5",
+      "post": "3.5"
+    },
+    "notes": "Placeholder to register KPS."
+  },
+  {
     "id": 1781809708603,
     "user": "Cas",
     "date": "2026-06-18",
