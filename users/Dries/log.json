@@ -1,5 +1,17 @@
 [
   {
+    "id": 1781994836566,
+    "user": "Dries",
+    "date": "2026-06-20",
+    "type": "Running",
+    "duration": "35",
+    "intensity": "low",
+    "exercises": [],
+    "energy": "above-average",
+    "sleep": "good",
+    "notes": "4.7 km"
+  },
+  {
     "id": 1781969957727,
     "user": "Dries",
     "date": "2026-06-20",
