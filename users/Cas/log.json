@@ -1,5 +1,55 @@
 [
   {
+    "id": 1782048413013,
+    "user": "Cas",
+    "date": "2026-06-21",
+    "type": "Full body",
+    "exercises": [
+      {
+        "name": "pull-ups",
+        "loading": "4x8@20kg",
+        "rpe": "RPE8.5"
+      },
+      {
+        "name": "incline dumbbell press",
+        "loading": "2x8@42kg, 1x10@38kg",
+        "rpe": "RPE8.5"
+      },
+      {
+        "name": "dips",
+        "loading": "3x10@30kg",
+        "rpe": "RPE8"
+      },
+      {
+        "name": "dumbbell rows",
+        "loading": "3x12@46kg",
+        "rpe": "RPE8"
+      },
+      {
+        "name": "strict press",
+        "loading": "1x8@52.5kg, 1x8@57.5kg, 1x8@60kg",
+        "rpe": "RPE8.5"
+      },
+      {
+        "name": "lateral raise",
+        "loading": "3x15@16kg",
+        "rpe": "RPE8"
+      },
+      {
+        "name": "rear delt dumbbell fly",
+        "loading": "3x12@10",
+        "rpe": "RPE8"
+      }
+    ],
+    "energy": "above-average",
+    "sleep": "poor",
+    "kps": {
+      "morning": "2.5",
+      "post": "2.5"
+    },
+    "notes": ""
+  },
+  {
     "id": 1781994830885,
     "user": "Cas",
     "date": "2026-06-19",
