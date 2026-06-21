@@ -37,15 +37,15 @@ Notes: ${s.notes||'—'}`;
   let loadingCtx = '';
   if (currentUser === 'Cas') {
     const kneeExercises = Object.entries(lookup.exercises)
-      .filter(([,v]) => v.leg_factor > 0)
-      .map(([name,v]) => `  ${name}: leg=${v.leg_factor} speed=${v.speed_factor} load=${v.loading_factor}${v.bodyweight?' +BW':''}`)
+      .filter(([,v]) => v.strain_factor > 0)
+      .map(([name,v]) => `  ${name}: strain=${v.strain_factor}${v.bodyweight?' +BW':''}`)
       .join('\n');
-    loadingCtx = `\n\nPATELLAR LOADING MODEL (formula: leg×speed×load×weight×log₁₀(10+sets×reps), BW=${BODYWEIGHT_KG}kg):
-$IMPACT scale: maximal≥100 | very-high 65-100 | high 40-65 | medium-to-high 22-40 | medium 12-22 | low-to-medium 6-12 | low 2-6 | very-low 0.5-2 | none<0.5
+    loadingCtx = `\n\nPATELLAR LOADING MODEL (formula: strain_factor×weight×log₁₀(10+sets×reps), BW=${BODYWEIGHT_KG}kg; cardio: loading_min×intensity_scale×√duration):
+$IMPACT scale: maximal≥100 | very high 65-100 | high 40-65 | medium-to-high 22-40 | medium 12-22 | low-to-medium 6-12 | low 2-6 | very low 0.5-2 | none<0.5
 Knee-loading exercises in lookup:\n${kneeExercises || '  (none)'}
 When suggesting factor adjustments, output a JSON code block:
 \`\`\`json
-{"type":"lookup-update","exercises":{"exercise name":{"loading_factor":X}}}
+{"type":"lookup-update","exercises":{"exercise name":{"strain_factor":X}}}
 \`\`\``;
   }
 
@@ -103,7 +103,7 @@ async function askCoach(q) {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        model: 'claude-sonnet-4-6', max_tokens: 2048,
+        model: 'claude-sonnet-4-6', max_tokens: 1024,
         system,
         messages: conversationHistory,
       })
@@ -179,7 +179,7 @@ function tuneLoadings() {
     !CARDIO_TYPES.includes(s.type) &&
     (s.exercises || []).some(e => {
       const entry = lookup.exercises[(e.name || '').toLowerCase().trim()];
-      return entry && entry.leg_factor > 0;
+      return entry && entry.strain_factor > 0;
     })
   ).slice(0, 4);
 
@@ -195,7 +195,7 @@ function tuneLoadings() {
     const exLines = (s.exercises || []).flatMap(e => {
       const key = (e.name || '').toLowerCase().trim();
       const entry = lookup.exercises[key];
-      if (!entry || !entry.leg_factor) return [];
+      if (!entry || !entry.strain_factor) return [];
       return (e.loading || '').split(',').map(p => p.trim()).filter(Boolean).map(part => {
         const sr = part.match(/^([\d.]+)\s*x\s*([\d.]+)/i);
         const w = part.match(/@\s*([\d.]+)/);
@@ -204,15 +204,15 @@ function tuneLoadings() {
         const added = w ? parseFloat(w[1]) : 0;
         const weight = entry.bodyweight ? BODYWEIGHT_KG + added : added;
         const load = (sets && reps && weight)
-          ? entry.leg_factor * entry.speed_factor * entry.loading_factor * weight * Math.log10(10 + sets * reps)
+          ? entry.strain_factor * weight * Math.log10(10 + sets * reps)
           : 0;
-        return `  • ${e.name}  ${part}  →  ${load.toFixed(1)} (${impactLabel(load)})  [leg=${entry.leg_factor} spd=${entry.speed_factor} lf=${entry.loading_factor}${entry.bodyweight ? ' +BW' : ''}]`;
+        return `  • ${e.name}  ${part}  →  ${load.toFixed(1)} (${impactLabel(load)})  [strain=${entry.strain_factor}${entry.bodyweight ? ' +BW' : ''}]`;
       });
     });
     return [`${s.date} | ${s.type}${kps}`, ...exLines].join('\n');
   }).join('\n\n');
 
-  const q = `I want to tune the patellar loading factors for my exercises. The app computed the following loads for my recent sessions using the current lookup factors (shown in brackets):\n\n${breakdown}\n\nFor each exercise, ask me whether the computed impact level matched my actual perceived knee strain. Go one session at a time, starting with the most recent. Based on my answers, suggest updated factors in this format:\n\`\`\`json\n{"type":"lookup-update","exercises":{"exercise name":{"loading_factor":X}}}\n\`\`\``;
+  const q = `I want to tune the patellar loading factors for my exercises. The app computed the following loads for my recent sessions using the current strain factors (shown in brackets):\n\n${breakdown}\n\nFor each exercise, ask me whether the computed impact level matched my actual perceived knee strain. Go one session at a time, starting with the most recent. Based on my answers, suggest updated factors in this format:\n\`\`\`json\n{"type":"lookup-update","exercises":{"exercise name":{"strain_factor":X}}}\n\`\`\``;
 
   clearConversation();
   showPage('coach');

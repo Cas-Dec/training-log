@@ -1,143 +1,63 @@
 {
   "exercises": {
-    "weighted pull-ups": {
-      "leg_factor": 0,
-      "speed_factor": 0,
-      "loading_factor": 0,
-      "bodyweight": false
-    },
-    "pull-ups": {
-      "leg_factor": 0,
-      "speed_factor": 0,
-      "loading_factor": 0,
-      "bodyweight": false
-    },
-    "dumbbell rows": {
-      "leg_factor": 0,
-      "speed_factor": 0,
-      "loading_factor": 0,
-      "bodyweight": false
-    },
-    "rear delt fly": {
-      "leg_factor": 0,
-      "speed_factor": 0,
-      "loading_factor": 0,
-      "bodyweight": false
-    },
-    "bicep curls": {
-      "leg_factor": 0,
-      "speed_factor": 0,
-      "loading_factor": 0,
-      "bodyweight": false
-    },
-    "incline dumbbell press": {
-      "leg_factor": 0,
-      "speed_factor": 0,
-      "loading_factor": 0,
-      "bodyweight": false
-    },
-    "dips": {
-      "leg_factor": 0,
-      "speed_factor": 0,
-      "loading_factor": 0,
-      "bodyweight": false
-    },
-    "strict press": {
-      "leg_factor": 0,
-      "speed_factor": 0,
-      "loading_factor": 0,
-      "bodyweight": false
-    },
-    "chest fly": {
-      "leg_factor": 0,
-      "speed_factor": 0,
-      "loading_factor": 0,
-      "bodyweight": false
-    },
-    "lateral raise": {
-      "leg_factor": 0,
-      "speed_factor": 0,
-      "loading_factor": 0,
-      "bodyweight": false
-    },
-    "skullcrushers": {
-      "leg_factor": 0,
-      "speed_factor": 0,
-      "loading_factor": 0,
-      "bodyweight": false
-    },
-    "back extensions": {
-      "leg_factor": 0,
-      "speed_factor": 0,
-      "loading_factor": 0,
-      "bodyweight": false
-    },
-    "romanian deadlift": {
-      "leg_factor": 0.5,
-      "speed_factor": 0.6,
-      "loading_factor": 0.2,
-      "bodyweight": true
-    },
-    "romanian deadlifts": {
-      "leg_factor": 0.5,
-      "speed_factor": 0.6,
-      "loading_factor": 0.2,
+    "squats": {
+      "strain_factor": 0.27,
       "bodyweight": true
     },
     "bulgarian split squats": {
-      "leg_factor": 1,
-      "speed_factor": 0.6,
-      "loading_factor": 0.18,
+      "strain_factor": 0.30,
+      "bodyweight": true
+    },
+    "romanian deadlifts": {
+      "strain_factor": 0.07,
+      "bodyweight": true
+    },
+    "clean": {
+      "strain_factor": 0.37,
+      "bodyweight": true
+    },
+    "power clean": {
+      "strain_factor": 0.22,
       "bodyweight": true
     },
     "clean pulls": {
-      "leg_factor": 0.5,
-      "speed_factor": 1,
-      "loading_factor": 0.2,
+      "strain_factor": 0.12,
       "bodyweight": true
     },
     "pauze power clean + jerk": {
-      "leg_factor": 0.5,
-      "speed_factor": 1,
-      "loading_factor": 1,
+      "strain_factor": 0.40,
+      "bodyweight": true
+    },
+    "snatch": {
+      "strain_factor": 0.21,
       "bodyweight": true
     },
     "leg extensions": {
-      "leg_factor": 0.5,
-      "speed_factor": 0.6,
-      "loading_factor": 1,
+      "strain_factor": 0.18,
       "bodyweight": false
     },
     "vertical jumps": {
-      "leg_factor": 0.5,
-      "speed_factor": 1,
-      "loading_factor": 0.9,
-      "bodyweight": true
-    },
-    "squat": {
-      "leg_factor": 0.5,
-      "speed_factor": 0.6,
-      "loading_factor": 0.85,
+      "strain_factor": 0.50,
       "bodyweight": true
     }
   },
   "cardio": {
     "Badminton": {
-      "loading_min": 0.75
+      "loading_min": 5.2
     },
     "Rugby": {
-      "loading_min": 0.3
+      "loading_min": 4.0
     },
     "Running": {
-      "loading_min": 0.5,
+      "loading_min": 8,
       "intensity_scale": {
-        "low": 0.4,
-        "medium": 0.7,
-        "high": 1
+        "low": 0.2,
+        "medium": 0.55,
+        "high": 1.0
       }
     },
     "Cycling": {
-      "loading_min": 0.15,
+      "loading_min": 1.2,
       "intensity_scale": {
         "low": 1,
         "medium": 2,

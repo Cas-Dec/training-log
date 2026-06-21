@@ -417,7 +417,7 @@
     <div class="progression-controls">
       <select id="progression-exercise" onchange="renderProgressionChart()"></select>
       <div class="metric-toggle">
-        <button class="metric-btn active" id="metric-btn-weight" onclick="setProgressionMetric('weight')">Max weight</button>
+        <button class="metric-btn active" id="metric-btn-e1rm" onclick="setProgressionMetric('e1rm')">e1RM</button>
         <button class="metric-btn" id="metric-btn-volume" onclick="setProgressionMetric('volume')">Volume</button>
       </div>
     </div>
@@ -508,9 +508,9 @@ const CARDIO_TYPES = ['Rugby', 'Badminton', 'Running', 'Cycling'];
 const SPEED_CARDIO_TYPES = ['Running', 'Cycling'];
 const BODYWEIGHT_KG = 85;
 const IMPACT_MIDPOINTS = {
-  'maximal':120,'very high':80,'very-high':80,'high':52,
-  'medium to high':31,'medium-to-high':31,'medium':17,
-  'low to medium':9,'low-to-medium':9,'low':4,'very low':1,'very-low':1,'none':0,
+  'maximal':120,'very high':80,'high':52,
+  'medium to high':31,'medium':17,
+  'low to medium':9,'low':4,'very low':1,'none':0,
 };
 let lookup = { exercises: {}, cardio: {} };
 let coreInstructions = '';
@@ -957,11 +957,13 @@ function resetForm() {
 // ── HISTORY ────────────────────────────────────────────────────────
 const TWELVE_WEEKS_MS = 84 * 864e5;
 
-function parseLoading(loading) {
+function parseLoading(loading, rpe) {
   loading = loading || '';
   const parts = loading.split(',').map(p => p.trim()).filter(Boolean);
-  if (!parts.length) return { sets: null, reps: null, weight: null, volume: null };
-  let totalVolume = 0, maxWeight = null, firstSets = null, firstReps = null, volumeValid = true;
+  if (!parts.length) return { sets: null, reps: null, e1rm: null, volume: null };
+  const rpeNum = rpe ? parseFloat((rpe + '').match(/[\d.]+/)?.[0]) : null;
+  const rpeMult = (rpeNum != null && rpeNum >= 1 && rpeNum <= 10) ? 1 + (10 - rpeNum) / 10 : 1;
+  let totalVolume = 0, maxE1rm = null, firstSets = null, firstReps = null, volumeValid = true;
   for (const part of parts) {
     const sr = part.match(/^([\d.]+)\s*x\s*([\d.]+)/i);
     const w = part.match(/@\s*([\d.]+)/);
@@ -969,11 +971,16 @@ function parseLoading(loading) {
     const reps = sr ? parseFloat(sr[2]) : null;
     const weight = w ? parseFloat(w[1]) : null;
     if (firstSets === null) { firstSets = sets; firstReps = reps; }
-    if (weight !== null && (maxWeight === null || weight > maxWeight)) maxWeight = weight;
-    if (sets !== null && reps !== null && weight !== null) totalVolume += sets * reps * weight;
-    else volumeValid = false;
+    if (sets !== null && reps !== null && weight !== null) {
+      const maxReps = reps * rpeMult;
+      totalVolume += sets * maxReps * weight;
+      const e1rm = weight * (1 + maxReps / 30);
+      if (maxE1rm === null || e1rm > maxE1rm) maxE1rm = e1rm;
+    } else {
+      volumeValid = false;
+    }
   }
-  return { sets: firstSets, reps: firstReps, weight: maxWeight, volume: volumeValid && totalVolume > 0 ? totalVolume : null };
+  return { sets: firstSets, reps: firstReps, e1rm: maxE1rm, volume: volumeValid && totalVolume > 0 ? totalVolume : null };
 }
 
 function sessionPatellarVolume(s) {
@@ -984,12 +991,12 @@ function sessionPatellarVolume(s) {
     const entry = lookup.cardio[s.type];
     if (!entry || !s.duration) return 0;
     const scale = entry.intensity_scale?.[s.intensity || 'medium'] ?? 1;
-    return entry.loading_min * scale * (+s.duration);
+    return entry.loading_min * scale * Math.sqrt(+s.duration);
   }
 
   return (s.exercises || []).reduce((sum, e) => {
     const entry = lookup.exercises[(e.name || '').toLowerCase().trim()];
-    if (!entry || !entry.leg_factor) return sum;
+    if (!entry || !entry.strain_factor) return sum;
     const parts = (e.loading || '').split(',').map(p => p.trim()).filter(Boolean);
     return sum + parts.reduce((pSum, part) => {
       const sr = part.match(/^([\d.]+)\s*x\s*([\d.]+)/i);
@@ -1000,7 +1007,7 @@ function sessionPatellarVolume(s) {
       const added = w ? parseFloat(w[1]) : 0;
       const weight = entry.bodyweight ? BODYWEIGHT_KG + added : added;
       if (!weight) return pSum;
-      return pSum + entry.leg_factor * entry.speed_factor * entry.loading_factor * weight * Math.log10(10 + sets * reps);
+      return pSum + entry.strain_factor * weight * Math.log10(10 + sets * reps);
     }, 0);
   }, 0);
 }
@@ -1061,11 +1068,11 @@ function renderHistory() {
 
 // ── PROGRESSION CHART ─────────────────────────────────────────────
 let progressionChart = null;
-let progressionMetric = 'weight';
+let progressionMetric = 'e1rm';
 
 function setProgressionMetric(metric) {
   progressionMetric = metric;
-  document.getElementById('metric-btn-weight').classList.toggle('active', metric === 'weight');
+  document.getElementById('metric-btn-e1rm').classList.toggle('active', metric === 'e1rm');
   document.getElementById('metric-btn-volume').classList.toggle('active', metric === 'volume');
   renderProgressionChart();
 }
@@ -1096,8 +1103,8 @@ function renderProgressionChart() {
     .flatMap(s => (s.exercises || [])
       .filter(e => e.name === exercise)
       .map(e => {
-        const { weight, volume } = parseLoading(e.loading);
-        const value = progressionMetric === 'volume' ? volume : weight;
+        const { e1rm, volume } = parseLoading(e.loading, e.rpe);
+        const value = progressionMetric === 'volume' ? volume : e1rm;
         return { date: s.date, value };
       }))
     .filter(p => p.value !== null)
@@ -1108,7 +1115,7 @@ function renderProgressionChart() {
   if (!exercise || !points.length) {
     wrap.style.display = 'none';
     empty.style.display = '';
-    empty.textContent = `No ${progressionMetric} data for this exercise in the last 12 weeks.`;
+    empty.textContent = `No ${progressionMetric === 'e1rm' ? 'e1RM' : 'volume'} data for this exercise in the last 12 weeks.`;
     return;
   }
   wrap.style.display = '';
@@ -1279,15 +1286,15 @@ Notes: ${s.notes||'—'}`;
   let loadingCtx = '';
   if (currentUser === 'Cas') {
     const kneeExercises = Object.entries(lookup.exercises)
-      .filter(([,v]) => v.leg_factor > 0)
-      .map(([name,v]) => `  ${name}: leg=${v.leg_factor} speed=${v.speed_factor} load=${v.loading_factor}${v.bodyweight?' +BW':''}`)
+      .filter(([,v]) => v.strain_factor > 0)
+      .map(([name,v]) => `  ${name}: strain=${v.strain_factor}${v.bodyweight?' +BW':''}`)
       .join('\n');
-    loadingCtx = `\n\nPATELLAR LOADING MODEL (formula: leg×speed×load×weight×log₁₀(10+sets×reps), BW=${BODYWEIGHT_KG}kg):
-$IMPACT scale: maximal≥100 | very-high 65-100 | high 40-65 | medium-to-high 22-40 | medium 12-22 | low-to-medium 6-12 | low 2-6 | very-low 0.5-2 | none<0.5
+    loadingCtx = `\n\nPATELLAR LOADING MODEL (formula: strain_factor×weight×log₁₀(10+sets×reps), BW=${BODYWEIGHT_KG}kg; cardio: loading_min×intensity_scale×√duration):
+$IMPACT scale: maximal≥100 | very high 65-100 | high 40-65 | medium-to-high 22-40 | medium 12-22 | low-to-medium 6-12 | low 2-6 | very low 0.5-2 | none<0.5
 Knee-loading exercises in lookup:\n${kneeExercises || '  (none)'}
 When suggesting factor adjustments, output a JSON code block:
 \`\`\`json
-{"type":"lookup-update","exercises":{"exercise name":{"loading_factor":X}}}
+{"type":"lookup-update","exercises":{"exercise name":{"strain_factor":X}}}
 \`\`\``;
   }
 
@@ -1345,7 +1352,7 @@ async function askCoach(q) {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        model: 'claude-sonnet-4-6', max_tokens: 2048,
+        model: 'claude-sonnet-4-6', max_tokens: 1024,
         system,
         messages: conversationHistory,
       })
@@ -1421,7 +1428,7 @@ function tuneLoadings() {
     !CARDIO_TYPES.includes(s.type) &&
     (s.exercises || []).some(e => {
       const entry = lookup.exercises[(e.name || '').toLowerCase().trim()];
-      return entry && entry.leg_factor > 0;
+      return entry && entry.strain_factor > 0;
     })
   ).slice(0, 4);
 
@@ -1437,7 +1444,7 @@ function tuneLoadings() {
     const exLines = (s.exercises || []).flatMap(e => {
       const key = (e.name || '').toLowerCase().trim();
       const entry = lookup.exercises[key];
-      if (!entry || !entry.leg_factor) return [];
+      if (!entry || !entry.strain_factor) return [];
       return (e.loading || '').split(',').map(p => p.trim()).filter(Boolean).map(part => {
         const sr = part.match(/^([\d.]+)\s*x\s*([\d.]+)/i);
         const w = part.match(/@\s*([\d.]+)/);
@@ -1446,15 +1453,15 @@ function tuneLoadings() {
         const added = w ? parseFloat(w[1]) : 0;
         const weight = entry.bodyweight ? BODYWEIGHT_KG + added : added;
         const load = (sets && reps && weight)
-          ? entry.leg_factor * entry.speed_factor * entry.loading_factor * weight * Math.log10(10 + sets * reps)
+          ? entry.strain_factor * weight * Math.log10(10 + sets * reps)
           : 0;
-        return `  • ${e.name}  ${part}  →  ${load.toFixed(1)} (${impactLabel(load)})  [leg=${entry.leg_factor} spd=${entry.speed_factor} lf=${entry.loading_factor}${entry.bodyweight ? ' +BW' : ''}]`;
+        return `  • ${e.name}  ${part}  →  ${load.toFixed(1)} (${impactLabel(load)})  [strain=${entry.strain_factor}${entry.bodyweight ? ' +BW' : ''}]`;
       });
     });
     return [`${s.date} | ${s.type}${kps}`, ...exLines].join('\n');
   }).join('\n\n');
 
-  const q = `I want to tune the patellar loading factors for my exercises. The app computed the following loads for my recent sessions using the current lookup factors (shown in brackets):\n\n${breakdown}\n\nFor each exercise, ask me whether the computed impact level matched my actual perceived knee strain. Go one session at a time, starting with the most recent. Based on my answers, suggest updated factors in this format:\n\`\`\`json\n{"type":"lookup-update","exercises":{"exercise name":{"loading_factor":X}}}\n\`\`\``;
+  const q = `I want to tune the patellar loading factors for my exercises. The app computed the following loads for my recent sessions using the current strain factors (shown in brackets):\n\n${breakdown}\n\nFor each exercise, ask me whether the computed impact level matched my actual perceived knee strain. Go one session at a time, starting with the most recent. Based on my answers, suggest updated factors in this format:\n\`\`\`json\n{"type":"lookup-update","exercises":{"exercise name":{"strain_factor":X}}}\n\`\`\``;
 
   clearConversation();
   showPage('coach');

@@ -1,11 +1,13 @@
 // ── HISTORY ────────────────────────────────────────────────────────
 const TWELVE_WEEKS_MS = 84 * 864e5;
 
-function parseLoading(loading) {
+function parseLoading(loading, rpe) {
   loading = loading || '';
   const parts = loading.split(',').map(p => p.trim()).filter(Boolean);
-  if (!parts.length) return { sets: null, reps: null, weight: null, volume: null };
-  let totalVolume = 0, maxWeight = null, firstSets = null, firstReps = null, volumeValid = true;
+  if (!parts.length) return { sets: null, reps: null, e1rm: null, volume: null };
+  const rpeNum = rpe ? parseFloat((rpe + '').match(/[\d.]+/)?.[0]) : null;
+  const rpeMult = (rpeNum != null && rpeNum >= 1 && rpeNum <= 10) ? 1 + (10 - rpeNum) / 10 : 1;
+  let totalVolume = 0, maxE1rm = null, firstSets = null, firstReps = null, volumeValid = true;
   for (const part of parts) {
     const sr = part.match(/^([\d.]+)\s*x\s*([\d.]+)/i);
     const w = part.match(/@\s*([\d.]+)/);
@@ -13,11 +15,16 @@ function parseLoading(loading) {
     const reps = sr ? parseFloat(sr[2]) : null;
     const weight = w ? parseFloat(w[1]) : null;
     if (firstSets === null) { firstSets = sets; firstReps = reps; }
-    if (weight !== null && (maxWeight === null || weight > maxWeight)) maxWeight = weight;
-    if (sets !== null && reps !== null && weight !== null) totalVolume += sets * reps * weight;
-    else volumeValid = false;
+    if (sets !== null && reps !== null && weight !== null) {
+      const maxReps = reps * rpeMult;
+      totalVolume += sets * maxReps * weight;
+      const e1rm = weight * (1 + maxReps / 30);
+      if (maxE1rm === null || e1rm > maxE1rm) maxE1rm = e1rm;
+    } else {
+      volumeValid = false;
+    }
   }
-  return { sets: firstSets, reps: firstReps, weight: maxWeight, volume: volumeValid && totalVolume > 0 ? totalVolume : null };
+  return { sets: firstSets, reps: firstReps, e1rm: maxE1rm, volume: volumeValid && totalVolume > 0 ? totalVolume : null };
 }
 
 function sessionPatellarVolume(s) {
@@ -28,12 +35,12 @@ function sessionPatellarVolume(s) {
     const entry = lookup.cardio[s.type];
     if (!entry || !s.duration) return 0;
     const scale = entry.intensity_scale?.[s.intensity || 'medium'] ?? 1;
-    return entry.loading_min * scale * (+s.duration);
+    return entry.loading_min * scale * Math.sqrt(+s.duration);
   }
 
   return (s.exercises || []).reduce((sum, e) => {
     const entry = lookup.exercises[(e.name || '').toLowerCase().trim()];
-    if (!entry || !entry.leg_factor) return sum;
+    if (!entry || !entry.strain_factor) return sum;
     const parts = (e.loading || '').split(',').map(p => p.trim()).filter(Boolean);
     return sum + parts.reduce((pSum, part) => {
       const sr = part.match(/^([\d.]+)\s*x\s*([\d.]+)/i);
@@ -44,7 +51,7 @@ function sessionPatellarVolume(s) {
       const added = w ? parseFloat(w[1]) : 0;
       const weight = entry.bodyweight ? BODYWEIGHT_KG + added : added;
       if (!weight) return pSum;
-      return pSum + entry.leg_factor * entry.speed_factor * entry.loading_factor * weight * Math.log10(10 + sets * reps);
+      return pSum + entry.strain_factor * weight * Math.log10(10 + sets * reps);
     }, 0);
   }, 0);
 }

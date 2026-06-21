@@ -1,10 +1,10 @@
 // ── PROGRESSION CHART ─────────────────────────────────────────────
 let progressionChart = null;
-let progressionMetric = 'weight';
+let progressionMetric = 'e1rm';
 
 function setProgressionMetric(metric) {
   progressionMetric = metric;
-  document.getElementById('metric-btn-weight').classList.toggle('active', metric === 'weight');
+  document.getElementById('metric-btn-e1rm').classList.toggle('active', metric === 'e1rm');
   document.getElementById('metric-btn-volume').classList.toggle('active', metric === 'volume');
   renderProgressionChart();
 }
@@ -35,8 +35,8 @@ function renderProgressionChart() {
     .flatMap(s => (s.exercises || [])
       .filter(e => e.name === exercise)
       .map(e => {
-        const { weight, volume } = parseLoading(e.loading);
-        const value = progressionMetric === 'volume' ? volume : weight;
+        const { e1rm, volume } = parseLoading(e.loading, e.rpe);
+        const value = progressionMetric === 'volume' ? volume : e1rm;
         return { date: s.date, value };
       }))
     .filter(p => p.value !== null)
@@ -47,7 +47,7 @@ function renderProgressionChart() {
   if (!exercise || !points.length) {
     wrap.style.display = 'none';
     empty.style.display = '';
-    empty.textContent = `No ${progressionMetric} data for this exercise in the last 12 weeks.`;
+    empty.textContent = `No ${progressionMetric === 'e1rm' ? 'e1RM' : 'volume'} data for this exercise in the last 12 weeks.`;
     return;
   }
   wrap.style.display = '';
