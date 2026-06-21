@@ -215,6 +215,24 @@ export default {
       return jsonResponse({ ok: res.ok }, res.ok ? 200 : res.status);
     }
 
+    // ── PUT /wiki ─────────────────────────────────────────────────────
+    if (url.pathname === '/wiki' && request.method === 'PUT') {
+      const { exercises, message } = await request.json();
+      const wikiUrl = `${GITHUB_API}/repos/${env.GITHUB_USER}/${env.GITHUB_REPO}/contents/exercises.json`;
+
+      let sha = null;
+      const existing = await fetch(wikiUrl, { headers: githubHeaders(env.GITHUB_TOKEN) });
+      if (existing.ok) sha = (await existing.json()).sha;
+
+      const content = toBase64(JSON.stringify({ exercises }, null, 2) + '\n');
+      const res = await fetch(wikiUrl, {
+        method: 'PUT',
+        headers: githubHeaders(env.GITHUB_TOKEN),
+        body: JSON.stringify({ message: message || 'Update exercise wiki', content, ...(sha ? { sha } : {}) }),
+      });
+      return jsonResponse({ ok: res.ok }, res.ok ? 200 : res.status);
+    }
+
     // ── POST /chat ────────────────────────────────────────────────────
     if (url.pathname === '/chat' && request.method === 'POST') {
       const body = await request.text();

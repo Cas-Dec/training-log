@@ -635,6 +635,16 @@ function applyLookupUpdate(update) {
   syncLookupToGitHub();
 }
 
+async function syncWikiToGitHub() {
+  try {
+    await authFetch(`${WORKER}/wiki`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ exercises: wikiExercises, message: 'Update exercise wiki' }),
+    });
+  } catch(e) {}
+}
+
 async function loadContextFiles() {
   try {
     const [coreRes, ctxRes, wikiRes] = await Promise.all([
@@ -844,6 +854,15 @@ async function saveSession() {
     } : {}),
     notes: document.getElementById('notes').value.trim(),
   };
+
+  // Register any new exercise names in the shared wiki
+  const newNames = (session.exercises || [])
+    .map(e => e.name)
+    .filter(n => n && !wikiExercises.includes(n));
+  if (newNames.length) {
+    wikiExercises = [...new Set([...wikiExercises, ...newNames])].sort();
+    syncWikiToGitHub();
+  }
 
   // Save locally first
   sessions.unshift(session);

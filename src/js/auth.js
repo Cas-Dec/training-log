@@ -158,6 +158,16 @@ function applyLookupUpdate(update) {
   syncLookupToGitHub();
 }
 
+async function syncWikiToGitHub() {
+  try {
+    await authFetch(`${WORKER}/wiki`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ exercises: wikiExercises, message: 'Update exercise wiki' }),
+    });
+  } catch(e) {}
+}
+
 async function loadContextFiles() {
   try {
     const [coreRes, ctxRes, wikiRes] = await Promise.all([

@@ -44,6 +44,15 @@ async function saveSession() {
     notes: document.getElementById('notes').value.trim(),
   };
 
+  // Register any new exercise names in the shared wiki
+  const newNames = (session.exercises || [])
+    .map(e => e.name)
+    .filter(n => n && !wikiExercises.includes(n));
+  if (newNames.length) {
+    wikiExercises = [...new Set([...wikiExercises, ...newNames])].sort();
+    syncWikiToGitHub();
+  }
+
   // Save locally first
   sessions.unshift(session);
   localStorage.setItem('tl_sessions', JSON.stringify(sessions));
