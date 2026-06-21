@@ -12,3 +12,4 @@ const IMPACT_MIDPOINTS = {
 let lookup = { exercises: {}, cardio: {} };
 let coreInstructions = '';
 let userContextMd = '';
+let wikiExercises = [];

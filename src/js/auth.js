@@ -160,11 +160,13 @@ function applyLookupUpdate(update) {
 
 async function loadContextFiles() {
   try {
-    const [coreRes, ctxRes] = await Promise.all([
+    const [coreRes, ctxRes, wikiRes] = await Promise.all([
       fetch('./core-instructions.md'),
       fetch(`./users/${currentUser}/user-context.md`),
+      fetch('./exercises.json'),
     ]);
     if (coreRes.ok) coreInstructions = await coreRes.text();
     if (ctxRes.ok) userContextMd = await ctxRes.text();
+    if (wikiRes.ok) wikiExercises = (await wikiRes.json()).exercises || [];
   } catch(e) {}
 }

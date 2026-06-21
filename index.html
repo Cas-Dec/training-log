@@ -473,6 +473,7 @@ const IMPACT_MIDPOINTS = {
 let lookup = { exercises: {}, cardio: {} };
 let coreInstructions = '';
 let userContextMd = '';
+let wikiExercises = [];
 
 // ── AUTH ───────────────────────────────────────────────────────────
 function getTokenPayload() {
@@ -636,12 +637,14 @@ function applyLookupUpdate(update) {
 
 async function loadContextFiles() {
   try {
-    const [coreRes, ctxRes] = await Promise.all([
+    const [coreRes, ctxRes, wikiRes] = await Promise.all([
       fetch('./core-instructions.md'),
       fetch(`./users/${currentUser}/user-context.md`),
+      fetch('./exercises.json'),
     ]);
     if (coreRes.ok) coreInstructions = await coreRes.text();
     if (ctxRes.ok) userContextMd = await ctxRes.text();
+    if (wikiRes.ok) wikiExercises = (await wikiRes.json()).exercises || [];
   } catch(e) {}
 }
 
@@ -686,7 +689,7 @@ function removeSetGroup(btn) {
 }
 
 function knownExerciseNames() {
-  const names = new Set();
+  const names = new Set(wikiExercises);
   sessions.forEach(s => (s.exercises || []).forEach(e => { if (e.name) names.add(e.name.toLowerCase()); }));
   return [...names].sort();
 }

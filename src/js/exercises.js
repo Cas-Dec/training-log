@@ -39,7 +39,7 @@ function removeSetGroup(btn) {
 }
 
 function knownExerciseNames() {
-  const names = new Set();
+  const names = new Set(wikiExercises);
   sessions.forEach(s => (s.exercises || []).forEach(e => { if (e.name) names.add(e.name.toLowerCase()); }));
   return [...names].sort();
 }
