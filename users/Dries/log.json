@@ -21,7 +21,7 @@
         "rpe": "RPE7"
       },
       {
-        "name": "dumbbell rear delt fly",
+        "name": "rear delt dumbbell fly",
         "loading": "3x12@12kg",
         "rpe": "RPE6"
       },
@@ -32,12 +32,12 @@
       },
       {
         "name": "hanging knees to chest",
-        "loading": "3x16",
+        "loading": "3x12",
         "rpe": "RPE6.5"
       },
       {
         "name": "landmine twist",
-        "loading": "3@50kg",
+        "loading": "3x12@50kg",
         "rpe": ""
       }
     ],
@@ -69,7 +69,7 @@
         "rpe": "RPE8"
       },
       {
-        "name": "zercher hip extension",
+        "name": "zercher hip extensions",
         "loading": "3x10@54kg",
         "rpe": "RPE7"
       },
@@ -95,12 +95,12 @@
     "type": "Upper body",
     "exercises": [
       {
-        "name": "weighted pull ups",
+        "name": "pull-ups",
         "loading": "2x6@27kg, 2x6@25kg",
         "rpe": "RPE9"
       },
       {
-        "name": "weighted dips",
+        "name": "dips",
         "loading": "2x6@55kg, 2x6@50kg",
         "rpe": "RPE9.5"
       },
@@ -120,7 +120,7 @@
         "rpe": "RPE8"
       },
       {
-        "name": "skull crushers",
+        "name": "skullcrushers",
         "loading": "2x10@50kg",
         "rpe": "RPE9"
       }
@@ -136,18 +136,18 @@
     "type": "Legs",
     "exercises": [
       {
-        "name": "squat",
+        "name": "squats",
         "loading": "4x3@165kg",
         "rpe": "RPE8.5"
       },
       {
-        "name": "romanian deadlift",
+        "name": "romanian deadlifts",
         "loading": "3x8@182kg",
         "rpe": "RPE8.5"
       },
       {
-        "name": "single leg extions",
-        "loading": "3x10@61",
+        "name": "single leg extensions",
+        "loading": "3x10@61kg",
         "rpe": "RPE7"
       },
       {
@@ -179,32 +179,32 @@
     "type": "Upper body",
     "exercises": [
       {
-        "name": "Weighted pull ups",
+        "name": "pull-ups",
         "loading": "4x6@26.25kg",
         "rpe": "RPE9"
       },
       {
-        "name": "Weighted dips",
-        "loading": "4x6@55kh",
+        "name": "dips",
+        "loading": "4x6@55kg",
         "rpe": "RPE9.5"
       },
       {
-        "name": "Flat dumbbell press",
+        "name": "flat dumbbell press",
         "loading": "3x8@48kg",
         "rpe": "RPE9"
       },
       {
-        "name": "Seated machine rows",
-        "loading": "3x10@50",
+        "name": "seated machine rows",
+        "loading": "3x10@50kg",
         "rpe": "RPE8"
       },
       {
-        "name": "Bicep curls",
+        "name": "bicep curls",
         "loading": "2x10@22kg",
         "rpe": "RPE7"
       },
       {
-        "name": "Skull crushers",
+        "name": "skullcrushers",
         "loading": "2x10@50kg",
         "rpe": "RPE9"
       }
@@ -232,13 +232,13 @@
     "type": "Legs",
     "exercises": [
       {
-        "name": "squat",
+        "name": "squats",
         "loading": "4x6@152kg",
         "rpe": "RPE8"
       },
       {
         "name": "romanian deadlift",
-        "loading": "3x8@165",
+        "loading": "3x8@165kg",
         "rpe": "RPE6"
       }
     ],
