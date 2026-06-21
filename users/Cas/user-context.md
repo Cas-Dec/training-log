@@ -40,8 +40,8 @@ Separate high-impact knee days (Badminton, hill sprints) from lower-body resista
 - **Zone 2 modality:** KPS ≤3 → Running permitted. KPS ≥4 → Cycling mandatory.
 
 ## Patellar loading model
-Formula: `leg_factor × speed_factor × loading_factor × weight × log₁₀(10 + sets × reps)` (bodyweight = 85 kg added for free-weight exercises).
+Formula: `strain_factor × weight × log₁₀(10 + sets × reps)` (bodyweight = 85 kg added for free-weight exercises). Cardio: `loading_min × intensity_scale × √duration`.
 
-$IMPACT scale: maximal ≥100 | very-high 65–100 | high 40–65 | medium-to-high 22–40 | medium 12–22 | low-to-medium 6–12 | low 2–6 | very-low 0.5–2 | none <0.5
+$IMPACT scale: maximal ≥100 | very high 65–100 | high 40–65 | medium to high 22–40 | medium 12–22 | low to medium 6–12 | low 2–6 | very low 0.5–2 | none <0.5
 
 Sessions can include `$IMPACT=<level>` in notes to override the computed value.

@@ -17,40 +17,64 @@ function buildContext() {
   const userSessions = sessions.filter(s => (s.user || 'Cas') === currentUser);
   if (!userSessions.length) return `No sessions logged yet for ${currentUser}.`;
 
-  const sessionLines = userSessions.slice(0,50).map(s => {
+  const cutoff = Date.now() - TWELVE_WEEKS_MS;
+  const shown  = userSessions.filter(s => new Date(s.date).getTime() >= cutoff);
+
+  const nrgAbbr = { 'above-average': 'hi', 'average': 'avg', 'below-average': 'lo' };
+  const slpAbbr = { 'good': 'g', 'average': 'a', 'poor': 'p' };
+
+  const isCas = currentUser === 'Cas';
+  const header = isCas
+    ? 'date|type|nrg|slp|kps|load|details'
+    : 'date|type|nrg|slp|details';
+
+  const lines = shown.map(s => {
+    const nrg = nrgAbbr[s.energy] ?? '?';
+    const slp = slpAbbr[s.sleep]  ?? '?';
     const isCardio = CARDIO_TYPES.includes(s.type);
-    const activityLine = isCardio
-      ? `Duration: ${s.duration||'?'}min | Intensity: ${s.intensity||'?'}` +
-        (s.hr?.avg  ? ` | HR avg ${s.hr.avg}bpm`     : '') +
-        (s.hr?.max  ? ` / max ${s.hr.max}bpm`        : '') +
-        (s.speed?.avg ? ` | Speed avg ${s.speed.avg}km/h` : '') +
-        (s.speed?.max ? ` / max ${s.speed.max}km/h`  : '')
-      : `Exercises: ${s.exercises?.map(e=>`${e.name} ${e.loading} ${e.rpe}`).join(' · ')||'none'}`;
-    const kpsLine = currentUser === 'Cas' ? `\nKPS: ${s.kps?.morning||'?'} → ${s.kps?.post||'?'}` : '';
-    const load = sessionPatellarVolume(s);
-    const loadLine = currentUser === 'Cas' ? `\nPatellar load: ${load.toFixed(1)} (${impactLabel(load)})` : '';
-    return `${s.date} | ${s.type} | Energy: ${s.energy} | Sleep: ${s.sleep||'?'}
-${activityLine}${kpsLine}${loadLine}
-Notes: ${s.notes||'—'}`;
-  }).join('\n\n');
+
+    let details;
+    if (isCardio) {
+      details = [
+        s.duration  != null ? `${s.duration}min`  : null,
+        s.intensity ?? null,
+        s.hr?.avg   != null ? `HR${s.hr.avg}${s.hr.max != null ? '/'+s.hr.max : ''}` : null,
+        s.speed?.avg!= null ? `${s.speed.avg}kph${s.speed.max != null ? '/'+s.speed.max : ''}` : null,
+      ].filter(Boolean).join(' ');
+    } else {
+      details = (s.exercises || [])
+        .map(e => `${e.name} ${(e.loading||'').replace(/kg/gi,'').trim()}${e.rpe?' '+e.rpe:''}`.trim())
+        .join('; ') || '—';
+    }
+
+    let main;
+    if (isCas) {
+      const m = s.kps?.morning != null && s.kps.morning !== '' ? s.kps.morning : '?';
+      const p = s.kps?.post    != null && s.kps.post    !== '' ? s.kps.post    : '?';
+      const load = sessionPatellarVolume(s);
+      const loadStr = load > 0 ? `${load.toFixed(0)}(${impactLabel(load)})` : '';
+      main = `${s.date}|${s.type}|${nrg}|${slp}|${m}→${p}|${loadStr}|${details}`;
+    } else {
+      main = `${s.date}|${s.type}|${nrg}|${slp}|${details}`;
+    }
+
+    const note = (s.notes || '').trim().replace(/^—$/, '');
+    return note ? `${main}\n  ${note}` : main;
+  }).join('\n');
 
   let loadingCtx = '';
-  if (currentUser === 'Cas') {
-    const kneeExercises = Object.entries(lookup.exercises)
+  if (isCas) {
+    const exList = Object.entries(lookup.exercises)
       .filter(([,v]) => v.strain_factor > 0)
-      .map(([name,v]) => `  ${name}: strain=${v.strain_factor}${v.bodyweight?' +BW':''}`)
-      .join('\n');
-    loadingCtx = `\n\nPATELLAR LOADING MODEL (formula: strain_factor×weight×log₁₀(10+sets×reps), BW=${BODYWEIGHT_KG}kg; cardio: loading_min×intensity_scale×√duration):
-$IMPACT scale: maximal≥100 | very high 65-100 | high 40-65 | medium-to-high 22-40 | medium 12-22 | low-to-medium 6-12 | low 2-6 | very low 0.5-2 | none<0.5
-Knee-loading exercises in lookup:\n${kneeExercises || '  (none)'}
-When suggesting factor adjustments, output a JSON code block:
-\`\`\`json
-{"type":"lookup-update","exercises":{"exercise name":{"strain_factor":X}}}
-\`\`\``;
+      .map(([name,v]) => `${name}:${v.strain_factor}${v.bodyweight?'+BW':''}`)
+      .join(' | ');
+    loadingCtx = `\n\nLOAD MODEL: strain_factor×weight×log₁₀(10+sets×reps), BW=${BODYWEIGHT_KG}kg; cardio: loading_min×scale×√min
+Labels: maximal≥100 | very high≥65 | high≥40 | medium to high≥22 | medium≥12 | low to medium≥6 | low≥2 | very low≥0.5
+Exercises: ${exList||'(none)'}
+Factor update: \`\`\`json\n{"type":"lookup-update","exercises":{"name":{"strain_factor":X}}}\`\`\``;
   }
 
-  return `TRAINING LOG for ${currentUser} (${userSessions.length} sessions, newest first):\n\n` +
-    sessionLines + loadingCtx;
+  return `TRAINING LOG ${currentUser} (${userSessions.length} total, last 12w shown):\n${header}\n${lines}${loadingCtx}`;
 }
 
 const SYSTEM_PROMPT_FALLBACK = `You are an expert strength & conditioning coach specialising in progressive overload, training load management, and injury prevention (especially knee health).
@@ -95,8 +119,12 @@ async function askCoach(q) {
 
   conversationHistory.push({ role: 'user', content: q });
 
-  const system = [coreInstructions || SYSTEM_PROMPT_FALLBACK, userContextMd, buildContext()]
+  const staticText = [coreInstructions || SYSTEM_PROMPT_FALLBACK, userContextMd]
     .filter(Boolean).join('\n\n---\n\n');
+  const system = [
+    { type: 'text', text: staticText },
+    { type: 'text', text: buildContext(), cache_control: { type: 'ephemeral' } },
+  ].filter(b => b.text && b.text.trim());
 
   try {
     const res = await authFetch(`${WORKER}/chat`, {
