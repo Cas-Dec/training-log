@@ -2,12 +2,20 @@
 function onTypeChange() {
   const type = document.getElementById('session-type').value;
   const isCardio = CARDIO_TYPES.includes(type);
+  const isSpeedType = SPEED_CARDIO_TYPES.includes(type);
   document.getElementById('exercises-section').style.display = isCardio ? 'none' : '';
   document.getElementById('cardio-section').style.display = isCardio ? '' : 'none';
+  document.getElementById('cardio-speed-section').style.display = isSpeedType ? '' : 'none';
   const last = sessions.filter(s => (s.user || 'Cas') === currentUser && s.type === type)[0];
   if (isCardio) {
-    if (last?.duration)  document.getElementById('cardio-duration').value  = last.duration;
-    if (last?.intensity) document.getElementById('cardio-intensity').value = last.intensity;
+    if (last?.duration)   document.getElementById('cardio-duration').value  = last.duration;
+    if (last?.intensity)  document.getElementById('cardio-intensity').value = last.intensity;
+    if (last?.hr?.avg)    document.getElementById('cardio-hr-avg').value    = last.hr.avg;
+    if (last?.hr?.max)    document.getElementById('cardio-hr-max').value    = last.hr.max;
+    if (isSpeedType) {
+      if (last?.speed?.avg) document.getElementById('cardio-speed-avg').value = last.speed.avg;
+      if (last?.speed?.max) document.getElementById('cardio-speed-max').value = last.speed.max;
+    }
   } else {
     document.getElementById('exercises').innerHTML = '';
     exCount = 0;
@@ -27,8 +35,16 @@ async function saveSession() {
     date,
     type,
     ...(isCardio ? {
-      duration: document.getElementById('cardio-duration').value || null,
+      duration:  document.getElementById('cardio-duration').value || null,
       intensity: document.getElementById('cardio-intensity').value || null,
+      hr: {
+        avg: document.getElementById('cardio-hr-avg').value || null,
+        max: document.getElementById('cardio-hr-max').value || null,
+      },
+      ...(SPEED_CARDIO_TYPES.includes(type) ? { speed: {
+        avg: document.getElementById('cardio-speed-avg').value || null,
+        max: document.getElementById('cardio-speed-max').value || null,
+      }} : {}),
       exercises: [],
     } : {
       exercises: getExercises(),
@@ -78,5 +94,9 @@ function resetForm() {
   document.getElementById('kps-post').value = '';
   document.getElementById('cardio-duration').value = '';
   document.getElementById('cardio-intensity').value = 'medium';
+  document.getElementById('cardio-hr-avg').value = '';
+  document.getElementById('cardio-hr-max').value = '';
+  document.getElementById('cardio-speed-avg').value = '';
+  document.getElementById('cardio-speed-max').value = '';
   onTypeChange(); // resets exercise section and pre-fills from last session of this type
 }

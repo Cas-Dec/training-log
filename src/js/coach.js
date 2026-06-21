@@ -18,7 +18,11 @@ function buildContext() {
   const sessionLines = userSessions.slice(0,50).map(s => {
     const isCardio = CARDIO_TYPES.includes(s.type);
     const activityLine = isCardio
-      ? `Duration: ${s.duration||'?'}min | Intensity: ${s.intensity||'?'}`
+      ? `Duration: ${s.duration||'?'}min | Intensity: ${s.intensity||'?'}` +
+        (s.hr?.avg  ? ` | HR avg ${s.hr.avg}bpm`     : '') +
+        (s.hr?.max  ? ` / max ${s.hr.max}bpm`        : '') +
+        (s.speed?.avg ? ` | Speed avg ${s.speed.avg}km/h` : '') +
+        (s.speed?.max ? ` / max ${s.speed.max}km/h`  : '')
       : `Exercises: ${s.exercises?.map(e=>`${e.name} ${e.loading} ${e.rpe}`).join(' · ')||'none'}`;
     const kpsLine = currentUser === 'Cas' ? `\nKPS: ${s.kps?.morning||'?'} → ${s.kps?.post||'?'}` : '';
     const load = sessionPatellarVolume(s);

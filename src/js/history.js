@@ -77,7 +77,14 @@ function renderHistory() {
   list.innerHTML = filtered.map(s => {
     const isCardio = CARDIO_TYPES.includes(s.type);
     const activityHtml = isCardio
-      ? `<div class="card-meta" style="margin-bottom:6px">${s.duration ? `<span>${s.duration} min</span>` : ''}${s.intensity ? `<span>Intensity: ${s.intensity}</span>` : ''}</div>`
+      ? `<div class="card-meta" style="margin-bottom:6px">
+          ${s.duration   ? `<span>${s.duration} min</span>` : ''}
+          ${s.intensity  ? `<span>Intensity: ${s.intensity}</span>` : ''}
+          ${s.hr?.avg    ? `<span>HR avg ${s.hr.avg} bpm</span>` : ''}
+          ${s.hr?.max    ? `<span>HR max ${s.hr.max} bpm</span>` : ''}
+          ${s.speed?.avg ? `<span>Avg ${s.speed.avg} km/h</span>` : ''}
+          ${s.speed?.max ? `<span>Max ${s.speed.max} km/h</span>` : ''}
+        </div>`
       : (s.exercises?.length ? `<div class="ex-chips">${s.exercises.map(e=>`<span class="ex-chip">${e.name} ${e.loading}${e.rpe?' '+e.rpe:''}</span>`).join('')}</div>` : '');
     return `
     <div class="session-card">

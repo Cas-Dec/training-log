@@ -320,6 +320,28 @@
         </select>
       </div>
     </div>
+    <div class="grid2">
+      <div class="field">
+        <label>Avg HR (bpm)</label>
+        <input type="number" id="cardio-hr-avg" min="40" max="220" placeholder="optional">
+      </div>
+      <div class="field">
+        <label>Max HR (bpm)</label>
+        <input type="number" id="cardio-hr-max" min="40" max="220" placeholder="optional">
+      </div>
+    </div>
+    <div id="cardio-speed-section" style="display:none">
+      <div class="grid2">
+        <div class="field">
+          <label>Avg speed (km/h)</label>
+          <input type="number" id="cardio-speed-avg" min="0" step="0.1" placeholder="optional">
+        </div>
+        <div class="field">
+          <label>Max speed (km/h)</label>
+          <input type="number" id="cardio-speed-max" min="0" step="0.1" placeholder="optional">
+        </div>
+      </div>
+    </div>
   </div>
 
   <div id="kps-section">
@@ -464,6 +486,7 @@ const WORKER = 'https://claude-proxy.casdecancq.workers.dev';
 let sessions = [];
 let currentUser = 'Cas';
 const CARDIO_TYPES = ['Rugby', 'Badminton', 'Running', 'Cycling'];
+const SPEED_CARDIO_TYPES = ['Running', 'Cycling'];
 const BODYWEIGHT_KG = 85;
 const IMPACT_MIDPOINTS = {
   'maximal':120,'very high':80,'very-high':80,'high':52,
@@ -813,12 +836,20 @@ function getExercises() {
 function onTypeChange() {
   const type = document.getElementById('session-type').value;
   const isCardio = CARDIO_TYPES.includes(type);
+  const isSpeedType = SPEED_CARDIO_TYPES.includes(type);
   document.getElementById('exercises-section').style.display = isCardio ? 'none' : '';
   document.getElementById('cardio-section').style.display = isCardio ? '' : 'none';
+  document.getElementById('cardio-speed-section').style.display = isSpeedType ? '' : 'none';
   const last = sessions.filter(s => (s.user || 'Cas') === currentUser && s.type === type)[0];
   if (isCardio) {
-    if (last?.duration)  document.getElementById('cardio-duration').value  = last.duration;
-    if (last?.intensity) document.getElementById('cardio-intensity').value = last.intensity;
+    if (last?.duration)   document.getElementById('cardio-duration').value  = last.duration;
+    if (last?.intensity)  document.getElementById('cardio-intensity').value = last.intensity;
+    if (last?.hr?.avg)    document.getElementById('cardio-hr-avg').value    = last.hr.avg;
+    if (last?.hr?.max)    document.getElementById('cardio-hr-max').value    = last.hr.max;
+    if (isSpeedType) {
+      if (last?.speed?.avg) document.getElementById('cardio-speed-avg').value = last.speed.avg;
+      if (last?.speed?.max) document.getElementById('cardio-speed-max').value = last.speed.max;
+    }
   } else {
     document.getElementById('exercises').innerHTML = '';
     exCount = 0;
@@ -838,8 +869,16 @@ async function saveSession() {
     date,
     type,
     ...(isCardio ? {
-      duration: document.getElementById('cardio-duration').value || null,
+      duration:  document.getElementById('cardio-duration').value || null,
       intensity: document.getElementById('cardio-intensity').value || null,
+      hr: {
+        avg: document.getElementById('cardio-hr-avg').value || null,
+        max: document.getElementById('cardio-hr-max').value || null,
+      },
+      ...(SPEED_CARDIO_TYPES.includes(type) ? { speed: {
+        avg: document.getElementById('cardio-speed-avg').value || null,
+        max: document.getElementById('cardio-speed-max').value || null,
+      }} : {}),
       exercises: [],
     } : {
       exercises: getExercises(),
@@ -889,6 +928,10 @@ function resetForm() {
   document.getElementById('kps-post').value = '';
   document.getElementById('cardio-duration').value = '';
   document.getElementById('cardio-intensity').value = 'medium';
+  document.getElementById('cardio-hr-avg').value = '';
+  document.getElementById('cardio-hr-max').value = '';
+  document.getElementById('cardio-speed-avg').value = '';
+  document.getElementById('cardio-speed-max').value = '';
   onTypeChange(); // resets exercise section and pre-fills from last session of this type
 }
 
@@ -971,7 +1014,14 @@ function renderHistory() {
   list.innerHTML = filtered.map(s => {
     const isCardio = CARDIO_TYPES.includes(s.type);
     const activityHtml = isCardio
-      ? `<div class="card-meta" style="margin-bottom:6px">${s.duration ? `<span>${s.duration} min</span>` : ''}${s.intensity ? `<span>Intensity: ${s.intensity}</span>` : ''}</div>`
+      ? `<div class="card-meta" style="margin-bottom:6px">
+          ${s.duration   ? `<span>${s.duration} min</span>` : ''}
+          ${s.intensity  ? `<span>Intensity: ${s.intensity}</span>` : ''}
+          ${s.hr?.avg    ? `<span>HR avg ${s.hr.avg} bpm</span>` : ''}
+          ${s.hr?.max    ? `<span>HR max ${s.hr.max} bpm</span>` : ''}
+          ${s.speed?.avg ? `<span>Avg ${s.speed.avg} km/h</span>` : ''}
+          ${s.speed?.max ? `<span>Max ${s.speed.max} km/h</span>` : ''}
+        </div>`
       : (s.exercises?.length ? `<div class="ex-chips">${s.exercises.map(e=>`<span class="ex-chip">${e.name} ${e.loading}${e.rpe?' '+e.rpe:''}</span>`).join('')}</div>` : '');
     return `
     <div class="session-card">
@@ -1191,7 +1241,11 @@ function buildContext() {
   const sessionLines = userSessions.slice(0,50).map(s => {
     const isCardio = CARDIO_TYPES.includes(s.type);
     const activityLine = isCardio
-      ? `Duration: ${s.duration||'?'}min | Intensity: ${s.intensity||'?'}`
+      ? `Duration: ${s.duration||'?'}min | Intensity: ${s.intensity||'?'}` +
+        (s.hr?.avg  ? ` | HR avg ${s.hr.avg}bpm`     : '') +
+        (s.hr?.max  ? ` / max ${s.hr.max}bpm`        : '') +
+        (s.speed?.avg ? ` | Speed avg ${s.speed.avg}km/h` : '') +
+        (s.speed?.max ? ` / max ${s.speed.max}km/h`  : '')
       : `Exercises: ${s.exercises?.map(e=>`${e.name} ${e.loading} ${e.rpe}`).join(' · ')||'none'}`;
     const kpsLine = currentUser === 'Cas' ? `\nKPS: ${s.kps?.morning||'?'} → ${s.kps?.post||'?'}` : '';
     const load = sessionPatellarVolume(s);
