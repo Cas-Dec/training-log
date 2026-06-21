@@ -123,6 +123,16 @@ function addExercise(d={}) {
   if (d.rpe) card.querySelector('.ex-rpe').value = d.rpe.replace('RPE', '');
 }
 
+function normalizeWeight(raw) {
+  raw = raw.trim();
+  if (!raw) return '';
+  const m = raw.match(/^([\d.]+)\s*[a-zA-Z]*/);
+  // Numeric weight (any unit or no unit) → normalise to kg
+  if (m) return `${m[1]}kg`;
+  // Non-numeric (e.g. "resistance bands") → keep as-is
+  return raw;
+}
+
 function getExercises() {
   return [...document.querySelectorAll('#exercises .ex-card')].map(card => {
     const name = card.querySelector('.ex-name-row input').value.trim().toLowerCase();
@@ -130,8 +140,9 @@ function getExercises() {
     const loadings = [...card.querySelectorAll('.ex-set-row')].map(sr => {
       const sets = sr.querySelector('.ex-sets').value;
       const reps = sr.querySelector('.ex-reps').value;
-      const weight = sr.querySelector('.ex-weight').value.trim();
-      if (!sets && !reps && !weight) return null;
+      const rawWeight = sr.querySelector('.ex-weight').value.trim();
+      if (!sets && !reps && !rawWeight) return null;
+      const weight = normalizeWeight(rawWeight);
       return (sets && reps ? `${sets}x${reps}` : (sets || reps || '')) + (weight ? `@${weight}` : '');
     }).filter(Boolean);
     return { name, loading: loadings.join(', '), rpe: rpe ? `RPE${rpe}` : '' };
