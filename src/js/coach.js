@@ -1,4 +1,6 @@
 // ── AI COACH ───────────────────────────────────────────────────────
+let conversationHistory = [];
+
 function impactLabel(v) {
   if (v >= 100) return 'maximal';
   if (v >= 65)  return 'very high';
@@ -60,20 +62,41 @@ You have access to the athlete's complete training log below. Your role:
 - Be concise. Use short paragraphs — no bullet lists unless genuinely listing distinct items.
 - If data is sparse, say so and offer sensible defaults.`;
 
+function clearConversation() {
+  conversationHistory = [];
+  const thread = document.getElementById('coach-thread');
+  thread.innerHTML = '<p class="ai-placeholder" id="coach-placeholder">Your coach\'s response will appear here.</p>';
+  document.getElementById('clear-chat-btn').style.display = 'none';
+}
+
 async function askCoach(q) {
   q = q || document.getElementById('coach-q').value.trim();
   if (!q) return;
-  const out = document.getElementById('ai-output');
-  const btn = document.getElementById('coach-btn');
-  out.textContent = 'Thinking…'; out.classList.add('ai-placeholder');
-  btn.disabled = true;
 
-  const systemParts = [
-    coreInstructions || SYSTEM_PROMPT_FALLBACK,
-    userContextMd,
-    buildContext(),
-  ].filter(Boolean);
-  const system = systemParts.join('\n\n---\n\n');
+  document.getElementById('coach-q').value = '';
+  document.getElementById('coach-btn').disabled = true;
+  document.getElementById('coach-placeholder')?.remove();
+  document.getElementById('clear-chat-btn').style.display = '';
+
+  const thread = document.getElementById('coach-thread');
+
+  // User bubble
+  const userDiv = document.createElement('div');
+  userDiv.className = 'chat-msg-user';
+  userDiv.textContent = q;
+  thread.appendChild(userDiv);
+
+  // Assistant bubble (thinking state)
+  const assistantDiv = document.createElement('div');
+  assistantDiv.className = 'chat-msg-assistant';
+  assistantDiv.textContent = 'Thinking…';
+  thread.appendChild(assistantDiv);
+  assistantDiv.scrollIntoView({ behavior: 'smooth', block: 'end' });
+
+  conversationHistory.push({ role: 'user', content: q });
+
+  const system = [coreInstructions || SYSTEM_PROMPT_FALLBACK, userContextMd, buildContext()]
+    .filter(Boolean).join('\n\n---\n\n');
 
   try {
     const res = await authFetch(`${WORKER}/chat`, {
@@ -82,13 +105,15 @@ async function askCoach(q) {
       body: JSON.stringify({
         model: 'claude-sonnet-4-6', max_tokens: 2048,
         system,
-        messages: [{ role: 'user', content: q }]
+        messages: conversationHistory,
       })
     });
     const data = await res.json();
-    out.classList.remove('ai-placeholder');
-    const text = data.content?.map(c=>c.text||'').join('') || JSON.stringify(data);
-    out.innerHTML = marked.parse(text);
+    const text = data.content?.map(c => c.text || '').join('') || JSON.stringify(data);
+
+    conversationHistory.push({ role: 'assistant', content: text });
+    assistantDiv.innerHTML = marked.parse(text);
+
     // Detect lookup-update JSON blocks and offer Apply button
     for (const [, jsonStr] of [...text.matchAll(/```json\n([\s\S]*?)\n```/g)]) {
       try {
@@ -99,7 +124,7 @@ async function askCoach(q) {
         applyBtn.style.marginTop = '12px';
         applyBtn.textContent = '↻ Apply suggested loading changes';
         applyBtn.onclick = () => { applyLookupUpdate(upd); applyBtn.textContent = '✓ Applied'; applyBtn.disabled = true; };
-        out.appendChild(applyBtn);
+        assistantDiv.appendChild(applyBtn);
       } catch(e) {}
     }
     // Detect user-context blocks and offer Apply button
@@ -109,15 +134,22 @@ async function askCoach(q) {
       applyBtn.style.marginTop = '12px';
       applyBtn.textContent = '↻ Apply context update';
       applyBtn.onclick = () => { applyContextUpdate(content); applyBtn.textContent = '✓ Applied'; applyBtn.disabled = true; };
-      out.appendChild(applyBtn);
+      assistantDiv.appendChild(applyBtn);
     }
   } catch(e) {
-    if (e.message !== 'session-expired') out.textContent = 'Error: ' + e.message;
+    if (e.message !== 'session-expired') assistantDiv.textContent = 'Error: ' + e.message;
+    else conversationHistory.pop(); // remove the user turn if session expired
   }
-  btn.disabled = false;
+
+  document.getElementById('coach-btn').disabled = false;
+  assistantDiv.scrollIntoView({ behavior: 'smooth', block: 'end' });
 }
 
-function quick(q) { document.getElementById('coach-q').value = q; showPage('coach'); askCoach(q); }
+function quick(q) {
+  clearConversation();
+  showPage('coach');
+  askCoach(q);
+}
 
 function editUserContext() {
   const current = userContextMd
@@ -135,6 +167,7 @@ Ask any follow-up questions needed. Once all details are confirmed, output the c
 \`\`\`user-context
 [full markdown here]
 \`\`\``;
+  clearConversation();
   closeSettings();
   showPage('coach');
   askCoach(q);
@@ -151,6 +184,7 @@ function tuneLoadings() {
   ).slice(0, 4);
 
   if (!withKneeLoad.length) {
+    clearConversation();
     showPage('coach');
     askCoach('There are no recent sessions with knee-loading exercises in my log. Can you help me decide what loading factors to set for exercises I plan to track?');
     return;
@@ -180,6 +214,7 @@ function tuneLoadings() {
 
   const q = `I want to tune the patellar loading factors for my exercises. The app computed the following loads for my recent sessions using the current lookup factors (shown in brackets):\n\n${breakdown}\n\nFor each exercise, ask me whether the computed impact level matched my actual perceived knee strain. Go one session at a time, starting with the most recent. Based on my answers, suggest updated factors in this format:\n\`\`\`json\n{"type":"lookup-update","exercises":{"exercise name":{"loading_factor":X}}}\n\`\`\``;
 
+  clearConversation();
   showPage('coach');
   askCoach(q);
 }

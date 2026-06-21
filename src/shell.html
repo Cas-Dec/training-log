@@ -208,10 +208,6 @@
   <h2>AI coach</h2>
   <p class="page-subtitle">Ask about your training, progression, or next session</p>
 
-  <div class="coach-input-row">
-    <input type="text" id="coach-q" placeholder="Ask anything about your training…" onkeydown="if(event.key==='Enter')askCoach()">
-    <button class="btn btn-primary" id="coach-btn" onclick="askCoach()">Ask</button>
-  </div>
   <div class="quick-btns">
     <button class="quick-btn" onclick="quick('Analyse my progression over recent sessions. Flag any plateaus, regressions, or concerning trends.')">Progression check</button>
     <button class="quick-btn" onclick="quick('Review my knee pain scores (KPS) over time. Is it trending up, stable, or down? Should I reduce load?')">Knee pain trend</button>
@@ -219,10 +215,16 @@
     <button class="quick-btn" onclick="quick('Audit my weekly training volume per muscle group. What is over- or under-trained?')">Volume audit</button>
     <button class="quick-btn" onclick="quick('Looking at my RPE scores, where am I consistently training too hard or leaving too much in the tank?')">RPE analysis</button>
     <button class="quick-btn" id="calibrate-btn" style="display:none" onclick="tuneLoadings()">Tune loadings</button>
+    <button class="quick-btn" id="clear-chat-btn" style="display:none" onclick="clearConversation()">✕ New chat</button>
   </div>
 
-  <div id="ai-output" class="ai-output">
-    <span class="ai-placeholder">Your coach's response will appear here.</span>
+  <div id="coach-thread" class="coach-thread">
+    <p class="ai-placeholder" id="coach-placeholder">Your coach's response will appear here.</p>
+  </div>
+
+  <div class="coach-input-row" style="margin-top:12px">
+    <input type="text" id="coach-q" placeholder="Ask anything about your training…" onkeydown="if(event.key==='Enter')askCoach()">
+    <button class="btn btn-primary" id="coach-btn" onclick="askCoach()">Ask</button>
   </div>
 </div>
 

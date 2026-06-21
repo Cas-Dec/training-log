@@ -160,6 +160,21 @@
   .quick-btn { background: var(--bg3); border: 1px solid var(--border); color: var(--muted); border-radius: 20px; padding: 5px 13px; font-size: 12px; cursor: pointer; font-family: var(--font-sans); transition: all .15s; }
   .quick-btn:hover { border-color: var(--accent); color: var(--accent); }
 
+  /* COACH THREAD */
+  .coach-thread { display: flex; flex-direction: column; gap: 10px; min-height: 80px; }
+  .chat-msg-user {
+    align-self: flex-end; max-width: 85%;
+    background: var(--accent-dim); border: 1px solid rgba(200,245,66,.25);
+    border-radius: var(--radius); padding: 10px 14px;
+    font-size: 14px; line-height: 1.6; white-space: pre-wrap; word-break: break-word;
+  }
+  .chat-msg-assistant {
+    width: 100%;
+    background: var(--bg2); border: 1px solid var(--border);
+    border-radius: var(--radius); padding: 16px 18px;
+    font-size: 14px; line-height: 1.75; color: var(--text);
+  }
+
   .ai-output {
     background: var(--bg2); border: 1px solid var(--border);
     border-radius: var(--radius); padding: 18px;
@@ -167,18 +182,20 @@
     color: var(--text);
   }
   .ai-placeholder { color: var(--muted); font-style: italic; }
-  .ai-output p { margin-bottom: 12px; }
-  .ai-output p:last-child { margin-bottom: 0; }
-  .ai-output strong { color: var(--text); font-weight: 600; }
-  .ai-output ul, .ai-output ol { margin: 0 0 12px 20px; }
-  .ai-output li { margin-bottom: 4px; }
-  .ai-output h1, .ai-output h2, .ai-output h3 { font-size: 1em; font-weight: 600; margin: 16px 0 8px; }
-  .ai-output h1:first-child, .ai-output h2:first-child, .ai-output h3:first-child { margin-top: 0; }
-  .ai-output code { font-family: var(--font-mono); background: var(--bg3); padding: 1px 5px; border-radius: 4px; font-size: 13px; }
-  .ai-output pre { background: var(--bg3); padding: 10px; border-radius: 6px; overflow-x: auto; margin-bottom: 12px; }
-  .ai-output pre code { background: none; padding: 0; }
-  .ai-output blockquote { border-left: 2px solid var(--border); padding-left: 12px; color: var(--muted); margin-bottom: 12px; }
-  .ai-output a { color: var(--accent); }
+  .ai-output p, .chat-msg-assistant p { margin-bottom: 12px; }
+  .ai-output p:last-child, .chat-msg-assistant p:last-child { margin-bottom: 0; }
+  .ai-output strong, .chat-msg-assistant strong { color: var(--text); font-weight: 600; }
+  .ai-output ul, .ai-output ol, .chat-msg-assistant ul, .chat-msg-assistant ol { margin: 0 0 12px 20px; }
+  .ai-output li, .chat-msg-assistant li { margin-bottom: 4px; }
+  .ai-output h1, .ai-output h2, .ai-output h3,
+  .chat-msg-assistant h1, .chat-msg-assistant h2, .chat-msg-assistant h3 { font-size: 1em; font-weight: 600; margin: 16px 0 8px; }
+  .ai-output h1:first-child, .ai-output h2:first-child, .ai-output h3:first-child,
+  .chat-msg-assistant h1:first-child, .chat-msg-assistant h2:first-child, .chat-msg-assistant h3:first-child { margin-top: 0; }
+  .ai-output code, .chat-msg-assistant code { font-family: var(--font-mono); background: var(--bg3); padding: 1px 5px; border-radius: 4px; font-size: 13px; }
+  .ai-output pre, .chat-msg-assistant pre { background: var(--bg3); padding: 10px; border-radius: 6px; overflow-x: auto; margin-bottom: 12px; }
+  .ai-output pre code, .chat-msg-assistant pre code { background: none; padding: 0; }
+  .ai-output blockquote, .chat-msg-assistant blockquote { border-left: 2px solid var(--border); padding-left: 12px; color: var(--muted); margin-bottom: 12px; }
+  .ai-output a, .chat-msg-assistant a { color: var(--accent); }
 
   /* SETTINGS MODAL */
   .modal-overlay {
@@ -441,10 +458,6 @@
   <h2>AI coach</h2>
   <p class="page-subtitle">Ask about your training, progression, or next session</p>
 
-  <div class="coach-input-row">
-    <input type="text" id="coach-q" placeholder="Ask anything about your training…" onkeydown="if(event.key==='Enter')askCoach()">
-    <button class="btn btn-primary" id="coach-btn" onclick="askCoach()">Ask</button>
-  </div>
   <div class="quick-btns">
     <button class="quick-btn" onclick="quick('Analyse my progression over recent sessions. Flag any plateaus, regressions, or concerning trends.')">Progression check</button>
     <button class="quick-btn" onclick="quick('Review my knee pain scores (KPS) over time. Is it trending up, stable, or down? Should I reduce load?')">Knee pain trend</button>
@@ -452,10 +465,16 @@
     <button class="quick-btn" onclick="quick('Audit my weekly training volume per muscle group. What is over- or under-trained?')">Volume audit</button>
     <button class="quick-btn" onclick="quick('Looking at my RPE scores, where am I consistently training too hard or leaving too much in the tank?')">RPE analysis</button>
     <button class="quick-btn" id="calibrate-btn" style="display:none" onclick="tuneLoadings()">Tune loadings</button>
+    <button class="quick-btn" id="clear-chat-btn" style="display:none" onclick="clearConversation()">✕ New chat</button>
   </div>
 
-  <div id="ai-output" class="ai-output">
-    <span class="ai-placeholder">Your coach's response will appear here.</span>
+  <div id="coach-thread" class="coach-thread">
+    <p class="ai-placeholder" id="coach-placeholder">Your coach's response will appear here.</p>
+  </div>
+
+  <div class="coach-input-row" style="margin-top:12px">
+    <input type="text" id="coach-q" placeholder="Ask anything about your training…" onkeydown="if(event.key==='Enter')askCoach()">
+    <button class="btn btn-primary" id="coach-btn" onclick="askCoach()">Ask</button>
   </div>
 </div>
 
@@ -1222,6 +1241,8 @@ function renderKpsSensitivityChart() {
 }
 
 // ── AI COACH ───────────────────────────────────────────────────────
+let conversationHistory = [];
+
 function impactLabel(v) {
   if (v >= 100) return 'maximal';
   if (v >= 65)  return 'very high';
@@ -1283,20 +1304,41 @@ You have access to the athlete's complete training log below. Your role:
 - Be concise. Use short paragraphs — no bullet lists unless genuinely listing distinct items.
 - If data is sparse, say so and offer sensible defaults.`;
 
+function clearConversation() {
+  conversationHistory = [];
+  const thread = document.getElementById('coach-thread');
+  thread.innerHTML = '<p class="ai-placeholder" id="coach-placeholder">Your coach\'s response will appear here.</p>';
+  document.getElementById('clear-chat-btn').style.display = 'none';
+}
+
 async function askCoach(q) {
   q = q || document.getElementById('coach-q').value.trim();
   if (!q) return;
-  const out = document.getElementById('ai-output');
-  const btn = document.getElementById('coach-btn');
-  out.textContent = 'Thinking…'; out.classList.add('ai-placeholder');
-  btn.disabled = true;
 
-  const systemParts = [
-    coreInstructions || SYSTEM_PROMPT_FALLBACK,
-    userContextMd,
-    buildContext(),
-  ].filter(Boolean);
-  const system = systemParts.join('\n\n---\n\n');
+  document.getElementById('coach-q').value = '';
+  document.getElementById('coach-btn').disabled = true;
+  document.getElementById('coach-placeholder')?.remove();
+  document.getElementById('clear-chat-btn').style.display = '';
+
+  const thread = document.getElementById('coach-thread');
+
+  // User bubble
+  const userDiv = document.createElement('div');
+  userDiv.className = 'chat-msg-user';
+  userDiv.textContent = q;
+  thread.appendChild(userDiv);
+
+  // Assistant bubble (thinking state)
+  const assistantDiv = document.createElement('div');
+  assistantDiv.className = 'chat-msg-assistant';
+  assistantDiv.textContent = 'Thinking…';
+  thread.appendChild(assistantDiv);
+  assistantDiv.scrollIntoView({ behavior: 'smooth', block: 'end' });
+
+  conversationHistory.push({ role: 'user', content: q });
+
+  const system = [coreInstructions || SYSTEM_PROMPT_FALLBACK, userContextMd, buildContext()]
+    .filter(Boolean).join('\n\n---\n\n');
 
   try {
     const res = await authFetch(`${WORKER}/chat`, {
@@ -1305,13 +1347,15 @@ async function askCoach(q) {
       body: JSON.stringify({
         model: 'claude-sonnet-4-6', max_tokens: 2048,
         system,
-        messages: [{ role: 'user', content: q }]
+        messages: conversationHistory,
       })
     });
     const data = await res.json();
-    out.classList.remove('ai-placeholder');
-    const text = data.content?.map(c=>c.text||'').join('') || JSON.stringify(data);
-    out.innerHTML = marked.parse(text);
+    const text = data.content?.map(c => c.text || '').join('') || JSON.stringify(data);
+
+    conversationHistory.push({ role: 'assistant', content: text });
+    assistantDiv.innerHTML = marked.parse(text);
+
     // Detect lookup-update JSON blocks and offer Apply button
     for (const [, jsonStr] of [...text.matchAll(/```json\n([\s\S]*?)\n```/g)]) {
       try {
@@ -1322,7 +1366,7 @@ async function askCoach(q) {
         applyBtn.style.marginTop = '12px';
         applyBtn.textContent = '↻ Apply suggested loading changes';
         applyBtn.onclick = () => { applyLookupUpdate(upd); applyBtn.textContent = '✓ Applied'; applyBtn.disabled = true; };
-        out.appendChild(applyBtn);
+        assistantDiv.appendChild(applyBtn);
       } catch(e) {}
     }
     // Detect user-context blocks and offer Apply button
@@ -1332,15 +1376,22 @@ async function askCoach(q) {
       applyBtn.style.marginTop = '12px';
       applyBtn.textContent = '↻ Apply context update';
       applyBtn.onclick = () => { applyContextUpdate(content); applyBtn.textContent = '✓ Applied'; applyBtn.disabled = true; };
-      out.appendChild(applyBtn);
+      assistantDiv.appendChild(applyBtn);
     }
   } catch(e) {
-    if (e.message !== 'session-expired') out.textContent = 'Error: ' + e.message;
+    if (e.message !== 'session-expired') assistantDiv.textContent = 'Error: ' + e.message;
+    else conversationHistory.pop(); // remove the user turn if session expired
   }
-  btn.disabled = false;
+
+  document.getElementById('coach-btn').disabled = false;
+  assistantDiv.scrollIntoView({ behavior: 'smooth', block: 'end' });
 }
 
-function quick(q) { document.getElementById('coach-q').value = q; showPage('coach'); askCoach(q); }
+function quick(q) {
+  clearConversation();
+  showPage('coach');
+  askCoach(q);
+}
 
 function editUserContext() {
   const current = userContextMd
@@ -1358,6 +1409,7 @@ Ask any follow-up questions needed. Once all details are confirmed, output the c
 \`\`\`user-context
 [full markdown here]
 \`\`\``;
+  clearConversation();
   closeSettings();
   showPage('coach');
   askCoach(q);
@@ -1374,6 +1426,7 @@ function tuneLoadings() {
   ).slice(0, 4);
 
   if (!withKneeLoad.length) {
+    clearConversation();
     showPage('coach');
     askCoach('There are no recent sessions with knee-loading exercises in my log. Can you help me decide what loading factors to set for exercises I plan to track?');
     return;
@@ -1403,6 +1456,7 @@ function tuneLoadings() {
 
   const q = `I want to tune the patellar loading factors for my exercises. The app computed the following loads for my recent sessions using the current lookup factors (shown in brackets):\n\n${breakdown}\n\nFor each exercise, ask me whether the computed impact level matched my actual perceived knee strain. Go one session at a time, starting with the most recent. Based on my answers, suggest updated factors in this format:\n\`\`\`json\n{"type":"lookup-update","exercises":{"exercise name":{"loading_factor":X}}}\n\`\`\``;
 
+  clearConversation();
   showPage('coach');
   askCoach(q);
 }
