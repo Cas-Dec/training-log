@@ -73,6 +73,7 @@ async function saveSession() {
     }),
     energy: document.getElementById('energy').value,
     sleep: document.getElementById('sleep').value,
+    recovery: document.getElementById('recovery').value,
     ...(currentUser === 'Cas' ? {
       kps: {
         morning: document.getElementById('kps-morning').value || null,
@@ -111,6 +112,7 @@ function setStatus(msg, type) {
 }
 
 function resetForm() {
+  document.getElementById('recovery').value = 'normal';
   document.getElementById('notes').value = '';
   document.getElementById('kps-morning').value = '';
   document.getElementById('kps-post').value = '';

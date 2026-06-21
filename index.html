@@ -383,7 +383,7 @@
     </div>
   </div>
 
-  <div class="grid2">
+  <div class="grid3">
     <div class="field">
       <label>Energy level</label>
       <select id="energy">
@@ -397,6 +397,14 @@
       <select id="sleep">
         <option value="good">Good</option>
         <option value="average" selected>Average</option>
+        <option value="poor">Poor</option>
+      </select>
+    </div>
+    <div class="field">
+      <label>Recovery</label>
+      <select id="recovery">
+        <option value="good">Good</option>
+        <option value="normal" selected>Normal</option>
         <option value="poor">Poor</option>
       </select>
     </div>
@@ -977,6 +985,7 @@ async function saveSession() {
     }),
     energy: document.getElementById('energy').value,
     sleep: document.getElementById('sleep').value,
+    recovery: document.getElementById('recovery').value,
     ...(currentUser === 'Cas' ? {
       kps: {
         morning: document.getElementById('kps-morning').value || null,
@@ -1015,6 +1024,7 @@ function setStatus(msg, type) {
 }
 
 function resetForm() {
+  document.getElementById('recovery').value = 'normal';
   document.getElementById('notes').value = '';
   document.getElementById('kps-morning').value = '';
   document.getElementById('kps-post').value = '';
@@ -1132,8 +1142,9 @@ function renderHistory() {
       ${activityHtml}
       <div class="card-meta">
         ${currentUser === 'Cas' && (s.kps?.morning||s.kps?.post) ? `<span>KPS ${s.kps.morning||'?'} → ${s.kps.post||'?'}</span>` : ''}
-        ${s.energy ? `<span>Energy: ${s.energy}</span>` : ''}
-        ${s.sleep ? `<span>Sleep: ${s.sleep}</span>` : ''}
+        ${s.energy   ? `<span>Energy: ${s.energy}</span>`     : ''}
+        ${s.sleep    ? `<span>Sleep: ${s.sleep}</span>`       : ''}
+        ${s.recovery ? `<span>Recovery: ${s.recovery}</span>` : ''}
       </div>
       ${s.notes ? `<div class="card-notes">${s.notes}</div>` : ''}
     </div>`;
@@ -1398,15 +1409,17 @@ function buildContext() {
 
   const nrgAbbr = { 'above-average': 'hi', 'average': 'avg', 'below-average': 'lo' };
   const slpAbbr = { 'good': 'g', 'average': 'a', 'poor': 'p' };
+  const recAbbr = { 'good': 'g', 'normal': 'n', 'poor': 'p' };
 
   const isCas = currentUser === 'Cas';
   const header = isCas
-    ? 'date|type|nrg|slp|kps|load|details'
-    : 'date|type|nrg|slp|details';
+    ? 'date|type|nrg|slp|rec|kps|load|details'
+    : 'date|type|nrg|slp|rec|details';
 
   const lines = shown.map(s => {
-    const nrg = nrgAbbr[s.energy] ?? '?';
-    const slp = slpAbbr[s.sleep]  ?? '?';
+    const nrg = nrgAbbr[s.energy]   ?? '?';
+    const slp = slpAbbr[s.sleep]    ?? '?';
+    const rec = recAbbr[s.recovery] ?? '?';
     const isCardio = CARDIO_TYPES.includes(s.type);
 
     let details;
@@ -1429,9 +1442,9 @@ function buildContext() {
       const p = s.kps?.post    != null && s.kps.post    !== '' ? s.kps.post    : '?';
       const load = sessionPatellarVolume(s);
       const loadStr = load > 0 ? `${load.toFixed(0)}(${impactLabel(load)})` : '';
-      main = `${s.date}|${s.type}|${nrg}|${slp}|${m}→${p}|${loadStr}|${details}`;
+      main = `${s.date}|${s.type}|${nrg}|${slp}|${rec}|${m}→${p}|${loadStr}|${details}`;
     } else {
-      main = `${s.date}|${s.type}|${nrg}|${slp}|${details}`;
+      main = `${s.date}|${s.type}|${nrg}|${slp}|${rec}|${details}`;
     }
 
     const note = (s.notes || '').trim().replace(/^—$/, '');
@@ -1656,10 +1669,10 @@ function exportJSON() {
 }
 
 function exportCSV() {
-  const rows = [['date','type','energy','sleep','kps_morning','kps_post','exercises','notes']];
-  sessions.forEach(s => rows.push([s.date, s.type, s.energy||'', s.sleep||'',
+  const rows = [['date','type','energy','sleep','recovery','kps_morning','kps_post','exercises','notes']];
+  sessions.forEach(s => rows.push([s.date, s.type, s.energy||'', s.sleep||'', s.recovery||'',
     s.kps?.morning||'', s.kps?.post||'',
-    s.exercises.map(e=>`${e.name} ${e.loading} ${e.rpe}`).join('; '),
+    (s.exercises||[]).map(e=>`${e.name} ${e.loading} ${e.rpe}`).join('; '),
     (s.notes||'').replace(/"/g,"'")]));
   dl(rows.map(r=>r.map(c=>`"${c}"`).join(',')).join('\n'), 'training-log.csv', 'text/csv');
 }

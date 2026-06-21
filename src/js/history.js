@@ -103,8 +103,9 @@ function renderHistory() {
       ${activityHtml}
       <div class="card-meta">
         ${currentUser === 'Cas' && (s.kps?.morning||s.kps?.post) ? `<span>KPS ${s.kps.morning||'?'} → ${s.kps.post||'?'}</span>` : ''}
-        ${s.energy ? `<span>Energy: ${s.energy}</span>` : ''}
-        ${s.sleep ? `<span>Sleep: ${s.sleep}</span>` : ''}
+        ${s.energy   ? `<span>Energy: ${s.energy}</span>`     : ''}
+        ${s.sleep    ? `<span>Sleep: ${s.sleep}</span>`       : ''}
+        ${s.recovery ? `<span>Recovery: ${s.recovery}</span>` : ''}
       </div>
       ${s.notes ? `<div class="card-notes">${s.notes}</div>` : ''}
     </div>`;

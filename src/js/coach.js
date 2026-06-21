@@ -22,15 +22,17 @@ function buildContext() {
 
   const nrgAbbr = { 'above-average': 'hi', 'average': 'avg', 'below-average': 'lo' };
   const slpAbbr = { 'good': 'g', 'average': 'a', 'poor': 'p' };
+  const recAbbr = { 'good': 'g', 'normal': 'n', 'poor': 'p' };
 
   const isCas = currentUser === 'Cas';
   const header = isCas
-    ? 'date|type|nrg|slp|kps|load|details'
-    : 'date|type|nrg|slp|details';
+    ? 'date|type|nrg|slp|rec|kps|load|details'
+    : 'date|type|nrg|slp|rec|details';
 
   const lines = shown.map(s => {
-    const nrg = nrgAbbr[s.energy] ?? '?';
-    const slp = slpAbbr[s.sleep]  ?? '?';
+    const nrg = nrgAbbr[s.energy]   ?? '?';
+    const slp = slpAbbr[s.sleep]    ?? '?';
+    const rec = recAbbr[s.recovery] ?? '?';
     const isCardio = CARDIO_TYPES.includes(s.type);
 
     let details;
@@ -53,9 +55,9 @@ function buildContext() {
       const p = s.kps?.post    != null && s.kps.post    !== '' ? s.kps.post    : '?';
       const load = sessionPatellarVolume(s);
       const loadStr = load > 0 ? `${load.toFixed(0)}(${impactLabel(load)})` : '';
-      main = `${s.date}|${s.type}|${nrg}|${slp}|${m}→${p}|${loadStr}|${details}`;
+      main = `${s.date}|${s.type}|${nrg}|${slp}|${rec}|${m}→${p}|${loadStr}|${details}`;
     } else {
-      main = `${s.date}|${s.type}|${nrg}|${slp}|${details}`;
+      main = `${s.date}|${s.type}|${nrg}|${slp}|${rec}|${details}`;
     }
 
     const note = (s.notes || '').trim().replace(/^—$/, '');

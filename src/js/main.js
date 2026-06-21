@@ -24,10 +24,10 @@ function exportJSON() {
 }
 
 function exportCSV() {
-  const rows = [['date','type','energy','sleep','kps_morning','kps_post','exercises','notes']];
-  sessions.forEach(s => rows.push([s.date, s.type, s.energy||'', s.sleep||'',
+  const rows = [['date','type','energy','sleep','recovery','kps_morning','kps_post','exercises','notes']];
+  sessions.forEach(s => rows.push([s.date, s.type, s.energy||'', s.sleep||'', s.recovery||'',
     s.kps?.morning||'', s.kps?.post||'',
-    s.exercises.map(e=>`${e.name} ${e.loading} ${e.rpe}`).join('; '),
+    (s.exercises||[]).map(e=>`${e.name} ${e.loading} ${e.rpe}`).join('; '),
     (s.notes||'').replace(/"/g,"'")]));
   dl(rows.map(r=>r.map(c=>`"${c}"`).join(',')).join('\n'), 'training-log.csv', 'text/csv');
 }
