@@ -1,0 +1,232 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Training Log</title>
+<style>
+{{STYLES}}
+</style>
+</head>
+<body>
+
+<div id="login-overlay" class="login-overlay">
+  <div class="login-card">
+    <div class="login-logo">⚡ TRAINING LOG</div>
+    <div class="field">
+      <label>Username</label>
+      <input type="text" id="login-username" placeholder="cas or dries" autocomplete="username" onkeydown="if(event.key==='Enter')login()">
+    </div>
+    <div class="field">
+      <label>Password</label>
+      <input type="password" id="login-password" placeholder="••••••••" autocomplete="current-password" onkeydown="if(event.key==='Enter')login()">
+    </div>
+    <div id="login-error" class="login-error"></div>
+    <button class="btn btn-primary btn-full" id="login-btn" onclick="login()">Sign in</button>
+  </div>
+</div>
+
+<nav>
+  <div class="nav-row">
+    <span class="nav-logo">⚡ TRAINING</span>
+    <div style="display:flex;gap:6px;align-items:center">
+      <span id="nav-user" style="font-size:13px;font-family:var(--font-mono);color:var(--muted)"></span>
+      <button class="gear-btn" onclick="openSettings()" aria-label="Settings">⚙</button>
+      <button class="gear-btn" onclick="logout()" aria-label="Sign out" title="Sign out">⏻</button>
+    </div>
+  </div>
+  <div class="nav-row">
+    <div class="nav-tabs">
+      <button class="nav-tab active" onclick="showPage('log')">Log</button>
+      <button class="nav-tab" onclick="showPage('history')">History</button>
+      <button class="nav-tab" onclick="showPage('coach')">Coach</button>
+    </div>
+  </div>
+</nav>
+
+<!-- ── LOG ── -->
+<div id="page-log" class="page active">
+  <h2>Log session</h2>
+  <p class="page-subtitle">Today's training</p>
+
+  <div class="grid2">
+    <div class="field">
+      <label>Date</label>
+      <input type="date" id="date">
+    </div>
+    <div class="field">
+      <label>Session type</label>
+      <select id="session-type" onchange="onTypeChange()">
+        <option>Pull</option><option>Push</option><option>Legs</option>
+        <option>Upper body</option><option>Full body</option><option>Accessory</option>
+        <option>Rugby</option><option>Badminton</option><option>Running</option><option>Cycling</option>
+      </select>
+    </div>
+  </div>
+
+  <div id="exercises-section">
+    <div class="field">
+      <label>Exercises</label>
+      <div id="exercises"></div>
+      <button class="add-ex" onclick="addExercise()">+ add exercise</button>
+    </div>
+  </div>
+
+  <div id="cardio-section" style="display:none">
+    <div class="grid2">
+      <div class="field">
+        <label>Duration (min)</label>
+        <input type="number" id="cardio-duration" min="1" placeholder="e.g. 60">
+      </div>
+      <div class="field">
+        <label>Intensity</label>
+        <select id="cardio-intensity">
+          <option value="low">Low</option>
+          <option value="medium" selected>Medium</option>
+          <option value="high">High</option>
+        </select>
+      </div>
+    </div>
+  </div>
+
+  <div id="kps-section">
+    <div class="field">
+      <label>Knee Pain Score (KPS)</label>
+      <div class="kps-row">
+        <div>
+          <label style="margin-bottom:4px;font-size:11px">Morning</label>
+          <input type="number" id="kps-morning" min="0" max="10" step="0.5" placeholder="0–10">
+        </div>
+        <div class="kps-arrow">→</div>
+        <div>
+          <label style="margin-bottom:4px;font-size:11px">Post-training</label>
+          <input type="number" id="kps-post" min="0" max="10" step="0.5" placeholder="0–10">
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="grid2">
+    <div class="field">
+      <label>Energy level</label>
+      <select id="energy">
+        <option value="above-average">Above average</option>
+        <option value="average" selected>Average</option>
+        <option value="below-average">Below average</option>
+      </select>
+    </div>
+    <div class="field">
+      <label>Sleep quality</label>
+      <select id="sleep">
+        <option value="good">Good</option>
+        <option value="average" selected>Average</option>
+        <option value="poor">Poor</option>
+      </select>
+    </div>
+  </div>
+
+  <div class="field">
+    <label>Notes</label>
+    <textarea id="notes" placeholder="How did it feel? Soreness, injuries, life stress…"></textarea>
+  </div>
+
+  <button class="btn btn-primary btn-full" id="save-btn" onclick="saveSession()">Save session</button>
+  <div id="save-status"></div>
+</div>
+
+<!-- ── HISTORY ── -->
+<div id="page-history" class="page">
+  <h2>History</h2>
+  <p class="page-subtitle">All logged sessions</p>
+  <div class="stats-row" id="stats-row"></div>
+
+  <div class="field">
+    <label>Exercise progression (last 12 weeks)</label>
+    <div class="progression-controls">
+      <select id="progression-exercise" onchange="renderProgressionChart()"></select>
+      <div class="metric-toggle">
+        <button class="metric-btn active" id="metric-btn-weight" onclick="setProgressionMetric('weight')">Max weight</button>
+        <button class="metric-btn" id="metric-btn-volume" onclick="setProgressionMetric('volume')">Volume</button>
+      </div>
+    </div>
+  </div>
+  <div class="chart-wrap" id="progression-chart-wrap">
+    <canvas id="progression-chart"></canvas>
+  </div>
+  <div class="empty" id="progression-empty" style="display:none"></div>
+
+  <div id="kps-sensitivity-section" style="display:none">
+    <div class="field" style="margin-bottom:10px">
+      <label>Knee sensitivity to patellar load (last 12 weeks)</label>
+      <div style="display:flex;align-items:center;gap:10px;margin-top:8px;margin-bottom:6px">
+        <div class="metric-toggle">
+          <button class="metric-btn active" id="kps-metric-btn-acute" onclick="setKpsMetric('acute')">Acute</button>
+          <button class="metric-btn" id="kps-metric-btn-morning" onclick="setKpsMetric('morning-after')">Morning-after</button>
+        </div>
+      </div>
+      <p id="kps-chart-desc" class="page-subtitle" style="margin-bottom:0"></p>
+    </div>
+    <div class="chart-wrap" id="kps-sensitivity-chart-wrap">
+      <canvas id="kps-sensitivity-chart"></canvas>
+    </div>
+    <div class="empty" id="kps-sensitivity-empty" style="display:none"></div>
+  </div>
+
+  <hr class="divider">
+
+  <div id="history-list"></div>
+  <div style="display:flex;gap:10px;margin-top:16px;flex-wrap:wrap">
+    <button class="btn btn-ghost" onclick="exportJSON()">Export JSON</button>
+    <button class="btn btn-ghost" onclick="exportCSV()">Export CSV</button>
+  </div>
+</div>
+
+<!-- ── COACH ── -->
+<div id="page-coach" class="page">
+  <h2>AI coach</h2>
+  <p class="page-subtitle">Ask about your training, progression, or next session</p>
+
+  <div class="coach-input-row">
+    <input type="text" id="coach-q" placeholder="Ask anything about your training…" onkeydown="if(event.key==='Enter')askCoach()">
+    <button class="btn btn-primary" id="coach-btn" onclick="askCoach()">Ask</button>
+  </div>
+  <div class="quick-btns">
+    <button class="quick-btn" onclick="quick('Analyse my progression over recent sessions. Flag any plateaus, regressions, or concerning trends.')">Progression check</button>
+    <button class="quick-btn" onclick="quick('Review my knee pain scores (KPS) over time. Is it trending up, stable, or down? Should I reduce load?')">Knee pain trend</button>
+    <button class="quick-btn" onclick="quick('Based on my recent sessions and recovery, what should I train in my next session and at what volume/intensity?')">Next session</button>
+    <button class="quick-btn" onclick="quick('Audit my weekly training volume per muscle group. What is over- or under-trained?')">Volume audit</button>
+    <button class="quick-btn" onclick="quick('Looking at my RPE scores, where am I consistently training too hard or leaving too much in the tank?')">RPE analysis</button>
+    <button class="quick-btn" id="calibrate-btn" style="display:none" onclick="tuneLoadings()">Tune loadings</button>
+  </div>
+
+  <div id="ai-output" class="ai-output">
+    <span class="ai-placeholder">Your coach's response will appear here.</span>
+  </div>
+</div>
+
+<!-- ── SETTINGS MODAL ── -->
+<div id="settings-modal" class="modal-overlay" onclick="if(event.target===this) closeSettings()">
+  <div class="modal-panel">
+    <div class="modal-header">
+      <h3>Settings</h3>
+      <button class="modal-close" onclick="closeSettings()" aria-label="Close">×</button>
+    </div>
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:4px">
+      <h3 style="font-size:15px;font-weight:600">User context</h3>
+      <button class="btn btn-ghost" style="font-size:12px;padding:5px 12px" onclick="editUserContext()">Edit with Coach →</button>
+    </div>
+    <p>Your training profile, injected into every coach prompt.</p>
+    <div id="user-context-preview" class="ai-output" style="font-size:13px;min-height:48px;max-height:280px;overflow-y:auto;margin-bottom:14px"></div>
+    <hr class="divider">
+    <p>Patellar loading factors are stored locally and calibrated via the coach. Reset clears calibrations and reloads defaults from the repo.</p>
+    <button class="btn btn-ghost btn-full" onclick="resetLookup()">Reset loading lookup to defaults</button>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/marked@12/marked.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4/dist/chart.umd.min.js"></script>
+<script>
+{{SCRIPTS}}
+</script>
+</body>
+</html>

@@ -1,0 +1,181 @@
+// ── AI COACH ───────────────────────────────────────────────────────
+function impactLabel(v) {
+  if (v >= 100) return 'maximal';
+  if (v >= 65)  return 'very high';
+  if (v >= 40)  return 'high';
+  if (v >= 22)  return 'medium to high';
+  if (v >= 12)  return 'medium';
+  if (v >= 6)   return 'low to medium';
+  if (v >= 2)   return 'low';
+  if (v >= 0.5) return 'very low';
+  return 'none';
+}
+
+function buildContext() {
+  const userSessions = sessions.filter(s => (s.user || 'Cas') === currentUser);
+  if (!userSessions.length) return `No sessions logged yet for ${currentUser}.`;
+
+  const sessionLines = userSessions.slice(0,50).map(s => {
+    const isCardio = CARDIO_TYPES.includes(s.type);
+    const activityLine = isCardio
+      ? `Duration: ${s.duration||'?'}min | Intensity: ${s.intensity||'?'}`
+      : `Exercises: ${s.exercises?.map(e=>`${e.name} ${e.loading} ${e.rpe}`).join(' · ')||'none'}`;
+    const kpsLine = currentUser === 'Cas' ? `\nKPS: ${s.kps?.morning||'?'} → ${s.kps?.post||'?'}` : '';
+    const load = sessionPatellarVolume(s);
+    const loadLine = currentUser === 'Cas' ? `\nPatellar load: ${load.toFixed(1)} (${impactLabel(load)})` : '';
+    return `${s.date} | ${s.type} | Energy: ${s.energy} | Sleep: ${s.sleep||'?'}
+${activityLine}${kpsLine}${loadLine}
+Notes: ${s.notes||'—'}`;
+  }).join('\n\n');
+
+  let loadingCtx = '';
+  if (currentUser === 'Cas') {
+    const kneeExercises = Object.entries(lookup.exercises)
+      .filter(([,v]) => v.leg_factor > 0)
+      .map(([name,v]) => `  ${name}: leg=${v.leg_factor} speed=${v.speed_factor} load=${v.loading_factor}${v.bodyweight?' +BW':''}`)
+      .join('\n');
+    loadingCtx = `\n\nPATELLAR LOADING MODEL (formula: leg×speed×load×weight×log₁₀(10+sets×reps), BW=${BODYWEIGHT_KG}kg):
+$IMPACT scale: maximal≥100 | very-high 65-100 | high 40-65 | medium-to-high 22-40 | medium 12-22 | low-to-medium 6-12 | low 2-6 | very-low 0.5-2 | none<0.5
+Knee-loading exercises in lookup:\n${kneeExercises || '  (none)'}
+When suggesting factor adjustments, output a JSON code block:
+\`\`\`json
+{"type":"lookup-update","exercises":{"exercise name":{"loading_factor":X}}}
+\`\`\``;
+  }
+
+  return `TRAINING LOG for ${currentUser} (${userSessions.length} sessions, newest first):\n\n` +
+    sessionLines + loadingCtx;
+}
+
+const SYSTEM_PROMPT_FALLBACK = `You are an expert strength & conditioning coach specialising in progressive overload, training load management, and injury prevention (especially knee health).
+
+You have access to the athlete's complete training log below. Your role:
+- Identify real trends from the data — progression, stagnation, volume spikes, RPE patterns
+- Flag concerns: rising KPS, insufficient recovery, repeated RPE10 efforts, imbalanced volume
+- Make specific, actionable recommendations using actual numbers from the log
+- Be concise. Use short paragraphs — no bullet lists unless genuinely listing distinct items.
+- If data is sparse, say so and offer sensible defaults.`;
+
+async function askCoach(q) {
+  q = q || document.getElementById('coach-q').value.trim();
+  if (!q) return;
+  const out = document.getElementById('ai-output');
+  const btn = document.getElementById('coach-btn');
+  out.textContent = 'Thinking…'; out.classList.add('ai-placeholder');
+  btn.disabled = true;
+
+  const systemParts = [
+    coreInstructions || SYSTEM_PROMPT_FALLBACK,
+    userContextMd,
+    buildContext(),
+  ].filter(Boolean);
+  const system = systemParts.join('\n\n---\n\n');
+
+  try {
+    const res = await authFetch(`${WORKER}/chat`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-6', max_tokens: 2048,
+        system,
+        messages: [{ role: 'user', content: q }]
+      })
+    });
+    const data = await res.json();
+    out.classList.remove('ai-placeholder');
+    const text = data.content?.map(c=>c.text||'').join('') || JSON.stringify(data);
+    out.innerHTML = marked.parse(text);
+    // Detect lookup-update JSON blocks and offer Apply button
+    for (const [, jsonStr] of [...text.matchAll(/```json\n([\s\S]*?)\n```/g)]) {
+      try {
+        const upd = JSON.parse(jsonStr);
+        if (upd.type !== 'lookup-update') continue;
+        const applyBtn = document.createElement('button');
+        applyBtn.className = 'btn btn-secondary';
+        applyBtn.style.marginTop = '12px';
+        applyBtn.textContent = '↻ Apply suggested loading changes';
+        applyBtn.onclick = () => { applyLookupUpdate(upd); applyBtn.textContent = '✓ Applied'; applyBtn.disabled = true; };
+        out.appendChild(applyBtn);
+      } catch(e) {}
+    }
+    // Detect user-context blocks and offer Apply button
+    for (const [, content] of [...text.matchAll(/```user-context\n([\s\S]*?)\n```/g)]) {
+      const applyBtn = document.createElement('button');
+      applyBtn.className = 'btn btn-secondary';
+      applyBtn.style.marginTop = '12px';
+      applyBtn.textContent = '↻ Apply context update';
+      applyBtn.onclick = () => { applyContextUpdate(content); applyBtn.textContent = '✓ Applied'; applyBtn.disabled = true; };
+      out.appendChild(applyBtn);
+    }
+  } catch(e) {
+    if (e.message !== 'session-expired') out.textContent = 'Error: ' + e.message;
+  }
+  btn.disabled = false;
+}
+
+function quick(q) { document.getElementById('coach-q').value = q; showPage('coach'); askCoach(q); }
+
+function editUserContext() {
+  const current = userContextMd
+    ? `Here is the current version:\n\`\`\`\n${userContextMd}\n\`\`\``
+    : `There is no user context yet — we need to create one from scratch.`;
+  const q = `You are helping me set up or update my coaching context file. ${current}
+
+Guide me through updating it. At minimum, confirm or update:
+1. Training goals (priority order)
+2. Primary tracking lifts (key compound movements)
+3. Resistance training frequency (sessions/week)
+4. Sport/cardio training types and frequency (sessions/week)
+
+Ask any follow-up questions needed. Once all details are confirmed, output the complete updated file in exactly this format:
+\`\`\`user-context
+[full markdown here]
+\`\`\``;
+  closeSettings();
+  showPage('coach');
+  askCoach(q);
+}
+
+function tuneLoadings() {
+  const casSessions = sessions.filter(s => (s.user || 'Cas') === 'Cas');
+  const withKneeLoad = casSessions.filter(s =>
+    !CARDIO_TYPES.includes(s.type) &&
+    (s.exercises || []).some(e => {
+      const entry = lookup.exercises[(e.name || '').toLowerCase().trim()];
+      return entry && entry.leg_factor > 0;
+    })
+  ).slice(0, 4);
+
+  if (!withKneeLoad.length) {
+    showPage('coach');
+    askCoach('There are no recent sessions with knee-loading exercises in my log. Can you help me decide what loading factors to set for exercises I plan to track?');
+    return;
+  }
+
+  const breakdown = withKneeLoad.map(s => {
+    const kps = s.kps ? ` | KPS ${s.kps.morning ?? '?'} → ${s.kps.post ?? '?'}` : '';
+    const exLines = (s.exercises || []).flatMap(e => {
+      const key = (e.name || '').toLowerCase().trim();
+      const entry = lookup.exercises[key];
+      if (!entry || !entry.leg_factor) return [];
+      return (e.loading || '').split(',').map(p => p.trim()).filter(Boolean).map(part => {
+        const sr = part.match(/^([\d.]+)\s*x\s*([\d.]+)/i);
+        const w = part.match(/@\s*([\d.]+)/);
+        const sets = sr ? parseFloat(sr[1]) : null;
+        const reps = sr ? parseFloat(sr[2]) : null;
+        const added = w ? parseFloat(w[1]) : 0;
+        const weight = entry.bodyweight ? BODYWEIGHT_KG + added : added;
+        const load = (sets && reps && weight)
+          ? entry.leg_factor * entry.speed_factor * entry.loading_factor * weight * Math.log10(10 + sets * reps)
+          : 0;
+        return `  • ${e.name}  ${part}  →  ${load.toFixed(1)} (${impactLabel(load)})  [leg=${entry.leg_factor} spd=${entry.speed_factor} lf=${entry.loading_factor}${entry.bodyweight ? ' +BW' : ''}]`;
+      });
+    });
+    return [`${s.date} | ${s.type}${kps}`, ...exLines].join('\n');
+  }).join('\n\n');
+
+  const q = `I want to tune the patellar loading factors for my exercises. The app computed the following loads for my recent sessions using the current lookup factors (shown in brackets):\n\n${breakdown}\n\nFor each exercise, ask me whether the computed impact level matched my actual perceived knee strain. Go one session at a time, starting with the most recent. Based on my answers, suggest updated factors in this format:\n\`\`\`json\n{"type":"lookup-update","exercises":{"exercise name":{"loading_factor":X}}}\n\`\`\``;
+
+  showPage('coach');
+  askCoach(q);
+}

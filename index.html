@@ -529,6 +529,7 @@ function logout() {
   location.reload();
 }
 
+// ── SYNC ───────────────────────────────────────────────────────────
 async function syncLookupFromWorker() {
   try {
     const res = await authFetch(`${WORKER}/lookup`);
@@ -566,6 +567,41 @@ async function syncContextToGitHub(content) {
   } catch(e) {}
 }
 
+async function syncToGitHub() {
+  try {
+    // Merge with remote before writing
+    const getRes = await authFetch(`${WORKER}/log`);
+    if (getRes.ok) {
+      const { sessions: remote } = await getRes.json();
+      const remoteIds = new Set(remote.map(s => s.id));
+      const merged = [...sessions.filter(s => !remoteIds.has(s.id)), ...remote];
+      merged.sort((a,b) => b.date.localeCompare(a.date));
+      sessions = merged;
+      localStorage.setItem('tl_sessions', JSON.stringify(sessions));
+    }
+    const putRes = await authFetch(`${WORKER}/log`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ sessions, message: `Add session ${sessions[0]?.date || ''}` }),
+    });
+    return putRes.ok;
+  } catch(e) { return false; }
+}
+
+async function pullFromGitHub() {
+  try {
+    const res = await authFetch(`${WORKER}/log`);
+    if (!res.ok) return;
+    const { sessions: remote } = await res.json();
+    // Remote wins on ID conflicts — GitHub is the source of truth for pulls
+    const remoteIds = new Set(remote.map(s => s.id));
+    const merged = [...sessions.filter(s => !remoteIds.has(s.id)), ...remote];
+    merged.sort((a,b) => b.date.localeCompare(a.date));
+    sessions = merged;
+    localStorage.setItem('tl_sessions', JSON.stringify(sessions));
+  } catch(e) {}
+}
+
 function applyContextUpdate(content) {
   userContextMd = content;
   const preview = document.getElementById('user-context-preview');
@@ -598,25 +634,6 @@ function applyLookupUpdate(update) {
   syncLookupToGitHub();
 }
 
-async function loadAll() {
-  try { sessions = JSON.parse(localStorage.getItem('tl_sessions') || '[]'); } catch(e) { sessions = []; }
-  // Seed lookup from localStorage while we wait for the worker; discard stale pre-Running/Cycling cache
-  try {
-    const s = localStorage.getItem('tl_lookup');
-    if (s) {
-      const cached = JSON.parse(s);
-      const isStale = cached.cardio?.Cardio && !cached.cardio?.Running;
-      if (isStale) localStorage.removeItem('tl_lookup');
-      else lookup = cached;
-    }
-  } catch(e) {}
-
-  const payload = getTokenPayload();
-  if (!payload) { document.getElementById('login-overlay').style.display = 'flex'; return; }
-  currentUser = payload.user;
-  initApp();
-}
-
 async function loadContextFiles() {
   try {
     const [coreRes, ctxRes] = await Promise.all([
@@ -628,70 +645,21 @@ async function loadContextFiles() {
   } catch(e) {}
 }
 
-function initApp() {
-  document.getElementById('nav-user').textContent = currentUser;
-  updateKPSVisibility();
-  document.getElementById('date').value = new Date().toISOString().split('T')[0];
-  onTypeChange();
-  loadContextFiles();
-  // Render history only after BOTH lookup and sessions are ready, so patellar loads are correct
-  Promise.all([syncLookupFromWorker(), pullFromGitHub()]).then(() => {
-    if (document.getElementById('page-history').classList.contains('active')) renderHistory();
-  });
-}
-
-function updateKPSVisibility() {
-  const isCas = currentUser === 'Cas';
-  document.getElementById('kps-section').style.display = isCas ? '' : 'none';
-  document.getElementById('calibrate-btn').style.display = isCas ? '' : 'none';
-}
-
-function openSettings() {
-  document.getElementById('settings-modal').classList.add('active');
-  const preview = document.getElementById('user-context-preview');
-  preview.innerHTML = userContextMd
-    ? marked.parse(userContextMd)
-    : '<span style="color:var(--muted);font-style:italic">No user context loaded — use Edit with Coach to create one.</span>';
-}
-function closeSettings() { document.getElementById('settings-modal').classList.remove('active'); }
-
-function onTypeChange() {
-  const type = document.getElementById('session-type').value;
-  const isCardio = CARDIO_TYPES.includes(type);
-  document.getElementById('exercises-section').style.display = isCardio ? 'none' : '';
-  document.getElementById('cardio-section').style.display = isCardio ? '' : 'none';
-  const last = sessions.filter(s => (s.user || 'Cas') === currentUser && s.type === type)[0];
-  if (isCardio) {
-    if (last?.duration)  document.getElementById('cardio-duration').value  = last.duration;
-    if (last?.intensity) document.getElementById('cardio-intensity').value = last.intensity;
-  } else {
-    document.getElementById('exercises').innerHTML = '';
-    exCount = 0;
-    (last?.exercises?.length ? last.exercises : [{}]).forEach(e => addExercise(e));
-  }
-}
-
-// ── NAVIGATION ─────────────────────────────────────────────────────
-function showPage(p) {
-  document.querySelectorAll('.page').forEach(el => el.classList.remove('active'));
-  document.querySelectorAll('.nav-tab').forEach(el => el.classList.remove('active'));
-  document.getElementById('page-'+p).classList.add('active');
-  document.querySelectorAll('.nav-tab')[['log','history','coach'].indexOf(p)].classList.add('active');
-  if (p==='history') renderHistory();
-}
-
 // ── EXERCISES ──────────────────────────────────────────────────────
 let exCount = 0;
+
 function numOptions(label, max) {
   let o = `<option value="">${label}</option>`;
   for (let i = 1; i <= max; i++) o += `<option value="${i}">${i}</option>`;
   return o;
 }
+
 function rpeOptions() {
   let o = '<option value="">RPE</option>';
   for (let i = 5; i <= 10; i += 0.5) o += `<option value="${i}">${i}</option>`;
   return o;
 }
+
 function addSetGroup(containerId, loading='') {
   const container = document.getElementById(containerId);
   const row = document.createElement('div');
@@ -711,10 +679,12 @@ function addSetGroup(containerId, loading='') {
     if (sr) { row.querySelector('.ex-sets').value = sr[1]; row.querySelector('.ex-reps').value = sr[2]; }
   }
 }
+
 function removeSetGroup(btn) {
   const row = btn.closest('.ex-set-row');
   if (row.parentElement.children.length > 1) row.remove();
 }
+
 function knownExerciseNames() {
   const names = new Set();
   sessions.forEach(s => (s.exercises || []).forEach(e => { if (e.name) names.add(e.name.toLowerCase()); }));
@@ -815,7 +785,23 @@ function getExercises() {
   }).filter(e => e.name);
 }
 
-// ── SAVE SESSION ───────────────────────────────────────────────────
+// ── LOG ────────────────────────────────────────────────────────────
+function onTypeChange() {
+  const type = document.getElementById('session-type').value;
+  const isCardio = CARDIO_TYPES.includes(type);
+  document.getElementById('exercises-section').style.display = isCardio ? 'none' : '';
+  document.getElementById('cardio-section').style.display = isCardio ? '' : 'none';
+  const last = sessions.filter(s => (s.user || 'Cas') === currentUser && s.type === type)[0];
+  if (isCardio) {
+    if (last?.duration)  document.getElementById('cardio-duration').value  = last.duration;
+    if (last?.intensity) document.getElementById('cardio-intensity').value = last.intensity;
+  } else {
+    document.getElementById('exercises').innerHTML = '';
+    exCount = 0;
+    (last?.exercises?.length ? last.exercises : [{}]).forEach(e => addExercise(e));
+  }
+}
+
 async function saveSession() {
   const date = document.getElementById('date').value;
   if (!date) { setStatus('Please set a date.', 'err'); return; }
@@ -873,48 +859,8 @@ function resetForm() {
   onTypeChange(); // resets exercise section and pre-fills from last session of this type
 }
 
-// ── GITHUB SYNC (via Worker) ────────────────────────────────────────
-async function syncToGitHub() {
-  try {
-    // Merge with remote before writing
-    const getRes = await authFetch(`${WORKER}/log`);
-    if (getRes.ok) {
-      const { sessions: remote } = await getRes.json();
-      const remoteIds = new Set(remote.map(s => s.id));
-      const merged = [...sessions.filter(s => !remoteIds.has(s.id)), ...remote];
-      merged.sort((a,b) => b.date.localeCompare(a.date));
-      sessions = merged;
-      localStorage.setItem('tl_sessions', JSON.stringify(sessions));
-    }
-    const putRes = await authFetch(`${WORKER}/log`, {
-      method: 'PUT',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ sessions, message: `Add session ${sessions[0]?.date || ''}` }),
-    });
-    return putRes.ok;
-  } catch(e) { return false; }
-}
-
-async function pullFromGitHub() {
-  try {
-    const res = await authFetch(`${WORKER}/log`);
-    if (!res.ok) return;
-    const { sessions: remote } = await res.json();
-    // Remote wins on ID conflicts — GitHub is the source of truth for pulls
-    const remoteIds = new Set(remote.map(s => s.id));
-    const merged = [...sessions.filter(s => !remoteIds.has(s.id)), ...remote];
-    merged.sort((a,b) => b.date.localeCompare(a.date));
-    sessions = merged;
-    localStorage.setItem('tl_sessions', JSON.stringify(sessions));
-  } catch(e) {}
-}
-
 // ── HISTORY ────────────────────────────────────────────────────────
 const TWELVE_WEEKS_MS = 84 * 864e5;
-
-// ── PROGRESSION CHART ─────────────────────────────────────────────
-let progressionChart = null;
-let progressionMetric = 'weight';
 
 function parseLoading(loading) {
   loading = loading || '';
@@ -934,6 +880,86 @@ function parseLoading(loading) {
   }
   return { sets: firstSets, reps: firstReps, weight: maxWeight, volume: volumeValid && totalVolume > 0 ? totalVolume : null };
 }
+
+function sessionPatellarVolume(s) {
+  const impactMatch = (s.notes || '').match(/\$IMPACT=([\w-]+)/i);
+  if (impactMatch) return IMPACT_MIDPOINTS[impactMatch[1].toLowerCase().replace(/_/g,'-')] ?? 0;
+
+  if (CARDIO_TYPES.includes(s.type)) {
+    const entry = lookup.cardio[s.type];
+    if (!entry || !s.duration) return 0;
+    const scale = entry.intensity_scale?.[s.intensity || 'medium'] ?? 1;
+    return entry.loading_min * scale * (+s.duration);
+  }
+
+  return (s.exercises || []).reduce((sum, e) => {
+    const entry = lookup.exercises[(e.name || '').toLowerCase().trim()];
+    if (!entry || !entry.leg_factor) return sum;
+    const parts = (e.loading || '').split(',').map(p => p.trim()).filter(Boolean);
+    return sum + parts.reduce((pSum, part) => {
+      const sr = part.match(/^([\d.]+)\s*x\s*([\d.]+)/i);
+      const w = part.match(/@\s*([\d.]+)/);
+      const sets = sr ? parseFloat(sr[1]) : null;
+      const reps = sr ? parseFloat(sr[2]) : null;
+      if (!sets || !reps) return pSum;
+      const added = w ? parseFloat(w[1]) : 0;
+      const weight = entry.bodyweight ? BODYWEIGHT_KG + added : added;
+      if (!weight) return pSum;
+      return pSum + entry.leg_factor * entry.speed_factor * entry.loading_factor * weight * Math.log10(10 + sets * reps);
+    }, 0);
+  }, 0);
+}
+
+function renderHistory() {
+  const filtered = sessions.filter(s => (s.user || 'Cas') === currentUser);
+  const n = filtered.length;
+  const last7 = filtered.filter(s => (Date.now()-new Date(s.date))/864e5 <= 7).length;
+  const kpsAll = filtered.flatMap(s => s.kps?.post ? [+s.kps.post] : []).filter(x=>!isNaN(x));
+  const avgKPS = kpsAll.length ? (kpsAll.reduce((a,b)=>a+b)/kpsAll.length).toFixed(1) : '–';
+
+  const kpsStat = currentUser === 'Cas'
+    ? `<div class="stat-box"><div class="stat-val">${avgKPS}</div><div class="stat-lbl">Avg KPS (post)</div></div>`
+    : '';
+  document.getElementById('stats-row').innerHTML = `
+    <div class="stat-box"><div class="stat-val">${n}</div><div class="stat-lbl">Total sessions</div></div>
+    <div class="stat-box"><div class="stat-val">${last7}</div><div class="stat-lbl">Last 7 days</div></div>
+    ${kpsStat}`;
+
+  populateProgressionSelect();
+  renderProgressionChart();
+
+  const sensitivitySection = document.getElementById('kps-sensitivity-section');
+  sensitivitySection.style.display = currentUser === 'Cas' ? '' : 'none';
+  if (currentUser === 'Cas') renderKpsSensitivityChart();
+
+  const list = document.getElementById('history-list');
+  if (!n) { list.innerHTML = '<div class="empty">No sessions yet. Log your first one.</div>'; return; }
+
+  list.innerHTML = filtered.map(s => {
+    const isCardio = CARDIO_TYPES.includes(s.type);
+    const activityHtml = isCardio
+      ? `<div class="card-meta" style="margin-bottom:6px">${s.duration ? `<span>${s.duration} min</span>` : ''}${s.intensity ? `<span>Intensity: ${s.intensity}</span>` : ''}</div>`
+      : (s.exercises?.length ? `<div class="ex-chips">${s.exercises.map(e=>`<span class="ex-chip">${e.name} ${e.loading}${e.rpe?' '+e.rpe:''}</span>`).join('')}</div>` : '');
+    return `
+    <div class="session-card">
+      <div class="card-top">
+        <span class="card-date">${s.date}</span>
+        <span class="badge badge-${s.type.replace(/\s+/g,'')}">${s.type}</span>
+      </div>
+      ${activityHtml}
+      <div class="card-meta">
+        ${currentUser === 'Cas' && (s.kps?.morning||s.kps?.post) ? `<span>KPS ${s.kps.morning||'?'} → ${s.kps.post||'?'}</span>` : ''}
+        ${s.energy ? `<span>Energy: ${s.energy}</span>` : ''}
+        ${s.sleep ? `<span>Sleep: ${s.sleep}</span>` : ''}
+      </div>
+      ${s.notes ? `<div class="card-notes">${s.notes}</div>` : ''}
+    </div>`;
+  }).join('');
+}
+
+// ── PROGRESSION CHART ─────────────────────────────────────────────
+let progressionChart = null;
+let progressionMetric = 'weight';
 
 function setProgressionMetric(metric) {
   progressionMetric = metric;
@@ -1012,37 +1038,7 @@ function renderProgressionChart() {
   });
 }
 
-// ── KNEE PAIN SENSITIVITY CHART ────────────────────────────────────
-
-function sessionPatellarVolume(s) {
-  const impactMatch = (s.notes || '').match(/\$IMPACT=([\w-]+)/i);
-  if (impactMatch) return IMPACT_MIDPOINTS[impactMatch[1].toLowerCase().replace(/_/g,'-')] ?? 0;
-
-  if (CARDIO_TYPES.includes(s.type)) {
-    const entry = lookup.cardio[s.type];
-    if (!entry || !s.duration) return 0;
-    const scale = entry.intensity_scale?.[s.intensity || 'medium'] ?? 1;
-    return entry.loading_min * scale * (+s.duration);
-  }
-
-  return (s.exercises || []).reduce((sum, e) => {
-    const entry = lookup.exercises[(e.name || '').toLowerCase().trim()];
-    if (!entry || !entry.leg_factor) return sum;
-    const parts = (e.loading || '').split(',').map(p => p.trim()).filter(Boolean);
-    return sum + parts.reduce((pSum, part) => {
-      const sr = part.match(/^([\d.]+)\s*x\s*([\d.]+)/i);
-      const w = part.match(/@\s*([\d.]+)/);
-      const sets = sr ? parseFloat(sr[1]) : null;
-      const reps = sr ? parseFloat(sr[2]) : null;
-      if (!sets || !reps) return pSum;
-      const added = w ? parseFloat(w[1]) : 0;
-      const weight = entry.bodyweight ? BODYWEIGHT_KG + added : added;
-      if (!weight) return pSum;
-      return pSum + entry.leg_factor * entry.speed_factor * entry.loading_factor * weight * Math.log10(10 + sets * reps);
-    }, 0);
-  }, 0);
-}
-
+// ── KPS SENSITIVITY CHART ──────────────────────────────────────────
 let kpsSensitivityChart = null;
 let kpsMetric = 'acute';
 
@@ -1140,71 +1136,6 @@ function renderKpsSensitivityChart() {
       }
     }
   });
-}
-
-function renderHistory() {
-  const filtered = sessions.filter(s => (s.user || 'Cas') === currentUser);
-  const n = filtered.length;
-  const last7 = filtered.filter(s => (Date.now()-new Date(s.date))/864e5 <= 7).length;
-  const kpsAll = filtered.flatMap(s => s.kps?.post ? [+s.kps.post] : []).filter(x=>!isNaN(x));
-  const avgKPS = kpsAll.length ? (kpsAll.reduce((a,b)=>a+b)/kpsAll.length).toFixed(1) : '–';
-
-  const kpsStat = currentUser === 'Cas'
-    ? `<div class="stat-box"><div class="stat-val">${avgKPS}</div><div class="stat-lbl">Avg KPS (post)</div></div>`
-    : '';
-  document.getElementById('stats-row').innerHTML = `
-    <div class="stat-box"><div class="stat-val">${n}</div><div class="stat-lbl">Total sessions</div></div>
-    <div class="stat-box"><div class="stat-val">${last7}</div><div class="stat-lbl">Last 7 days</div></div>
-    ${kpsStat}`;
-
-  populateProgressionSelect();
-  renderProgressionChart();
-
-  const sensitivitySection = document.getElementById('kps-sensitivity-section');
-  sensitivitySection.style.display = currentUser === 'Cas' ? '' : 'none';
-  if (currentUser === 'Cas') renderKpsSensitivityChart();
-
-  const list = document.getElementById('history-list');
-  if (!n) { list.innerHTML = '<div class="empty">No sessions yet. Log your first one.</div>'; return; }
-
-  list.innerHTML = filtered.map(s => {
-    const isCardio = CARDIO_TYPES.includes(s.type);
-    const activityHtml = isCardio
-      ? `<div class="card-meta" style="margin-bottom:6px">${s.duration ? `<span>${s.duration} min</span>` : ''}${s.intensity ? `<span>Intensity: ${s.intensity}</span>` : ''}</div>`
-      : (s.exercises?.length ? `<div class="ex-chips">${s.exercises.map(e=>`<span class="ex-chip">${e.name} ${e.loading}${e.rpe?' '+e.rpe:''}</span>`).join('')}</div>` : '');
-    return `
-    <div class="session-card">
-      <div class="card-top">
-        <span class="card-date">${s.date}</span>
-        <span class="badge badge-${s.type.replace(/\s+/g,'')}">${s.type}</span>
-      </div>
-      ${activityHtml}
-      <div class="card-meta">
-        ${currentUser === 'Cas' && (s.kps?.morning||s.kps?.post) ? `<span>KPS ${s.kps.morning||'?'} → ${s.kps.post||'?'}</span>` : ''}
-        ${s.energy ? `<span>Energy: ${s.energy}</span>` : ''}
-        ${s.sleep ? `<span>Sleep: ${s.sleep}</span>` : ''}
-      </div>
-      ${s.notes ? `<div class="card-notes">${s.notes}</div>` : ''}
-    </div>`;
-  }).join('');
-}
-
-// ── EXPORT ─────────────────────────────────────────────────────────
-function exportJSON() {
-  dl(JSON.stringify(sessions, null, 2), 'training-log.json', 'application/json');
-}
-function exportCSV() {
-  const rows = [['date','type','energy','sleep','kps_morning','kps_post','exercises','notes']];
-  sessions.forEach(s => rows.push([s.date, s.type, s.energy||'', s.sleep||'',
-    s.kps?.morning||'', s.kps?.post||'',
-    s.exercises.map(e=>`${e.name} ${e.loading} ${e.rpe}`).join('; '),
-    (s.notes||'').replace(/"/g,"'")]));
-  dl(rows.map(r=>r.map(c=>`"${c}"`).join(',')).join('\n'), 'training-log.csv', 'text/csv');
-}
-function dl(content, filename, type) {
-  const a = document.createElement('a');
-  a.href = URL.createObjectURL(new Blob([content], {type}));
-  a.download = filename; a.click();
 }
 
 // ── AI COACH ───────────────────────────────────────────────────────
@@ -1389,8 +1320,86 @@ function tuneLoadings() {
   askCoach(q);
 }
 
+// ── NAVIGATION ─────────────────────────────────────────────────────
+function showPage(p) {
+  document.querySelectorAll('.page').forEach(el => el.classList.remove('active'));
+  document.querySelectorAll('.nav-tab').forEach(el => el.classList.remove('active'));
+  document.getElementById('page-'+p).classList.add('active');
+  document.querySelectorAll('.nav-tab')[['log','history','coach'].indexOf(p)].classList.add('active');
+  if (p==='history') renderHistory();
+}
+
+// ── SETTINGS ───────────────────────────────────────────────────────
+function openSettings() {
+  document.getElementById('settings-modal').classList.add('active');
+  const preview = document.getElementById('user-context-preview');
+  preview.innerHTML = userContextMd
+    ? marked.parse(userContextMd)
+    : '<span style="color:var(--muted);font-style:italic">No user context loaded — use Edit with Coach to create one.</span>';
+}
+
+function closeSettings() { document.getElementById('settings-modal').classList.remove('active'); }
+
+// ── EXPORT ─────────────────────────────────────────────────────────
+function exportJSON() {
+  dl(JSON.stringify(sessions, null, 2), 'training-log.json', 'application/json');
+}
+
+function exportCSV() {
+  const rows = [['date','type','energy','sleep','kps_morning','kps_post','exercises','notes']];
+  sessions.forEach(s => rows.push([s.date, s.type, s.energy||'', s.sleep||'',
+    s.kps?.morning||'', s.kps?.post||'',
+    s.exercises.map(e=>`${e.name} ${e.loading} ${e.rpe}`).join('; '),
+    (s.notes||'').replace(/"/g,"'")]));
+  dl(rows.map(r=>r.map(c=>`"${c}"`).join(',')).join('\n'), 'training-log.csv', 'text/csv');
+}
+
+function dl(content, filename, type) {
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(new Blob([content], {type}));
+  a.download = filename; a.click();
+}
+
 // ── INIT ───────────────────────────────────────────────────────────
+function updateKPSVisibility() {
+  const isCas = currentUser === 'Cas';
+  document.getElementById('kps-section').style.display = isCas ? '' : 'none';
+  document.getElementById('calibrate-btn').style.display = isCas ? '' : 'none';
+}
+
+function initApp() {
+  document.getElementById('nav-user').textContent = currentUser;
+  updateKPSVisibility();
+  document.getElementById('date').value = new Date().toISOString().split('T')[0];
+  onTypeChange();
+  loadContextFiles();
+  // Render history only after BOTH lookup and sessions are ready, so patellar loads are correct
+  Promise.all([syncLookupFromWorker(), pullFromGitHub()]).then(() => {
+    if (document.getElementById('page-history').classList.contains('active')) renderHistory();
+  });
+}
+
+async function loadAll() {
+  try { sessions = JSON.parse(localStorage.getItem('tl_sessions') || '[]'); } catch(e) { sessions = []; }
+  // Seed lookup from localStorage while we wait for the worker; discard stale pre-Running/Cycling cache
+  try {
+    const s = localStorage.getItem('tl_lookup');
+    if (s) {
+      const cached = JSON.parse(s);
+      const isStale = cached.cardio?.Cardio && !cached.cardio?.Running;
+      if (isStale) localStorage.removeItem('tl_lookup');
+      else lookup = cached;
+    }
+  } catch(e) {}
+
+  const payload = getTokenPayload();
+  if (!payload) { document.getElementById('login-overlay').style.display = 'flex'; return; }
+  currentUser = payload.user;
+  initApp();
+}
+
 loadAll();
+
 </script>
 </body>
 </html>
