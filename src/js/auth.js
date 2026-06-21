@@ -168,6 +168,36 @@ async function syncWikiToGitHub() {
   } catch(e) {}
 }
 
+async function syncBodyweightFromWorker() {
+  try {
+    const res = await authFetch(`${WORKER}/bodyweight`);
+    if (res.ok) {
+      const { entries } = await res.json();
+      if (Array.isArray(entries)) {
+        bodyweightLog = entries;
+        localStorage.setItem('tl_bodyweight', JSON.stringify(entries));
+        if (entries.length) BODYWEIGHT_KG = entries[0].weight;
+        return;
+      }
+    }
+  } catch(e) {}
+  const cached = localStorage.getItem('tl_bodyweight');
+  if (cached) try {
+    bodyweightLog = JSON.parse(cached);
+    if (bodyweightLog.length) BODYWEIGHT_KG = bodyweightLog[0].weight;
+  } catch(e) {}
+}
+
+async function syncBodyweightToGitHub() {
+  try {
+    await authFetch(`${WORKER}/bodyweight`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ entries: bodyweightLog, message: 'Update bodyweight log' }),
+    });
+  } catch(e) {}
+}
+
 async function loadContextFiles() {
   try {
     const [coreRes, ctxRes, wikiRes] = await Promise.all([

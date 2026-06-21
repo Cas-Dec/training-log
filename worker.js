@@ -233,6 +233,32 @@ export default {
       return jsonResponse({ ok: res.ok }, res.ok ? 200 : res.status);
     }
 
+    // ── GET /bodyweight ───────────────────────────────────────────────
+    if (url.pathname === '/bodyweight' && request.method === 'GET') {
+      const bwUrl = `${GITHUB_API}/repos/${env.GITHUB_USER}/${env.GITHUB_REPO}/contents/users/${session.user}/bodyweight.json`;
+      const res = await fetch(bwUrl, { headers: githubHeaders(env.GITHUB_TOKEN) });
+      if (!res.ok) return jsonResponse({ entries: [] });
+      const data = await res.json();
+      const entries = JSON.parse(fromBase64(data.content));
+      return jsonResponse({ entries });
+    }
+
+    // ── PUT /bodyweight ───────────────────────────────────────────────
+    if (url.pathname === '/bodyweight' && request.method === 'PUT') {
+      const { entries, message } = await request.json();
+      const bwUrl = `${GITHUB_API}/repos/${env.GITHUB_USER}/${env.GITHUB_REPO}/contents/users/${session.user}/bodyweight.json`;
+      let sha = null;
+      const existing = await fetch(bwUrl, { headers: githubHeaders(env.GITHUB_TOKEN) });
+      if (existing.ok) sha = (await existing.json()).sha;
+      const content = toBase64(JSON.stringify(entries, null, 2));
+      const res = await fetch(bwUrl, {
+        method: 'PUT',
+        headers: githubHeaders(env.GITHUB_TOKEN),
+        body: JSON.stringify({ message: message || 'Update bodyweight log', content, ...(sha ? { sha } : {}) }),
+      });
+      return jsonResponse({ ok: res.ok }, res.ok ? 200 : res.status);
+    }
+
     // ── POST /chat ────────────────────────────────────────────────────
     if (url.pathname === '/chat' && request.method === 'POST') {
       const body = await request.text();

@@ -73,6 +73,7 @@ function renderHistory() {
 
   populateProgressionSelect();
   renderProgressionChart();
+  renderBodyweightChart();
 
   const sensitivitySection = document.getElementById('kps-sensitivity-section');
   sensitivitySection.style.display = currentUser === 'Cas' ? '' : 'none';

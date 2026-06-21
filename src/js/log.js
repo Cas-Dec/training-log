@@ -1,4 +1,26 @@
 // ── LOG ────────────────────────────────────────────────────────────
+function saveBodyweight() {
+  const date = document.getElementById('bw-date').value;
+  const weight = parseFloat(document.getElementById('bw-weight').value);
+  if (!date || isNaN(weight) || weight <= 0) return;
+  bodyweightLog = bodyweightLog.filter(e => e.date !== date);
+  bodyweightLog.push({ date, weight });
+  bodyweightLog.sort((a, b) => b.date.localeCompare(a.date));
+  BODYWEIGHT_KG = bodyweightLog[0].weight;
+  localStorage.setItem('tl_bodyweight', JSON.stringify(bodyweightLog));
+  syncBodyweightToGitHub();
+  document.getElementById('bw-weight').value = '';
+  renderBwRecent();
+}
+
+function renderBwRecent() {
+  const el = document.getElementById('bw-recent');
+  if (!el) return;
+  el.innerHTML = bodyweightLog.slice(0, 5).map(e =>
+    `<span class="bw-entry">${e.date} <strong>${e.weight} kg</strong></span>`
+  ).join('');
+}
+
 function onTypeChange() {
   const type = document.getElementById('session-type').value;
   const isCardio = CARDIO_TYPES.includes(type);

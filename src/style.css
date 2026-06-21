@@ -135,6 +135,11 @@
   .card-notes { font-size: 13px; color: var(--muted); margin-top: 8px; font-style: italic; }
 
   .chart-wrap { background: var(--bg2); border: 1px solid var(--border); border-radius: var(--radius); padding: 12px; height: 240px; margin-bottom: 4px; }
+  .bw-row { display: flex; gap: 8px; align-items: flex-end; }
+  .bw-row input[type="date"] { flex: 1.5; }
+  .bw-row input[type="number"] { flex: 1; }
+  .bw-recent { margin-top: 8px; display: flex; flex-wrap: wrap; gap: 10px; }
+  .bw-entry { font-size: 12px; color: var(--muted); }
   .progression-controls { display: flex; gap: 8px; flex-wrap: wrap; }
   .progression-controls select { flex: 1; min-width: 140px; }
   .metric-toggle { display: flex; gap: 2px; background: var(--bg3); border-radius: 8px; padding: 2px; flex-shrink: 0; }

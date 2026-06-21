@@ -74,7 +74,14 @@ Exercises: ${exList||'(none)'}
 Factor update: \`\`\`json\n{"type":"lookup-update","exercises":{"name":{"strain_factor":X}}}\`\`\``;
   }
 
-  return `TRAINING LOG ${currentUser} (${userSessions.length} total, last 12w shown):\n${header}\n${lines}${loadingCtx}`;
+  let bwCtx = '';
+  if (bodyweightLog.length) {
+    const bwCutoff = Date.now() - 30 * 864e5;
+    const recent = bodyweightLog.filter(e => new Date(e.date).getTime() >= bwCutoff).slice(0, 14);
+    if (recent.length) bwCtx = `\nBW(kg,last30d): ${recent.map(e => `${e.date}:${e.weight}`).join(' ')}`;
+  }
+
+  return `TRAINING LOG ${currentUser} (${userSessions.length} total, last 12w shown):\n${header}\n${lines}${bwCtx}${loadingCtx}`;
 }
 
 const SYSTEM_PROMPT_FALLBACK = `You are an expert strength & conditioning coach specialising in progressive overload, training load management, and injury prevention (especially knee health).

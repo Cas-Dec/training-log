@@ -154,6 +154,17 @@
 
   <button class="btn btn-primary btn-full" id="save-btn" onclick="saveSession()">Save session</button>
   <div id="save-status"></div>
+
+  <hr class="divider" style="margin-top:24px">
+  <div class="field">
+    <label>Bodyweight</label>
+    <div class="bw-row">
+      <input type="date" id="bw-date">
+      <input type="number" id="bw-weight" placeholder="kg" step="0.1" min="30" max="250">
+      <button class="btn btn-secondary" onclick="saveBodyweight()">Log</button>
+    </div>
+    <div id="bw-recent" class="bw-recent"></div>
+  </div>
 </div>
 
 <!-- ── HISTORY ── -->
@@ -176,6 +187,14 @@
     <canvas id="progression-chart"></canvas>
   </div>
   <div class="empty" id="progression-empty" style="display:none"></div>
+
+  <div class="field" style="margin-top:16px">
+    <label>Bodyweight (last 12 weeks)</label>
+  </div>
+  <div class="chart-wrap" id="bw-chart-wrap">
+    <canvas id="bw-chart"></canvas>
+  </div>
+  <div class="empty" id="bw-empty" style="display:none"></div>
 
   <div id="kps-sensitivity-section" style="display:none">
     <div class="field" style="margin-bottom:10px">

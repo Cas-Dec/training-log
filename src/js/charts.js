@@ -79,6 +79,54 @@ function renderProgressionChart() {
   });
 }
 
+// ── BODYWEIGHT CHART ───────────────────────────────────────────────
+let bodyweightChart = null;
+
+function renderBodyweightChart() {
+  const wrap  = document.getElementById('bw-chart-wrap');
+  const empty = document.getElementById('bw-empty');
+
+  const cutoff = Date.now() - TWELVE_WEEKS_MS;
+  const points = bodyweightLog
+    .filter(e => new Date(e.date).getTime() >= cutoff)
+    .sort((a, b) => a.date.localeCompare(b.date));
+
+  if (bodyweightChart) { bodyweightChart.destroy(); bodyweightChart = null; }
+
+  if (!points.length) {
+    wrap.style.display  = 'none';
+    empty.style.display = '';
+    empty.textContent   = 'No bodyweight logged in the last 12 weeks.';
+    return;
+  }
+  wrap.style.display  = '';
+  empty.style.display = 'none';
+
+  bodyweightChart = new Chart(document.getElementById('bw-chart'), {
+    type: 'line',
+    data: {
+      labels: points.map(p => p.date),
+      datasets: [{
+        data: points.map(p => p.weight),
+        borderColor: '#c8f542',
+        backgroundColor: 'rgba(200,245,66,0.12)',
+        pointBackgroundColor: '#c8f542',
+        tension: 0.25,
+        fill: true,
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: { legend: { display: false } },
+      scales: {
+        x: { ticks: { color: '#7a7872', font: { size: 11 }, maxTicksLimit: 10 }, grid: { color: '#2e2e2e' } },
+        y: { ticks: { color: '#7a7872', font: { size: 11 }, callback: v => v + ' kg' }, grid: { color: '#2e2e2e' } },
+      }
+    }
+  });
+}
+
 // ── KPS CHARTS ─────────────────────────────────────────────────────
 let kpsLoadingChart = null;
 let kpsKpsChart = null;

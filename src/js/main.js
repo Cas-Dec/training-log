@@ -48,11 +48,14 @@ function updateKPSVisibility() {
 function initApp() {
   document.getElementById('nav-user').textContent = currentUser;
   updateKPSVisibility();
-  document.getElementById('date').value = new Date().toISOString().split('T')[0];
+  const today = new Date().toISOString().split('T')[0];
+  document.getElementById('date').value    = today;
+  document.getElementById('bw-date').value = today;
   onTypeChange();
   loadContextFiles();
   // Render history only after BOTH lookup and sessions are ready, so patellar loads are correct
-  Promise.all([syncLookupFromWorker(), pullFromGitHub()]).then(() => {
+  Promise.all([syncLookupFromWorker(), pullFromGitHub(), syncBodyweightFromWorker()]).then(() => {
+    renderBwRecent();
     if (document.getElementById('page-history').classList.contains('active')) renderHistory();
   });
 }

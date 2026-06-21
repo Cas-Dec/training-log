@@ -142,6 +142,11 @@
   .card-notes { font-size: 13px; color: var(--muted); margin-top: 8px; font-style: italic; }
 
   .chart-wrap { background: var(--bg2); border: 1px solid var(--border); border-radius: var(--radius); padding: 12px; height: 240px; margin-bottom: 4px; }
+  .bw-row { display: flex; gap: 8px; align-items: flex-end; }
+  .bw-row input[type="date"] { flex: 1.5; }
+  .bw-row input[type="number"] { flex: 1; }
+  .bw-recent { margin-top: 8px; display: flex; flex-wrap: wrap; gap: 10px; }
+  .bw-entry { font-size: 12px; color: var(--muted); }
   .progression-controls { display: flex; gap: 8px; flex-wrap: wrap; }
   .progression-controls select { flex: 1; min-width: 140px; }
   .metric-toggle { display: flex; gap: 2px; background: var(--bg3); border-radius: 8px; padding: 2px; flex-shrink: 0; }
@@ -404,6 +409,17 @@
 
   <button class="btn btn-primary btn-full" id="save-btn" onclick="saveSession()">Save session</button>
   <div id="save-status"></div>
+
+  <hr class="divider" style="margin-top:24px">
+  <div class="field">
+    <label>Bodyweight</label>
+    <div class="bw-row">
+      <input type="date" id="bw-date">
+      <input type="number" id="bw-weight" placeholder="kg" step="0.1" min="30" max="250">
+      <button class="btn btn-secondary" onclick="saveBodyweight()">Log</button>
+    </div>
+    <div id="bw-recent" class="bw-recent"></div>
+  </div>
 </div>
 
 <!-- ── HISTORY ── -->
@@ -426,6 +442,14 @@
     <canvas id="progression-chart"></canvas>
   </div>
   <div class="empty" id="progression-empty" style="display:none"></div>
+
+  <div class="field" style="margin-top:16px">
+    <label>Bodyweight (last 12 weeks)</label>
+  </div>
+  <div class="chart-wrap" id="bw-chart-wrap">
+    <canvas id="bw-chart"></canvas>
+  </div>
+  <div class="empty" id="bw-empty" style="display:none"></div>
 
   <div id="kps-sensitivity-section" style="display:none">
     <div class="field" style="margin-bottom:10px">
@@ -502,13 +526,14 @@ let sessions = [];
 let currentUser = 'Cas';
 const CARDIO_TYPES = ['Rugby', 'Badminton', 'Running', 'Cycling'];
 const SPEED_CARDIO_TYPES = ['Running', 'Cycling'];
-const BODYWEIGHT_KG = 85;
+let BODYWEIGHT_KG = 85;
 const IMPACT_MIDPOINTS = {
   'maximal':120,'very high':80,'high':52,
   'medium to high':31,'medium':17,
   'low to medium':9,'low':4,'very low':1,'none':0,
 };
 let lookup = { exercises: {}, cardio: {} };
+let bodyweightLog = [];
 let coreInstructions = '';
 let userContextMd = '';
 let wikiExercises = [];
@@ -683,6 +708,36 @@ async function syncWikiToGitHub() {
   } catch(e) {}
 }
 
+async function syncBodyweightFromWorker() {
+  try {
+    const res = await authFetch(`${WORKER}/bodyweight`);
+    if (res.ok) {
+      const { entries } = await res.json();
+      if (Array.isArray(entries)) {
+        bodyweightLog = entries;
+        localStorage.setItem('tl_bodyweight', JSON.stringify(entries));
+        if (entries.length) BODYWEIGHT_KG = entries[0].weight;
+        return;
+      }
+    }
+  } catch(e) {}
+  const cached = localStorage.getItem('tl_bodyweight');
+  if (cached) try {
+    bodyweightLog = JSON.parse(cached);
+    if (bodyweightLog.length) BODYWEIGHT_KG = bodyweightLog[0].weight;
+  } catch(e) {}
+}
+
+async function syncBodyweightToGitHub() {
+  try {
+    await authFetch(`${WORKER}/bodyweight`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ entries: bodyweightLog, message: 'Update bodyweight log' }),
+    });
+  } catch(e) {}
+}
+
 async function loadContextFiles() {
   try {
     const [coreRes, ctxRes, wikiRes] = await Promise.all([
@@ -848,6 +903,28 @@ function getExercises() {
 }
 
 // ── LOG ────────────────────────────────────────────────────────────
+function saveBodyweight() {
+  const date = document.getElementById('bw-date').value;
+  const weight = parseFloat(document.getElementById('bw-weight').value);
+  if (!date || isNaN(weight) || weight <= 0) return;
+  bodyweightLog = bodyweightLog.filter(e => e.date !== date);
+  bodyweightLog.push({ date, weight });
+  bodyweightLog.sort((a, b) => b.date.localeCompare(a.date));
+  BODYWEIGHT_KG = bodyweightLog[0].weight;
+  localStorage.setItem('tl_bodyweight', JSON.stringify(bodyweightLog));
+  syncBodyweightToGitHub();
+  document.getElementById('bw-weight').value = '';
+  renderBwRecent();
+}
+
+function renderBwRecent() {
+  const el = document.getElementById('bw-recent');
+  if (!el) return;
+  el.innerHTML = bodyweightLog.slice(0, 5).map(e =>
+    `<span class="bw-entry">${e.date} <strong>${e.weight} kg</strong></span>`
+  ).join('');
+}
+
 function onTypeChange() {
   const type = document.getElementById('session-type').value;
   const isCardio = CARDIO_TYPES.includes(type);
@@ -1025,6 +1102,7 @@ function renderHistory() {
 
   populateProgressionSelect();
   renderProgressionChart();
+  renderBodyweightChart();
 
   const sensitivitySection = document.getElementById('kps-sensitivity-section');
   sensitivitySection.style.display = currentUser === 'Cas' ? '' : 'none';
@@ -1138,6 +1216,54 @@ function renderProgressionChart() {
       scales: {
         x: { ticks: { color: '#7a7872', font: { size: 11 } }, grid: { color: '#2e2e2e' } },
         y: { ticks: { color: '#7a7872', font: { size: 11 } }, grid: { color: '#2e2e2e' } },
+      }
+    }
+  });
+}
+
+// ── BODYWEIGHT CHART ───────────────────────────────────────────────
+let bodyweightChart = null;
+
+function renderBodyweightChart() {
+  const wrap  = document.getElementById('bw-chart-wrap');
+  const empty = document.getElementById('bw-empty');
+
+  const cutoff = Date.now() - TWELVE_WEEKS_MS;
+  const points = bodyweightLog
+    .filter(e => new Date(e.date).getTime() >= cutoff)
+    .sort((a, b) => a.date.localeCompare(b.date));
+
+  if (bodyweightChart) { bodyweightChart.destroy(); bodyweightChart = null; }
+
+  if (!points.length) {
+    wrap.style.display  = 'none';
+    empty.style.display = '';
+    empty.textContent   = 'No bodyweight logged in the last 12 weeks.';
+    return;
+  }
+  wrap.style.display  = '';
+  empty.style.display = 'none';
+
+  bodyweightChart = new Chart(document.getElementById('bw-chart'), {
+    type: 'line',
+    data: {
+      labels: points.map(p => p.date),
+      datasets: [{
+        data: points.map(p => p.weight),
+        borderColor: '#c8f542',
+        backgroundColor: 'rgba(200,245,66,0.12)',
+        pointBackgroundColor: '#c8f542',
+        tension: 0.25,
+        fill: true,
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: { legend: { display: false } },
+      scales: {
+        x: { ticks: { color: '#7a7872', font: { size: 11 }, maxTicksLimit: 10 }, grid: { color: '#2e2e2e' } },
+        y: { ticks: { color: '#7a7872', font: { size: 11 }, callback: v => v + ' kg' }, grid: { color: '#2e2e2e' } },
       }
     }
   });
@@ -1324,7 +1450,14 @@ Exercises: ${exList||'(none)'}
 Factor update: \`\`\`json\n{"type":"lookup-update","exercises":{"name":{"strain_factor":X}}}\`\`\``;
   }
 
-  return `TRAINING LOG ${currentUser} (${userSessions.length} total, last 12w shown):\n${header}\n${lines}${loadingCtx}`;
+  let bwCtx = '';
+  if (bodyweightLog.length) {
+    const bwCutoff = Date.now() - 30 * 864e5;
+    const recent = bodyweightLog.filter(e => new Date(e.date).getTime() >= bwCutoff).slice(0, 14);
+    if (recent.length) bwCtx = `\nBW(kg,last30d): ${recent.map(e => `${e.date}:${e.weight}`).join(' ')}`;
+  }
+
+  return `TRAINING LOG ${currentUser} (${userSessions.length} total, last 12w shown):\n${header}\n${lines}${bwCtx}${loadingCtx}`;
 }
 
 const SYSTEM_PROMPT_FALLBACK = `You are an expert strength & conditioning coach specialising in progressive overload, training load management, and injury prevention (especially knee health).
@@ -1547,11 +1680,14 @@ function updateKPSVisibility() {
 function initApp() {
   document.getElementById('nav-user').textContent = currentUser;
   updateKPSVisibility();
-  document.getElementById('date').value = new Date().toISOString().split('T')[0];
+  const today = new Date().toISOString().split('T')[0];
+  document.getElementById('date').value    = today;
+  document.getElementById('bw-date').value = today;
   onTypeChange();
   loadContextFiles();
   // Render history only after BOTH lookup and sessions are ready, so patellar loads are correct
-  Promise.all([syncLookupFromWorker(), pullFromGitHub()]).then(() => {
+  Promise.all([syncLookupFromWorker(), pullFromGitHub(), syncBodyweightFromWorker()]).then(() => {
+    renderBwRecent();
     if (document.getElementById('page-history').classList.contains('active')) renderHistory();
   });
 }
