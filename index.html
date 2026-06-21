@@ -429,17 +429,13 @@
 
   <div id="kps-sensitivity-section" style="display:none">
     <div class="field" style="margin-bottom:10px">
-      <label>Knee sensitivity to patellar load (last 12 weeks)</label>
-      <div style="display:flex;align-items:center;gap:10px;margin-top:8px;margin-bottom:6px">
-        <div class="metric-toggle">
-          <button class="metric-btn active" id="kps-metric-btn-acute" onclick="setKpsMetric('acute')">Acute</button>
-          <button class="metric-btn" id="kps-metric-btn-morning" onclick="setKpsMetric('morning-after')">Morning-after</button>
-        </div>
-      </div>
-      <p id="kps-chart-desc" class="page-subtitle" style="margin-bottom:0"></p>
+      <label>Patellar load &amp; KPS (last 12 weeks)</label>
     </div>
-    <div class="chart-wrap" id="kps-sensitivity-chart-wrap">
-      <canvas id="kps-sensitivity-chart"></canvas>
+    <div class="chart-wrap" id="kps-loading-chart-wrap" style="height:180px;margin-bottom:8px">
+      <canvas id="kps-loading-chart"></canvas>
+    </div>
+    <div class="chart-wrap" id="kps-kps-chart-wrap" style="height:180px">
+      <canvas id="kps-kps-chart"></canvas>
     </div>
     <div class="empty" id="kps-sensitivity-empty" style="display:none"></div>
   </div>
@@ -1147,101 +1143,106 @@ function renderProgressionChart() {
   });
 }
 
-// ── KPS SENSITIVITY CHART ──────────────────────────────────────────
-let kpsSensitivityChart = null;
-let kpsMetric = 'acute';
-
-const KPS_METRIC_DESC = {
-  'acute': 'Per session: (post − morning KPS) ÷ patellar loading volume. Captures immediate irritation on the day.',
-  'morning-after': 'Per training day: (next-morning KPS − morning KPS) ÷ patellar loading volume. Captures overnight inflammatory response to load; more relevant for tissue adaptation trends.',
-};
-
-function setKpsMetric(metric) {
-  kpsMetric = metric;
-  document.getElementById('kps-metric-btn-acute').classList.toggle('active', metric === 'acute');
-  document.getElementById('kps-metric-btn-morning').classList.toggle('active', metric === 'morning-after');
-  renderKpsSensitivityChart();
-}
+// ── KPS CHARTS ─────────────────────────────────────────────────────
+let kpsLoadingChart = null;
+let kpsKpsChart = null;
 
 function renderKpsSensitivityChart() {
-  const wrap = document.getElementById('kps-sensitivity-chart-wrap');
-  const empty = document.getElementById('kps-sensitivity-empty');
-  document.getElementById('kps-chart-desc').textContent = KPS_METRIC_DESC[kpsMetric];
+  const wrapLoad = document.getElementById('kps-loading-chart-wrap');
+  const wrapKps  = document.getElementById('kps-kps-chart-wrap');
+  const empty    = document.getElementById('kps-sensitivity-empty');
 
   const cutoff = Date.now() - TWELVE_WEEKS_MS;
-  let points;
 
-  if (kpsMetric === 'acute') {
-    points = sessions
-      .filter(s => (s.user || 'Cas') === 'Cas' && new Date(s.date).getTime() >= cutoff
-        && s.kps?.morning != null && s.kps?.post != null && s.kps.morning !== '' && s.kps.post !== '')
-      .map(s => {
-        const volume = sessionPatellarVolume(s);
-        const deltaKps = (+s.kps.post) - (+s.kps.morning);
-        return { date: s.date, value: volume > 0 ? deltaKps / volume : null };
-      })
-      .filter(p => p.value !== null && !isNaN(p.value))
-      .sort((a, b) => a.date.localeCompare(b.date));
-  } else {
-    // Build a per-day map: date -> { morningKps, totalPatellarVolume }
-    const dayMap = {};
-    sessions.filter(s => (s.user || 'Cas') === 'Cas').forEach(s => {
-      if (!dayMap[s.date]) dayMap[s.date] = { morningKps: null, patellarVolume: 0 };
-      if (s.kps?.morning != null && s.kps.morning !== '' && dayMap[s.date].morningKps === null)
-        dayMap[s.date].morningKps = +s.kps.morning;
-      dayMap[s.date].patellarVolume += sessionPatellarVolume(s);
-    });
-    const dates = Object.keys(dayMap).sort();
-    points = dates
-      .filter(d => new Date(d).getTime() >= cutoff
-        && dayMap[d].morningKps !== null && dayMap[d].patellarVolume > 0)
-      .map(d => {
-        const dMs = new Date(d).getTime();
-        const nextDate = dates.find(nd => {
-          const diff = (new Date(nd).getTime() - dMs) / 864e5;
-          return diff > 0 && diff <= 3 && dayMap[nd].morningKps !== null;
-        });
-        if (!nextDate) return null;
-        const deltaKps = dayMap[nextDate].morningKps - dayMap[d].morningKps;
-        return { date: d, value: deltaKps / dayMap[d].patellarVolume };
-      })
-      .filter(Boolean);
-  }
+  // Aggregate per day
+  const dayMap = {};
+  sessions.filter(s => (s.user || 'Cas') === 'Cas').forEach(s => {
+    if (!dayMap[s.date]) dayMap[s.date] = { loading: 0, morningKps: null, postKps: null };
+    dayMap[s.date].loading += sessionPatellarVolume(s);
+    if (s.kps?.morning != null && s.kps.morning !== '' && dayMap[s.date].morningKps === null)
+      dayMap[s.date].morningKps = +s.kps.morning;
+    if (s.kps?.post != null && s.kps.post !== '')
+      dayMap[s.date].postKps = +s.kps.post;
+  });
 
-  if (kpsSensitivityChart) { kpsSensitivityChart.destroy(); kpsSensitivityChart = null; }
+  const dates = Object.keys(dayMap)
+    .filter(d => new Date(d).getTime() >= cutoff)
+    .sort();
 
-  if (!points.length) {
-    wrap.style.display = 'none';
-    empty.style.display = '';
-    empty.textContent = kpsMetric === 'acute'
-      ? 'No sessions with both KPS and patellar loading in the last 12 weeks.'
-      : 'No training days with patellar loading followed by a logged next-morning KPS in the last 12 weeks.';
+  if (kpsLoadingChart) { kpsLoadingChart.destroy(); kpsLoadingChart = null; }
+  if (kpsKpsChart)     { kpsKpsChart.destroy();     kpsKpsChart = null; }
+
+  if (!dates.length) {
+    wrapLoad.style.display = 'none';
+    wrapKps.style.display  = 'none';
+    empty.style.display    = '';
+    empty.textContent = 'No sessions in the last 12 weeks.';
     return;
   }
-  wrap.style.display = '';
-  empty.style.display = 'none';
+  wrapLoad.style.display = '';
+  wrapKps.style.display  = '';
+  empty.style.display    = 'none';
 
-  kpsSensitivityChart = new Chart(document.getElementById('kps-sensitivity-chart'), {
-    type: 'line',
+  const xAxis = { ticks: { color: '#7a7872', font: { size: 11 }, maxTicksLimit: 10 }, grid: { color: '#2e2e2e' } };
+  const yAxis = { ticks: { color: '#7a7872', font: { size: 11 } }, grid: { color: '#2e2e2e' }, beginAtZero: true };
+
+  // Top: patellar loading per day (bar)
+  kpsLoadingChart = new Chart(document.getElementById('kps-loading-chart'), {
+    type: 'bar',
     data: {
-      labels: points.map(p => p.date),
+      labels: dates,
       datasets: [{
-        label: kpsMetric === 'acute' ? 'ΔKPS (same-day) / volume' : 'Δmorning KPS / volume',
-        data: points.map(p => p.value),
+        label: 'Patellar load',
+        data: dates.map(d => dayMap[d].loading > 0 ? +dayMap[d].loading.toFixed(1) : null),
+        backgroundColor: 'rgba(255,107,107,0.55)',
         borderColor: '#ff6b6b',
-        backgroundColor: 'rgba(255,107,107,0.12)',
-        pointBackgroundColor: '#ff6b6b',
-        tension: 0.25,
-        fill: true,
+        borderWidth: 1,
+        borderRadius: 3,
       }]
     },
     options: {
-      responsive: true,
-      maintainAspectRatio: false,
+      responsive: true, maintainAspectRatio: false,
       plugins: { legend: { display: false } },
+      scales: { x: xAxis, y: yAxis },
+    }
+  });
+
+  // Bottom: KPS history (morning + post)
+  const morningData = dates.map(d => dayMap[d].morningKps);
+  const postData    = dates.map(d => dayMap[d].postKps);
+  const hasPost     = postData.some(v => v !== null);
+
+  const kpsDatasets = [{
+    label: 'Morning KPS',
+    data: morningData,
+    borderColor: '#ff6b6b',
+    backgroundColor: 'rgba(255,107,107,0.12)',
+    pointBackgroundColor: '#ff6b6b',
+    tension: 0.25,
+    fill: true,
+    spanGaps: true,
+  }];
+  if (hasPost) kpsDatasets.push({
+    label: 'Post KPS',
+    data: postData,
+    borderColor: '#ffb347',
+    backgroundColor: 'transparent',
+    pointBackgroundColor: '#ffb347',
+    borderDash: [4, 3],
+    tension: 0.25,
+    fill: false,
+    spanGaps: true,
+  });
+
+  kpsKpsChart = new Chart(document.getElementById('kps-kps-chart'), {
+    type: 'line',
+    data: { labels: dates, datasets: kpsDatasets },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: { legend: { display: hasPost, labels: { color: '#7a7872', font: { size: 11 }, boxWidth: 24 } } },
       scales: {
-        x: { ticks: { color: '#7a7872', font: { size: 11 } }, grid: { color: '#2e2e2e' } },
-        y: { ticks: { color: '#7a7872', font: { size: 11 } }, grid: { color: '#2e2e2e' } },
+        x: xAxis,
+        y: { ...yAxis, min: 0, max: 10, ticks: { ...yAxis.ticks, stepSize: 2 } },
       }
     }
   });

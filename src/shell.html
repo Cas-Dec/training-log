@@ -179,17 +179,13 @@
 
   <div id="kps-sensitivity-section" style="display:none">
     <div class="field" style="margin-bottom:10px">
-      <label>Knee sensitivity to patellar load (last 12 weeks)</label>
-      <div style="display:flex;align-items:center;gap:10px;margin-top:8px;margin-bottom:6px">
-        <div class="metric-toggle">
-          <button class="metric-btn active" id="kps-metric-btn-acute" onclick="setKpsMetric('acute')">Acute</button>
-          <button class="metric-btn" id="kps-metric-btn-morning" onclick="setKpsMetric('morning-after')">Morning-after</button>
-        </div>
-      </div>
-      <p id="kps-chart-desc" class="page-subtitle" style="margin-bottom:0"></p>
+      <label>Patellar load &amp; KPS (last 12 weeks)</label>
     </div>
-    <div class="chart-wrap" id="kps-sensitivity-chart-wrap">
-      <canvas id="kps-sensitivity-chart"></canvas>
+    <div class="chart-wrap" id="kps-loading-chart-wrap" style="height:180px;margin-bottom:8px">
+      <canvas id="kps-loading-chart"></canvas>
+    </div>
+    <div class="chart-wrap" id="kps-kps-chart-wrap" style="height:180px">
+      <canvas id="kps-kps-chart"></canvas>
     </div>
     <div class="empty" id="kps-sensitivity-empty" style="display:none"></div>
   </div>
