@@ -1,5 +1,51 @@
 [
   {
+    "id": 1782048301067,
+    "user": "Dries",
+    "date": "2026-06-21",
+    "type": "Upper body",
+    "exercises": [
+      {
+        "name": "pull-ups",
+        "loading": "2x12, 1x9",
+        "rpe": "RPE8"
+      },
+      {
+        "name": "overhead press",
+        "loading": "2x10@70kg, 1x8@65kg",
+        "rpe": "RPE8"
+      },
+      {
+        "name": "lateral raise",
+        "loading": "3x12@18kg",
+        "rpe": "RPE7"
+      },
+      {
+        "name": "dumbbell rear delt fly",
+        "loading": "3x12@12kg",
+        "rpe": "RPE6"
+      },
+      {
+        "name": "bosuball crunch",
+        "loading": "3x10@14kg",
+        "rpe": "RPE7"
+      },
+      {
+        "name": "hanging knees to chest",
+        "loading": "3x16",
+        "rpe": "RPE6.5"
+      },
+      {
+        "name": "landmine twist",
+        "loading": "3@50kg",
+        "rpe": ""
+      }
+    ],
+    "energy": "above-average",
+    "sleep": "average",
+    "notes": "Very hot night"
+  },
+  {
     "id": 1781994836566,
     "user": "Dries",
     "date": "2026-06-20",
