@@ -73,7 +73,7 @@ function renderProgressionChart() {
       plugins: { legend: { display: false } },
       scales: {
         x: { ticks: { color: '#7a7872', font: { size: 11 } }, grid: { color: '#2e2e2e' } },
-        y: { ticks: { color: '#7a7872', font: { size: 11 } }, grid: { color: '#2e2e2e' } },
+        y: { ticks: { color: '#7a7872', font: { size: 11 } }, grid: { color: '#2e2e2e' }, min: 0 },
       }
     }
   });
@@ -226,7 +226,7 @@ function renderKpsSensitivityChart() {
       plugins: { legend: { display: hasPost, labels: { color: '#7a7872', font: { size: 11 }, boxWidth: 24 } } },
       scales: {
         x: xAxis,
-        y: { ...yAxis, min: 0, max: 10, ticks: { ...yAxis.ticks, stepSize: 2 } },
+        y: { ...yAxis, min: 1, max: 6, ticks: { ...yAxis.ticks, stepSize: 1 } },
       }
     }
   });
