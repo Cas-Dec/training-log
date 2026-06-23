@@ -1,5 +1,46 @@
 [
   {
+    "id": 1782214706154,
+    "user": "Cas",
+    "date": "2026-06-23",
+    "type": "Pull",
+    "exercises": [
+      {
+        "name": "pull-ups",
+        "loading": "1x6@20kg, 2x6@24kg, 1x4@30kg",
+        "rpe": "RPE8"
+      },
+      {
+        "name": "clean pulls",
+        "loading": "1x8@140kg, 1x8@150kg, 1x8@155kg",
+        "rpe": "RPE6.5"
+      },
+      {
+        "name": "dumbbell rows",
+        "loading": "3x10@46kg",
+        "rpe": "RPE7.5"
+      },
+      {
+        "name": "rear delt machine fly",
+        "loading": "3x12@79kg",
+        "rpe": "RPE7.5"
+      },
+      {
+        "name": "bicep curls",
+        "loading": "3x8@20kg",
+        "rpe": "RPE8"
+      }
+    ],
+    "energy": "average",
+    "sleep": "average",
+    "recovery": "normal",
+    "kps": {
+      "morning": "3.5",
+      "post": "3.5"
+    },
+    "notes": ""
+  },
+  {
     "id": 1782160929034,
     "user": "Cas",
     "date": "2026-06-22",
