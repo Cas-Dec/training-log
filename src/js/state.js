@@ -2,7 +2,7 @@
 const WORKER = 'https://claude-proxy.casdecancq.workers.dev';
 let sessions = [];
 let currentUser = 'Cas';
-const CARDIO_TYPES = ['Rugby', 'Badminton', 'Running', 'Cycling'];
+const CARDIO_TYPES = ['Rugby', 'Badminton', 'Swimming', 'Running', 'Cycling'];
 const SPEED_CARDIO_TYPES = ['Running', 'Cycling'];
 let BODYWEIGHT_KG = 85;
 const IMPACT_MIDPOINTS = {

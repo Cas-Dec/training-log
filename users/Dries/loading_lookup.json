@@ -1,4 +1,8 @@
 {
   "exercises": {},
-  "cardio": {}
+  "cardio": {
+    "Swimming": {
+      "loading_min": 0
+    }
+  }
 }
