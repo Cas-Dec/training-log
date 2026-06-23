@@ -1,5 +1,26 @@
 [
   {
+    "id": 1782251655789,
+    "user": "Cas",
+    "date": "2026-06-23",
+    "type": "Swimming",
+    "duration": "30",
+    "intensity": "high",
+    "hr": {
+      "avg": null,
+      "max": null
+    },
+    "exercises": [],
+    "energy": "average",
+    "sleep": "average",
+    "recovery": "good",
+    "kps": {
+      "morning": "3.5",
+      "post": "2.5"
+    },
+    "notes": ""
+  },
+  {
     "id": 1782214706154,
     "user": "Cas",
     "date": "2026-06-23",
