@@ -67,7 +67,10 @@ function buildContext() {
       .join(' | ');
     const volDesc = LOADING_MODEL.volume_formula === 'sqrt' ? '√(sets×reps)' : 'log₁₀(10+sets×reps)';
     const labelStr = LOADING_MODEL.impact_scale.map(t => `${t.name}≥${t.min}`).join(' | ');
-    const cardioDesc = LOADING_MODEL.volume_formula === 'sqrt' ? 'loading_min×√duration' : 'loading_min×duration';
+    const intStr = Object.entries(LOADING_MODEL.intensity_scale ?? {}).map(([k,v])=>`${k}=${v}`).join('/');
+    const cardioDesc = LOADING_MODEL.volume_formula === 'sqrt'
+      ? `loading_min×intensity×√duration (${intStr})`
+      : `loading_min×intensity×duration (${intStr})`;
     const rpeThresh = LOADING_MODEL.rpe_threshold ?? 8;
     loadingCtx = `\n\nLOAD MODEL: strain_factor×weight×${volDesc}×exp(max(0,RPE-${rpeThresh})), BW=${BODYWEIGHT_KG}kg; cardio: ${cardioDesc}
 Labels: ${labelStr}

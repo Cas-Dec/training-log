@@ -35,7 +35,8 @@ function sessionPatellarVolume(s) {
     const entry = lookup.cardio[s.type];
     if (!entry || !s.duration) return 0;
     const durVol = LOADING_MODEL.volume_formula === 'sqrt' ? Math.sqrt(+s.duration) : +s.duration;
-    return entry.loading_min * durVol;
+    const intScale = (LOADING_MODEL.intensity_scale ?? {})[ s.intensity || 'medium'] ?? 1;
+    return entry.loading_min * intScale * durVol;
   }
 
   return (s.exercises || []).reduce((sum, e) => {

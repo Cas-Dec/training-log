@@ -11,5 +11,6 @@
     { "name": "none",           "min": 0,   "midpoint": 0    }
   ],
   "volume_formula": "sqrt",
-  "rpe_threshold": 8
+  "rpe_threshold": 8,
+  "intensity_scale": { "low": 0.75, "medium": 1.0, "high": 1.5 }
 }

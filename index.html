@@ -530,7 +530,7 @@
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4/dist/chart.umd.min.js"></script>
 <script>
 // ── LOADING MODEL (src/loading_model.json) ────────────────────────
-const LOADING_MODEL = {"impact_scale":[{"name":"maximal","min":100,"midpoint":120},{"name":"very high","min":90,"midpoint":95},{"name":"high","min":75,"midpoint":82.5},{"name":"medium to high","min":60,"midpoint":67.5},{"name":"medium","min":45,"midpoint":52.5},{"name":"low to medium","min":30,"midpoint":37.5},{"name":"low","min":15,"midpoint":22.5},{"name":"very low","min":0.5,"midpoint":8},{"name":"none","min":0,"midpoint":0}],"volume_formula":"sqrt","rpe_threshold":8};
+const LOADING_MODEL = {"impact_scale":[{"name":"maximal","min":100,"midpoint":120},{"name":"very high","min":90,"midpoint":95},{"name":"high","min":75,"midpoint":82.5},{"name":"medium to high","min":60,"midpoint":67.5},{"name":"medium","min":45,"midpoint":52.5},{"name":"low to medium","min":30,"midpoint":37.5},{"name":"low","min":15,"midpoint":22.5},{"name":"very low","min":0.5,"midpoint":8},{"name":"none","min":0,"midpoint":0}],"volume_formula":"sqrt","rpe_threshold":8,"intensity_scale":{"low":0.75,"medium":1.0,"high":1.5}};
 const IMPACT_MIDPOINTS = Object.fromEntries(LOADING_MODEL.impact_scale.map(function(t){return[t.name,t.midpoint];}));
 
 // ── STATE ──────────────────────────────────────────────────────────
@@ -1085,7 +1085,8 @@ function sessionPatellarVolume(s) {
     const entry = lookup.cardio[s.type];
     if (!entry || !s.duration) return 0;
     const durVol = LOADING_MODEL.volume_formula === 'sqrt' ? Math.sqrt(+s.duration) : +s.duration;
-    return entry.loading_min * durVol;
+    const intScale = (LOADING_MODEL.intensity_scale ?? {})[ s.intensity || 'medium'] ?? 1;
+    return entry.loading_min * intScale * durVol;
   }
 
   return (s.exercises || []).reduce((sum, e) => {
@@ -1468,7 +1469,10 @@ function buildContext() {
       .join(' | ');
     const volDesc = LOADING_MODEL.volume_formula === 'sqrt' ? '√(sets×reps)' : 'log₁₀(10+sets×reps)';
     const labelStr = LOADING_MODEL.impact_scale.map(t => `${t.name}≥${t.min}`).join(' | ');
-    const cardioDesc = LOADING_MODEL.volume_formula === 'sqrt' ? 'loading_min×√duration' : 'loading_min×duration';
+    const intStr = Object.entries(LOADING_MODEL.intensity_scale ?? {}).map(([k,v])=>`${k}=${v}`).join('/');
+    const cardioDesc = LOADING_MODEL.volume_formula === 'sqrt'
+      ? `loading_min×intensity×√duration (${intStr})`
+      : `loading_min×intensity×duration (${intStr})`;
     const rpeThresh = LOADING_MODEL.rpe_threshold ?? 8;
     loadingCtx = `\n\nLOAD MODEL: strain_factor×weight×${volDesc}×exp(max(0,RPE-${rpeThresh})), BW=${BODYWEIGHT_KG}kg; cardio: ${cardioDesc}
 Labels: ${labelStr}
