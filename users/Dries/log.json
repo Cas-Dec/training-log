@@ -1,5 +1,26 @@
 [
   {
+    "id": 1782289178639,
+    "user": "Dries",
+    "date": "2026-06-24",
+    "type": "Running",
+    "duration": "50",
+    "intensity": "high",
+    "hr": {
+      "avg": null,
+      "max": null
+    },
+    "speed": {
+      "avg": null,
+      "max": null
+    },
+    "exercises": [],
+    "energy": "average",
+    "sleep": "average",
+    "recovery": "good",
+    "notes": "hill sprints same session as last hill sprint session."
+  },
+  {
     "id": 1782220011089,
     "user": "Dries",
     "date": "2026-06-23",
