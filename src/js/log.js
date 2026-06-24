@@ -35,6 +35,10 @@ function onTypeChange() {
     if (last?.hr?.avg)    document.getElementById('cardio-hr-avg').value    = last.hr.avg;
     if (last?.hr?.max)    document.getElementById('cardio-hr-max').value    = last.hr.max;
     if (isSpeedType) {
+      const unit = type === 'Running' ? 'min/km' : type === 'Swimming' ? 'min/100m' : 'km/h';
+      const label = type === 'Cycling' ? 'speed' : 'pace';
+      document.getElementById('cardio-speed-avg-label').textContent = `Avg ${label} (${unit})`;
+      document.getElementById('cardio-speed-max-label').textContent = `Max ${label} (${unit})`;
       if (last?.speed?.avg) document.getElementById('cardio-speed-avg').value = last.speed.avg;
       if (last?.speed?.max) document.getElementById('cardio-speed-max').value = last.speed.max;
     }

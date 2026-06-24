@@ -356,11 +356,11 @@
     <div id="cardio-speed-section" style="display:none">
       <div class="grid2">
         <div class="field">
-          <label>Avg speed (km/h)</label>
+          <label id="cardio-speed-avg-label">Avg speed (km/h)</label>
           <input type="number" id="cardio-speed-avg" min="0" step="0.1" placeholder="optional">
         </div>
         <div class="field">
-          <label>Max speed (km/h)</label>
+          <label id="cardio-speed-max-label">Max speed (km/h)</label>
           <input type="number" id="cardio-speed-max" min="0" step="0.1" placeholder="optional">
         </div>
       </div>
@@ -534,7 +534,7 @@ const WORKER = 'https://claude-proxy.casdecancq.workers.dev';
 let sessions = [];
 let currentUser = 'Cas';
 const CARDIO_TYPES = ['Rugby', 'Badminton', 'Swimming', 'Running', 'Cycling'];
-const SPEED_CARDIO_TYPES = ['Running', 'Cycling'];
+const SPEED_CARDIO_TYPES = ['Running', 'Cycling', 'Swimming'];
 let BODYWEIGHT_KG = 85;
 const IMPACT_MIDPOINTS = {
   'maximal':120,'very high':80,'high':52,
@@ -948,6 +948,10 @@ function onTypeChange() {
     if (last?.hr?.avg)    document.getElementById('cardio-hr-avg').value    = last.hr.avg;
     if (last?.hr?.max)    document.getElementById('cardio-hr-max').value    = last.hr.max;
     if (isSpeedType) {
+      const unit = type === 'Running' ? 'min/km' : type === 'Swimming' ? 'min/100m' : 'km/h';
+      const label = type === 'Cycling' ? 'speed' : 'pace';
+      document.getElementById('cardio-speed-avg-label').textContent = `Avg ${label} (${unit})`;
+      document.getElementById('cardio-speed-max-label').textContent = `Max ${label} (${unit})`;
       if (last?.speed?.avg) document.getElementById('cardio-speed-avg').value = last.speed.avg;
       if (last?.speed?.max) document.getElementById('cardio-speed-max').value = last.speed.max;
     }
@@ -1130,8 +1134,8 @@ function renderHistory() {
           ${s.intensity  ? `<span>Intensity: ${s.intensity}</span>` : ''}
           ${s.hr?.avg    ? `<span>HR avg ${s.hr.avg} bpm</span>` : ''}
           ${s.hr?.max    ? `<span>HR max ${s.hr.max} bpm</span>` : ''}
-          ${s.speed?.avg ? `<span>Avg ${s.speed.avg} km/h</span>` : ''}
-          ${s.speed?.max ? `<span>Max ${s.speed.max} km/h</span>` : ''}
+          ${s.speed?.avg ? `<span>Avg ${s.speed.avg} ${s.type === 'Running' ? 'min/km' : s.type === 'Swimming' ? 'min/100m' : 'km/h'}</span>` : ''}
+          ${s.speed?.max ? `<span>Max ${s.speed.max} ${s.type === 'Running' ? 'min/km' : s.type === 'Swimming' ? 'min/100m' : 'km/h'}</span>` : ''}
         </div>`
       : (s.exercises?.length ? `<div class="ex-chips">${s.exercises.map(e=>`<span class="ex-chip">${e.name} ${e.loading}${e.rpe?' '+e.rpe:''}</span>`).join('')}</div>` : '');
     return `

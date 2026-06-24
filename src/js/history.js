@@ -90,8 +90,8 @@ function renderHistory() {
           ${s.intensity  ? `<span>Intensity: ${s.intensity}</span>` : ''}
           ${s.hr?.avg    ? `<span>HR avg ${s.hr.avg} bpm</span>` : ''}
           ${s.hr?.max    ? `<span>HR max ${s.hr.max} bpm</span>` : ''}
-          ${s.speed?.avg ? `<span>Avg ${s.speed.avg} km/h</span>` : ''}
-          ${s.speed?.max ? `<span>Max ${s.speed.max} km/h</span>` : ''}
+          ${s.speed?.avg ? `<span>Avg ${s.speed.avg} ${s.type === 'Running' ? 'min/km' : s.type === 'Swimming' ? 'min/100m' : 'km/h'}</span>` : ''}
+          ${s.speed?.max ? `<span>Max ${s.speed.max} ${s.type === 'Running' ? 'min/km' : s.type === 'Swimming' ? 'min/100m' : 'km/h'}</span>` : ''}
         </div>`
       : (s.exercises?.length ? `<div class="ex-chips">${s.exercises.map(e=>`<span class="ex-chip">${e.name} ${e.loading}${e.rpe?' '+e.rpe:''}</span>`).join('')}</div>` : '');
     return `
