@@ -1,5 +1,30 @@
 [
   {
+    "id": 1782290793621,
+    "user": "Cas",
+    "date": "2026-06-24",
+    "type": "Running",
+    "duration": "52",
+    "intensity": "high",
+    "hr": {
+      "avg": null,
+      "max": null
+    },
+    "speed": {
+      "avg": "9",
+      "max": "4.75"
+    },
+    "exercises": [],
+    "energy": "below-average",
+    "sleep": "poor",
+    "recovery": "good",
+    "kps": {
+      "morning": "2",
+      "post": "2"
+    },
+    "notes": ""
+  },
+  {
     "id": 1782251655789,
     "user": "Cas",
     "date": "2026-06-23",
@@ -83,6 +108,52 @@
     "notes": ""
   },
   {
+    "id": 1782048301067,
+    "user": "Dries",
+    "date": "2026-06-21",
+    "type": "Upper body",
+    "exercises": [
+      {
+        "name": "pull-ups",
+        "loading": "2x12, 1x9",
+        "rpe": "RPE8"
+      },
+      {
+        "name": "overhead press",
+        "loading": "2x10@70kg, 1x8@65kg",
+        "rpe": "RPE8"
+      },
+      {
+        "name": "lateral raise",
+        "loading": "3x12@18kg",
+        "rpe": "RPE7"
+      },
+      {
+        "name": "rear delt dumbbell fly",
+        "loading": "3x12@12kg",
+        "rpe": "RPE6"
+      },
+      {
+        "name": "bosuball crunch",
+        "loading": "3x10@14kg",
+        "rpe": "RPE7"
+      },
+      {
+        "name": "hanging knees to chest",
+        "loading": "3x12",
+        "rpe": "RPE6.5"
+      },
+      {
+        "name": "landmine twist",
+        "loading": "3x12@50kg",
+        "rpe": ""
+      }
+    ],
+    "energy": "above-average",
+    "sleep": "average",
+    "notes": "Very hot night"
+  },
+  {
     "id": 1782048413013,
     "user": "Cas",
     "date": "2026-06-21",
@@ -133,6 +204,90 @@
     "notes": ""
   },
   {
+    "id": 1781994836566,
+    "user": "Dries",
+    "date": "2026-06-20",
+    "type": "Running",
+    "duration": "35",
+    "intensity": "low",
+    "exercises": [],
+    "energy": "above-average",
+    "sleep": "good",
+    "notes": "4.7 km"
+  },
+  {
+    "id": 1781969957727,
+    "user": "Dries",
+    "date": "2026-06-20",
+    "type": "Legs",
+    "exercises": [
+      {
+        "name": "power clean",
+        "loading": "2x3@120kg, 1x3@122.5kg",
+        "rpe": "RPE8"
+      },
+      {
+        "name": "zercher hip extensions",
+        "loading": "3x10@54kg",
+        "rpe": "RPE7"
+      },
+      {
+        "name": "bulgarian split squats",
+        "loading": "3x8@95kg",
+        "rpe": "RPE7"
+      },
+      {
+        "name": "straight leg box jump",
+        "loading": "3x4",
+        "rpe": ""
+      }
+    ],
+    "energy": "above-average",
+    "sleep": "good",
+    "notes": ""
+  },
+  {
+    "id": 1781876506685,
+    "user": "Dries",
+    "date": "2026-06-19",
+    "type": "Upper body",
+    "exercises": [
+      {
+        "name": "pull-ups",
+        "loading": "2x6@27kg, 2x6@25kg",
+        "rpe": "RPE9"
+      },
+      {
+        "name": "dips",
+        "loading": "2x6@55kg, 2x6@50kg",
+        "rpe": "RPE9.5"
+      },
+      {
+        "name": "flat dumbbell press",
+        "loading": "2x9@48kg, 1x7@48kg",
+        "rpe": "RPE8"
+      },
+      {
+        "name": "seated machine rows",
+        "loading": "3x10@52.5kg",
+        "rpe": "RPE8"
+      },
+      {
+        "name": "bicep curls",
+        "loading": "2x10@20kg",
+        "rpe": "RPE8"
+      },
+      {
+        "name": "skullcrushers",
+        "loading": "2x10@50kg",
+        "rpe": "RPE9"
+      }
+    ],
+    "energy": "above-average",
+    "sleep": "average",
+    "notes": ""
+  },
+  {
     "id": 1781994830885,
     "user": "Cas",
     "date": "2026-06-19",
@@ -163,6 +318,37 @@
       "post": "3.5"
     },
     "notes": "Placeholder to register KPS."
+  },
+  {
+    "id": 1781785351602,
+    "user": "Dries",
+    "date": "2026-06-18",
+    "type": "Legs",
+    "exercises": [
+      {
+        "name": "squats",
+        "loading": "4x3@165kg",
+        "rpe": "RPE8.5"
+      },
+      {
+        "name": "romanian deadlifts",
+        "loading": "3x8@182kg",
+        "rpe": "RPE8.5"
+      },
+      {
+        "name": "single leg extensions",
+        "loading": "3x10@61kg",
+        "rpe": "RPE7"
+      },
+      {
+        "name": "prone leg curls",
+        "loading": "3x8@88kg",
+        "rpe": "RPE7"
+      }
+    ],
+    "energy": "above-average",
+    "sleep": "good",
+    "notes": "A bit sore from yesterday's rugby session but the body felt good"
   },
   {
     "id": 1781809708603,
@@ -236,6 +422,59 @@
     "notes": "Relaxed session, body tired from workload past week."
   },
   {
+    "id": 1781727295104,
+    "user": "Dries",
+    "date": "2026-06-17",
+    "type": "Rugby",
+    "duration": "90",
+    "intensity": "medium",
+    "exercises": [],
+    "energy": "average",
+    "sleep": "average",
+    "notes": ""
+  },
+  {
+    "id": 1781698976701,
+    "user": "Dries",
+    "date": "2026-06-17",
+    "type": "Upper body",
+    "exercises": [
+      {
+        "name": "pull-ups",
+        "loading": "4x6@26.25kg",
+        "rpe": "RPE9"
+      },
+      {
+        "name": "dips",
+        "loading": "4x6@55kg",
+        "rpe": "RPE9.5"
+      },
+      {
+        "name": "flat dumbbell press",
+        "loading": "3x8@48kg",
+        "rpe": "RPE9"
+      },
+      {
+        "name": "seated machine rows",
+        "loading": "3x10@50kg",
+        "rpe": "RPE8"
+      },
+      {
+        "name": "bicep curls",
+        "loading": "2x10@22kg",
+        "rpe": "RPE7"
+      },
+      {
+        "name": "skullcrushers",
+        "loading": "2x10@50kg",
+        "rpe": "RPE9"
+      }
+    ],
+    "energy": "average",
+    "sleep": "good",
+    "notes": ""
+  },
+  {
     "id": 1781727435527,
     "user": "Cas",
     "date": "2026-06-17",
@@ -284,6 +523,39 @@
       "post": "1.5"
     },
     "notes": "Easy training full of slow negatives"
+  },
+  {
+    "id": 1781646790206,
+    "user": "Dries",
+    "date": "2026-06-16",
+    "type": "Running",
+    "duration": "45",
+    "intensity": "high",
+    "exercises": [],
+    "energy": "below-average",
+    "sleep": "poor",
+    "notes": "25 minute warm up, running around Blaarmeersen\n2x4 hill sprints at rpe 9. Length, about 120m duration 20-30 seconds with 1m30 of rest between Intervals and 3 min rest between the two sets."
+  },
+  {
+    "id": 1781646655248,
+    "user": "Dries",
+    "date": "2026-06-16",
+    "type": "Legs",
+    "exercises": [
+      {
+        "name": "squats",
+        "loading": "4x6@152kg",
+        "rpe": "RPE8"
+      },
+      {
+        "name": "romanian deadlifts",
+        "loading": "3x8@165kg",
+        "rpe": "RPE6"
+      }
+    ],
+    "energy": "below-average",
+    "sleep": "poor",
+    "notes": "I felt tired after my exam and my tensor fascia latea or hurting whilst doing my warm ups NRS 2/10"
   },
   {
     "id": 1781645429544,
@@ -439,6 +711,45 @@
       "post": "4"
     },
     "notes": ""
+  },
+  {
+    "id": 1781376695963,
+    "date": "2026-06-12",
+    "type": "Pull",
+    "exercises": [
+      {
+        "name": "pull-ups",
+        "loading": "4x8@20kg",
+        "rpe": "RPE10"
+      },
+      {
+        "name": "romanian deadlifts",
+        "loading": "3x8@140kg",
+        "rpe": "RPE8"
+      },
+      {
+        "name": "bulgarian split squats",
+        "loading": "3x8@80kg",
+        "rpe": "RPE6.5"
+      },
+      {
+        "name": "dumbbell rows",
+        "loading": "3x15@40kg",
+        "rpe": "RPE9"
+      },
+      {
+        "name": "bicep curls",
+        "loading": "3x6@18kg",
+        "rpe": "RPE9"
+      }
+    ],
+    "energy": "below-average",
+    "sleep": "average",
+    "kps": {
+      "morning": "4.5",
+      "post": "4.5"
+    },
+    "notes": "Training felt good but slightly tired. Solei (calf) muscles too sore to run. Will go for cycling next instead."
   },
   {
     "id": 1781536017685,
