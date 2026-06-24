@@ -47,8 +47,8 @@ Sunday | rest
 - **Zone 2 modality:** KPS ≤3 → Running permitted. KPS ≥4 → Cycling mandatory.
 
 ## Patellar loading model
-Formula: `strain_factor × weight × log₁₀(10 + sets × reps)` (bodyweight = 85 kg added for free-weight exercises). Cardio: `loading_min × intensity_scale × √duration`.
+Formula: `strain_factor × weight × √(sets × reps)` (bodyweight = 85 kg added for free-weight exercises). Cardio: `loading_min × √duration`.
 
-$IMPACT scale: maximal ≥100 | very high 65–100 | high 40–65 | medium to high 22–40 | medium 12–22 | low to medium 6–12 | low 2–6 | very low 0.5–2 | none <0.5
+$IMPACT scale: maximal ≥100 | very high 90–100 | high 75–90 | medium to high 60–75 | medium 45–60 | low to medium 30–45 | low 15–30 | very low 0.5–15 | none <0.5
 
 Sessions can include `$IMPACT=<level>` in notes to override the computed value.

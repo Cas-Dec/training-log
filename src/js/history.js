@@ -34,13 +34,16 @@ function sessionPatellarVolume(s) {
   if (CARDIO_TYPES.includes(s.type)) {
     const entry = lookup.cardio[s.type];
     if (!entry || !s.duration) return 0;
-    const scale = entry.intensity_scale?.[s.intensity || 'medium'] ?? 1;
-    return entry.loading_min * scale * Math.sqrt(+s.duration);
+    const durVol = LOADING_MODEL.volume_formula === 'sqrt' ? Math.sqrt(+s.duration) : +s.duration;
+    return entry.loading_min * durVol;
   }
 
   return (s.exercises || []).reduce((sum, e) => {
     const entry = lookup.exercises[(e.name || '').toLowerCase().trim()];
     if (!entry || !entry.strain_factor) return sum;
+    const rpeNum = e.rpe ? parseFloat((e.rpe + '').match(/[\d.]+/)?.[0]) : null;
+    const thresh = LOADING_MODEL.rpe_threshold ?? 8;
+    const rpeMult = (rpeNum != null && rpeNum > thresh) ? Math.exp(rpeNum - thresh) : 1;
     const parts = (e.loading || '').split(',').map(p => p.trim()).filter(Boolean);
     return sum + parts.reduce((pSum, part) => {
       const sr = part.match(/^([\d.]+)\s*x\s*([\d.]+)/i);
@@ -51,7 +54,7 @@ function sessionPatellarVolume(s) {
       const added = w ? parseFloat(w[1]) : 0;
       const weight = entry.bodyweight ? BODYWEIGHT_KG + added : added;
       if (!weight) return pSum;
-      return pSum + entry.strain_factor * weight * Math.log10(10 + sets * reps);
+      return pSum + entry.strain_factor * weight * patellarVol(sets, reps) * rpeMult;
     }, 0);
   }, 0);
 }

@@ -13,7 +13,7 @@ Global constants and mutable state. Everything else reads from here.
 | `sessions` | let | Session array, newest-first. Populated by `pullFromGitHub()`. |
 | `currentUser` | let | `'Cas'` or `'Dries'`. Set on login / token parse. |
 | `BODYWEIGHT_KG` | let | Active bodyweight (kg). Defaults to 85; updated on `syncBodyweightFromWorker()` and each new bodyweight entry. Used in patellar load calculations. |
-| `lookup` | let | Patellar loading factors. Shape: `{ exercises: { name: { strain_factor, bodyweight } }, cardio: { type: { loading_min, intensity_scale? } } }` |
+| `lookup` | let | Patellar loading factors. Shape: `{ exercises: { name: { strain_factor, bodyweight } }, cardio: { type: { loading_min } } }` |
 | `bodyweightLog` | let | `[{ date, weight }]`, newest-first. Populated by `syncBodyweightFromWorker()`. |
 | `coreInstructions` | let | Loaded from `core-instructions.md` at runtime. |
 | `userContextMd` | let | Loaded from `users/{User}/user-context.md` at runtime. |
@@ -77,7 +77,7 @@ Session and bodyweight logging.
 Session list and patellar load model.
 
 - `parseLoading(loading, rpe)` — parses a loading string (e.g. `"4x8@100, 1x6@105"`) with optional RPE. Returns `{ sets, reps, e1rm, volume }` where `e1rm` uses the Epley formula with RPE-adjusted max reps, and `volume` is RPE-adjusted tonnage. Fallback when no RPE: multiplier = 1 (equivalent to RPE 10).
-- `sessionPatellarVolume(s)` — computes the patellar loading score for a session. Formula for strength: `strain_factor × weight × log₁₀(10 + sets×reps)`, summed across exercises. For cardio: `loading_min × intensity_scale × √duration`. Respects `$IMPACT=<label>` note override.
+- `sessionPatellarVolume(s)` — computes the patellar loading score for a session. Formula for strength: `strain_factor × weight × patellarVol(sets, reps)`, summed across exercises. For cardio: `loading_min × patellarVol(duration)`. Volume formula (`sqrt` or `log10`) is set in `src/loading_model.json`. Respects `$IMPACT=<label>` note override.
 - `renderHistory()` — renders the stats row, progression chart, bodyweight chart, KPS section, and session card list.
 
 ---

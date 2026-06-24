@@ -1,0 +1,15 @@
+{
+  "impact_scale": [
+    { "name": "maximal",        "min": 100, "midpoint": 120  },
+    { "name": "very high",      "min": 90,  "midpoint": 95   },
+    { "name": "high",           "min": 75,  "midpoint": 82.5 },
+    { "name": "medium to high", "min": 60,  "midpoint": 67.5 },
+    { "name": "medium",         "min": 45,  "midpoint": 52.5 },
+    { "name": "low to medium",  "min": 30,  "midpoint": 37.5 },
+    { "name": "low",            "min": 15,  "midpoint": 22.5 },
+    { "name": "very low",       "min": 0.5, "midpoint": 8    },
+    { "name": "none",           "min": 0,   "midpoint": 0    }
+  ],
+  "volume_formula": "sqrt",
+  "rpe_threshold": 8
+}

@@ -2,14 +2,9 @@
 let conversationHistory = [];
 
 function impactLabel(v) {
-  if (v >= 100) return 'maximal';
-  if (v >= 65)  return 'very high';
-  if (v >= 40)  return 'high';
-  if (v >= 22)  return 'medium to high';
-  if (v >= 12)  return 'medium';
-  if (v >= 6)   return 'low to medium';
-  if (v >= 2)   return 'low';
-  if (v >= 0.5) return 'very low';
+  for (const tier of LOADING_MODEL.impact_scale) {
+    if (v >= tier.min) return tier.name;
+  }
   return 'none';
 }
 
@@ -70,8 +65,12 @@ function buildContext() {
       .filter(([,v]) => v.strain_factor > 0)
       .map(([name,v]) => `${name}:${v.strain_factor}${v.bodyweight?'+BW':''}`)
       .join(' | ');
-    loadingCtx = `\n\nLOAD MODEL: strain_factor×weight×log₁₀(10+sets×reps), BW=${BODYWEIGHT_KG}kg; cardio: loading_min×scale×√min
-Labels: maximal≥100 | very high≥65 | high≥40 | medium to high≥22 | medium≥12 | low to medium≥6 | low≥2 | very low≥0.5
+    const volDesc = LOADING_MODEL.volume_formula === 'sqrt' ? '√(sets×reps)' : 'log₁₀(10+sets×reps)';
+    const labelStr = LOADING_MODEL.impact_scale.map(t => `${t.name}≥${t.min}`).join(' | ');
+    const cardioDesc = LOADING_MODEL.volume_formula === 'sqrt' ? 'loading_min×√duration' : 'loading_min×duration';
+    const rpeThresh = LOADING_MODEL.rpe_threshold ?? 8;
+    loadingCtx = `\n\nLOAD MODEL: strain_factor×weight×${volDesc}×exp(max(0,RPE-${rpeThresh})), BW=${BODYWEIGHT_KG}kg; cardio: ${cardioDesc}
+Labels: ${labelStr}
 Exercises: ${exList||'(none)'}
 Factor update: \`\`\`json\n{"type":"lookup-update","exercises":{"name":{"strain_factor":X}}}\`\`\``;
   }
@@ -240,8 +239,11 @@ function tuneLoadings() {
         const reps = sr ? parseFloat(sr[2]) : null;
         const added = w ? parseFloat(w[1]) : 0;
         const weight = entry.bodyweight ? BODYWEIGHT_KG + added : added;
+        const rpeNum = e.rpe ? parseFloat((e.rpe + '').match(/[\d.]+/)?.[0]) : null;
+        const thresh = LOADING_MODEL.rpe_threshold ?? 8;
+        const rpeMult = (rpeNum != null && rpeNum > thresh) ? Math.exp(rpeNum - thresh) : 1;
         const load = (sets && reps && weight)
-          ? entry.strain_factor * weight * Math.log10(10 + sets * reps)
+          ? entry.strain_factor * weight * patellarVol(sets, reps) * rpeMult
           : 0;
         return `  • ${e.name}  ${part}  →  ${load.toFixed(1)} (${impactLabel(load)})  [strain=${entry.strain_factor}${entry.bodyweight ? ' +BW' : ''}]`;
       });

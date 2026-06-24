@@ -529,18 +529,24 @@
 <script src="https://cdn.jsdelivr.net/npm/marked@12/marked.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4/dist/chart.umd.min.js"></script>
 <script>
+// ── LOADING MODEL (src/loading_model.json) ────────────────────────
+const LOADING_MODEL = {"impact_scale":[{"name":"maximal","min":100,"midpoint":120},{"name":"very high","min":90,"midpoint":95},{"name":"high","min":75,"midpoint":82.5},{"name":"medium to high","min":60,"midpoint":67.5},{"name":"medium","min":45,"midpoint":52.5},{"name":"low to medium","min":30,"midpoint":37.5},{"name":"low","min":15,"midpoint":22.5},{"name":"very low","min":0.5,"midpoint":8},{"name":"none","min":0,"midpoint":0}],"volume_formula":"sqrt","rpe_threshold":8};
+const IMPACT_MIDPOINTS = Object.fromEntries(LOADING_MODEL.impact_scale.map(function(t){return[t.name,t.midpoint];}));
+
 // ── STATE ──────────────────────────────────────────────────────────
+// LOADING_MODEL and IMPACT_MIDPOINTS are injected by build.py from src/loading_model.json
 const WORKER = 'https://claude-proxy.casdecancq.workers.dev';
 let sessions = [];
 let currentUser = 'Cas';
 const CARDIO_TYPES = ['Rugby', 'Badminton', 'Swimming', 'Running', 'Cycling'];
 const SPEED_CARDIO_TYPES = ['Running', 'Cycling', 'Swimming'];
 let BODYWEIGHT_KG = 85;
-const IMPACT_MIDPOINTS = {
-  'maximal':120,'very high':80,'high':52,
-  'medium to high':31,'medium':17,
-  'low to medium':9,'low':4,'very low':1,'none':0,
-};
+
+function patellarVol(sets, reps) {
+  return LOADING_MODEL.volume_formula === 'sqrt'
+    ? Math.sqrt(sets * reps)
+    : Math.log10(10 + sets * reps);
+}
 let lookup = { exercises: {}, cardio: {} };
 let bodyweightLog = [];
 let coreInstructions = '';
@@ -1078,13 +1084,16 @@ function sessionPatellarVolume(s) {
   if (CARDIO_TYPES.includes(s.type)) {
     const entry = lookup.cardio[s.type];
     if (!entry || !s.duration) return 0;
-    const scale = entry.intensity_scale?.[s.intensity || 'medium'] ?? 1;
-    return entry.loading_min * scale * Math.sqrt(+s.duration);
+    const durVol = LOADING_MODEL.volume_formula === 'sqrt' ? Math.sqrt(+s.duration) : +s.duration;
+    return entry.loading_min * durVol;
   }
 
   return (s.exercises || []).reduce((sum, e) => {
     const entry = lookup.exercises[(e.name || '').toLowerCase().trim()];
     if (!entry || !entry.strain_factor) return sum;
+    const rpeNum = e.rpe ? parseFloat((e.rpe + '').match(/[\d.]+/)?.[0]) : null;
+    const thresh = LOADING_MODEL.rpe_threshold ?? 8;
+    const rpeMult = (rpeNum != null && rpeNum > thresh) ? Math.exp(rpeNum - thresh) : 1;
     const parts = (e.loading || '').split(',').map(p => p.trim()).filter(Boolean);
     return sum + parts.reduce((pSum, part) => {
       const sr = part.match(/^([\d.]+)\s*x\s*([\d.]+)/i);
@@ -1095,7 +1104,7 @@ function sessionPatellarVolume(s) {
       const added = w ? parseFloat(w[1]) : 0;
       const weight = entry.bodyweight ? BODYWEIGHT_KG + added : added;
       if (!weight) return pSum;
-      return pSum + entry.strain_factor * weight * Math.log10(10 + sets * reps);
+      return pSum + entry.strain_factor * weight * patellarVol(sets, reps) * rpeMult;
     }, 0);
   }, 0);
 }
@@ -1394,14 +1403,9 @@ function renderKpsSensitivityChart() {
 let conversationHistory = [];
 
 function impactLabel(v) {
-  if (v >= 100) return 'maximal';
-  if (v >= 65)  return 'very high';
-  if (v >= 40)  return 'high';
-  if (v >= 22)  return 'medium to high';
-  if (v >= 12)  return 'medium';
-  if (v >= 6)   return 'low to medium';
-  if (v >= 2)   return 'low';
-  if (v >= 0.5) return 'very low';
+  for (const tier of LOADING_MODEL.impact_scale) {
+    if (v >= tier.min) return tier.name;
+  }
   return 'none';
 }
 
@@ -1462,8 +1466,12 @@ function buildContext() {
       .filter(([,v]) => v.strain_factor > 0)
       .map(([name,v]) => `${name}:${v.strain_factor}${v.bodyweight?'+BW':''}`)
       .join(' | ');
-    loadingCtx = `\n\nLOAD MODEL: strain_factor×weight×log₁₀(10+sets×reps), BW=${BODYWEIGHT_KG}kg; cardio: loading_min×scale×√min
-Labels: maximal≥100 | very high≥65 | high≥40 | medium to high≥22 | medium≥12 | low to medium≥6 | low≥2 | very low≥0.5
+    const volDesc = LOADING_MODEL.volume_formula === 'sqrt' ? '√(sets×reps)' : 'log₁₀(10+sets×reps)';
+    const labelStr = LOADING_MODEL.impact_scale.map(t => `${t.name}≥${t.min}`).join(' | ');
+    const cardioDesc = LOADING_MODEL.volume_formula === 'sqrt' ? 'loading_min×√duration' : 'loading_min×duration';
+    const rpeThresh = LOADING_MODEL.rpe_threshold ?? 8;
+    loadingCtx = `\n\nLOAD MODEL: strain_factor×weight×${volDesc}×exp(max(0,RPE-${rpeThresh})), BW=${BODYWEIGHT_KG}kg; cardio: ${cardioDesc}
+Labels: ${labelStr}
 Exercises: ${exList||'(none)'}
 Factor update: \`\`\`json\n{"type":"lookup-update","exercises":{"name":{"strain_factor":X}}}\`\`\``;
   }
@@ -1632,8 +1640,11 @@ function tuneLoadings() {
         const reps = sr ? parseFloat(sr[2]) : null;
         const added = w ? parseFloat(w[1]) : 0;
         const weight = entry.bodyweight ? BODYWEIGHT_KG + added : added;
+        const rpeNum = e.rpe ? parseFloat((e.rpe + '').match(/[\d.]+/)?.[0]) : null;
+        const thresh = LOADING_MODEL.rpe_threshold ?? 8;
+        const rpeMult = (rpeNum != null && rpeNum > thresh) ? Math.exp(rpeNum - thresh) : 1;
         const load = (sets && reps && weight)
-          ? entry.strain_factor * weight * Math.log10(10 + sets * reps)
+          ? entry.strain_factor * weight * patellarVol(sets, reps) * rpeMult
           : 0;
         return `  • ${e.name}  ${part}  →  ${load.toFixed(1)} (${impactLabel(load)})  [strain=${entry.strain_factor}${entry.bodyweight ? ' +BW' : ''}]`;
       });

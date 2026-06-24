@@ -1,71 +1,61 @@
 {
   "exercises": {
     "squats": {
-      "strain_factor": 0.27,
+      "strain_factor": 0.0555,
       "bodyweight": true
     },
     "bulgarian split squats": {
-      "strain_factor": 0.30,
+      "strain_factor": 0.0698,
       "bodyweight": true
     },
     "romanian deadlifts": {
-      "strain_factor": 0.07,
+      "strain_factor": 0.019,
       "bodyweight": true
     },
     "clean": {
-      "strain_factor": 0.37,
+      "strain_factor": 0.0483,
       "bodyweight": true
     },
     "power clean": {
-      "strain_factor": 0.22,
+      "strain_factor": 0.0423,
       "bodyweight": true
     },
     "clean pulls": {
-      "strain_factor": 0.12,
+      "strain_factor": 0.0131,
       "bodyweight": true
     },
     "pauze power clean + jerk": {
-      "strain_factor": 0.40,
+      "strain_factor": 0.0437,
       "bodyweight": true
     },
     "snatch": {
-      "strain_factor": 0.21,
+      "strain_factor": 0.1118,
       "bodyweight": true
     },
     "leg extensions": {
-      "strain_factor": 0.18,
+      "strain_factor": 0.2208,
       "bodyweight": false
     },
     "vertical jumps": {
-      "strain_factor": 0.50,
+      "strain_factor": 0.1847,
       "bodyweight": true
     }
   },
   "cardio": {
     "Badminton": {
-      "loading_min": 5.2
+      "loading_min": 9.0
     },
     "Swimming": {
       "loading_min": 0
     },
     "Rugby": {
-      "loading_min": 4.0
+      "loading_min": 8.5
     },
     "Running": {
-      "loading_min": 8,
-      "intensity_scale": {
-        "low": 0.2,
-        "medium": 0.55,
-        "high": 1.0
-      }
+      "loading_min": 10.0
     },
     "Cycling": {
-      "loading_min": 1.2,
-      "intensity_scale": {
-        "low": 1,
-        "medium": 2,
-        "high": 3.5
-      }
+      "loading_min": 4.8
     }
   }
 }
