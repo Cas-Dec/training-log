@@ -1,5 +1,61 @@
 [
   {
+    "id": 1782306599746,
+    "user": "Cas",
+    "date": "2026-06-24",
+    "type": "Full body",
+    "exercises": [
+      {
+        "name": "incline dumbbell press",
+        "loading": "1x8@42kg, 3x8@36kg",
+        "rpe": "RPE8"
+      },
+      {
+        "name": "tibialis raises",
+        "loading": "3x25",
+        "rpe": "RPE5"
+      },
+      {
+        "name": "single leg calf raises",
+        "loading": "3x15@10kg",
+        "rpe": "RPE5"
+      },
+      {
+        "name": "strict press",
+        "loading": "3x8@60kg",
+        "rpe": "RPE9"
+      },
+      {
+        "name": "bulgarian split squats",
+        "loading": "4x8@32kg",
+        "rpe": "RPE5"
+      },
+      {
+        "name": "dips",
+        "loading": "3x10@25kg",
+        "rpe": "RPE7"
+      },
+      {
+        "name": "romanian deadlifts",
+        "loading": "3x10@120kg",
+        "rpe": "RPE6.5"
+      },
+      {
+        "name": "lateral raise",
+        "loading": "3x12@18kg",
+        "rpe": "RPE8"
+      }
+    ],
+    "energy": "below-average",
+    "sleep": "poor",
+    "recovery": "poor",
+    "kps": {
+      "morning": "2",
+      "post": "3.5"
+    },
+    "notes": "Knees bit inflamed from running in the morning, not from this training. Form revision on incline db presses. Slow negatives for accessory work."
+  },
+  {
     "id": 1782290793621,
     "user": "Cas",
     "date": "2026-06-24",
