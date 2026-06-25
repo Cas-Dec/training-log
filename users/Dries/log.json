@@ -1,5 +1,42 @@
 [
   {
+    "id": 1782375163026,
+    "user": "Dries",
+    "date": "2026-06-25",
+    "type": "Legs",
+    "exercises": [
+      {
+        "name": "squats",
+        "loading": "4x5@130kg",
+        "rpe": "RPE5.5"
+      },
+      {
+        "name": "leg press",
+        "loading": "3x10@210kg",
+        "rpe": "RPE6.5"
+      },
+      {
+        "name": "prone leg curls",
+        "loading": "2x10@75kg",
+        "rpe": "RPE6.5"
+      },
+      {
+        "name": "leg press calve raises",
+        "loading": "3x12@120kg",
+        "rpe": "RPE5"
+      },
+      {
+        "name": "copenhagen plank 20s",
+        "loading": "2",
+        "rpe": "RPE5"
+      }
+    ],
+    "energy": "below-average",
+    "sleep": "poor",
+    "recovery": "normal",
+    "notes": "Between to exams, a bit stressed and very hot to get a good night of sleep. -> light session. Next week we go hard again"
+  },
+  {
     "id": 1782307642594,
     "user": "Dries",
     "date": "2026-06-24",
