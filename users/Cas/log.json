@@ -1,5 +1,46 @@
 [
   {
+    "id": 1782732799166,
+    "user": "Cas",
+    "date": "2026-06-29",
+    "type": "Pull",
+    "exercises": [
+      {
+        "name": "pull-ups",
+        "loading": "3x6@20kg, 2x12@0kg",
+        "rpe": "RPE9"
+      },
+      {
+        "name": "clean pulls",
+        "loading": "3x6@120kg",
+        "rpe": "RPE5"
+      },
+      {
+        "name": "dumbbell rows",
+        "loading": "3x10@50kg",
+        "rpe": "RPE8"
+      },
+      {
+        "name": "rear delt machine fly",
+        "loading": "3x12@86kg",
+        "rpe": "RPE8"
+      },
+      {
+        "name": "bicep curls",
+        "loading": "3x8@20kg",
+        "rpe": "RPE8.5"
+      }
+    ],
+    "energy": "below-average",
+    "sleep": "good",
+    "recovery": "normal",
+    "kps": {
+      "morning": "3",
+      "post": "2.5"
+    },
+    "notes": "Tired from festival but training felt good."
+  },
+  {
     "id": 1782387916398,
     "user": "Cas",
     "date": "2026-06-25",
