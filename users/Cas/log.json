@@ -1,5 +1,41 @@
 [
   {
+    "id": 1782827455814,
+    "user": "Cas",
+    "date": "2026-06-30",
+    "type": "Push",
+    "exercises": [
+      {
+        "name": "incline dumbbell press",
+        "loading": "3x8@36kg",
+        "rpe": "RPE8"
+      },
+      {
+        "name": "dips",
+        "loading": "3x10@0kg",
+        "rpe": "RPE5"
+      },
+      {
+        "name": "strict press",
+        "loading": "3x8@60kg",
+        "rpe": "RPE8"
+      },
+      {
+        "name": "lateral raise",
+        "loading": "1x12@16kg",
+        "rpe": "RPE8"
+      }
+    ],
+    "energy": "below-average",
+    "sleep": "average",
+    "recovery": "poor",
+    "kps": {
+      "morning": "4.5",
+      "post": "4.5"
+    },
+    "notes": "Feeling sick and inflamed. Reduced load, yet still had to stop session early."
+  },
+  {
     "id": 1782805804261,
     "user": "Cas",
     "date": "2026-06-29",
