@@ -1,5 +1,79 @@
 [
   {
+    "id": 1782819838468,
+    "user": "Dries",
+    "date": "2026-06-30",
+    "type": "Legs",
+    "exercises": [
+      {
+        "name": "squats",
+        "loading": "4x4@157kg",
+        "rpe": "RPE9.5"
+      },
+      {
+        "name": "romanian deadlifts",
+        "loading": "3x8@170kg",
+        "rpe": "RPE8.5"
+      },
+      {
+        "name": "prone leg curls",
+        "loading": "2x8@86kg",
+        "rpe": "RPE8.5"
+      },
+      {
+        "name": "single leg extensions",
+        "loading": "2x10@61kg",
+        "rpe": "RPE8.5"
+      }
+    ],
+    "energy": "below-average",
+    "sleep": "average",
+    "recovery": "normal",
+    "notes": "Energy was okay but the body was not on point"
+  },
+  {
+    "id": 1782773998341,
+    "user": "Dries",
+    "date": "2026-06-29",
+    "type": "Upper body",
+    "exercises": [
+      {
+        "name": "pull-ups",
+        "loading": "3x10",
+        "rpe": "RPE8"
+      },
+      {
+        "name": "overhead press",
+        "loading": "1x10@70kg, 1x8@70kg, 1x6@70kg",
+        "rpe": "RPE8.5"
+      },
+      {
+        "name": "lateral raise",
+        "loading": "3x12@16kg",
+        "rpe": "RPE6"
+      },
+      {
+        "name": "rear delt fly",
+        "loading": "3x12@74kg",
+        "rpe": "RPE7.5"
+      },
+      {
+        "name": "hanging knees to chest",
+        "loading": "2x12",
+        "rpe": "RPE7"
+      },
+      {
+        "name": "bosuball crunch",
+        "loading": "2x12@15kg",
+        "rpe": "RPE8.5"
+      }
+    ],
+    "energy": "average",
+    "sleep": "average",
+    "recovery": "normal",
+    "notes": ""
+  },
+  {
     "id": 1782712493887,
     "user": "Dries",
     "date": "2026-06-27",
