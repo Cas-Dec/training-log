@@ -1,5 +1,26 @@
 [
   {
+    "id": 1782886489674,
+    "user": "Dries",
+    "date": "2026-06-30",
+    "type": "Running",
+    "duration": "50",
+    "intensity": "high",
+    "hr": {
+      "avg": null,
+      "max": null
+    },
+    "speed": {
+      "avg": null,
+      "max": null
+    },
+    "exercises": [],
+    "energy": "average",
+    "sleep": "average",
+    "recovery": "normal",
+    "notes": "Hill sprints"
+  },
+  {
     "id": 1782819838468,
     "user": "Dries",
     "date": "2026-06-30",
