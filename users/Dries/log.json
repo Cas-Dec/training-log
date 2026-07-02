@@ -1,5 +1,22 @@
 [
   {
+    "id": 1782988834274,
+    "user": "Dries",
+    "date": "2026-07-02",
+    "type": "Rugby",
+    "duration": "90",
+    "intensity": "medium",
+    "hr": {
+      "avg": null,
+      "max": null
+    },
+    "exercises": [],
+    "energy": "average",
+    "sleep": "average",
+    "recovery": "normal",
+    "notes": "Beach rugby sessie"
+  },
+  {
     "id": 1782988795274,
     "user": "Dries",
     "date": "2026-07-02",
