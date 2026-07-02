@@ -1,5 +1,47 @@
 [
   {
+    "id": 1782988795274,
+    "user": "Dries",
+    "date": "2026-07-02",
+    "type": "Upper body",
+    "exercises": [
+      {
+        "name": "pull-ups",
+        "loading": "3x6@27kg, 1x5@27kg",
+        "rpe": "RPE9"
+      },
+      {
+        "name": "dips",
+        "loading": "4x6@55kg",
+        "rpe": "RPE8"
+      },
+      {
+        "name": "flat dumbbell press",
+        "loading": "3x8@48kg",
+        "rpe": "RPE9"
+      },
+      {
+        "name": "seated machine rows",
+        "loading": "3x10@55kg",
+        "rpe": "RPE7.5"
+      },
+      {
+        "name": "bicep curls",
+        "loading": "2x12@20kg",
+        "rpe": "RPE7"
+      },
+      {
+        "name": "triceps push down",
+        "loading": "2x12@45kg",
+        "rpe": "RPE8.5"
+      }
+    ],
+    "energy": "average",
+    "sleep": "average",
+    "recovery": "normal",
+    "notes": ""
+  },
+  {
     "id": 1782886489674,
     "user": "Dries",
     "date": "2026-06-30",
