@@ -1,5 +1,56 @@
 [
   {
+    "id": 1782996890652,
+    "user": "Cas",
+    "date": "2026-07-02",
+    "type": "Full body",
+    "exercises": [
+      {
+        "name": "dips",
+        "loading": "1x10@30kg, 3x10@40kg",
+        "rpe": "RPE8"
+      },
+      {
+        "name": "bulgarian split squats",
+        "loading": "3x8@42kg",
+        "rpe": "RPE6.5"
+      },
+      {
+        "name": "romanian deadlifts",
+        "loading": "3x10@120kg",
+        "rpe": "RPE7"
+      },
+      {
+        "name": "step-ups",
+        "loading": "2x12@33.5kg",
+        "rpe": "RPE9"
+      },
+      {
+        "name": "skullcrushers",
+        "loading": "2x10@45kg",
+        "rpe": "RPE9"
+      },
+      {
+        "name": "single leg calf raises",
+        "loading": "1x20@20kg",
+        "rpe": "RPE7"
+      },
+      {
+        "name": "tibialis raises",
+        "loading": "1x25",
+        "rpe": "RPE6.5"
+      }
+    ],
+    "energy": "average",
+    "sleep": "poor",
+    "recovery": "good",
+    "kps": {
+      "morning": "3",
+      "post": "3"
+    },
+    "notes": ""
+  },
+  {
     "id": 1782979770980,
     "user": "Cas",
     "date": "2026-07-01",
