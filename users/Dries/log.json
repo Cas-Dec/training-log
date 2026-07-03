@@ -1,5 +1,26 @@
 [
   {
+    "id": 1783097478199,
+    "user": "Dries",
+    "date": "2026-07-03",
+    "type": "Cycling",
+    "duration": "120",
+    "intensity": "medium",
+    "hr": {
+      "avg": null,
+      "max": null
+    },
+    "speed": {
+      "avg": null,
+      "max": null
+    },
+    "exercises": [],
+    "energy": "average",
+    "sleep": "average",
+    "recovery": "normal",
+    "notes": ""
+  },
+  {
     "id": 1782993076133,
     "user": "Dries",
     "date": "2026-07-02",
