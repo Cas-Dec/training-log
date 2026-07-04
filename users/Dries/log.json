@@ -1,5 +1,37 @@
 [
   {
+    "id": 1783181707496,
+    "user": "Dries",
+    "date": "2026-07-04",
+    "type": "Legs",
+    "exercises": [
+      {
+        "name": "power clean",
+        "loading": "3x3@110kg",
+        "rpe": "RPE9.5"
+      },
+      {
+        "name": "bulgarian split squats",
+        "loading": "3x8@90kg",
+        "rpe": "RPE7"
+      },
+      {
+        "name": "zercher hip extensions",
+        "loading": "3x10@60kg",
+        "rpe": "RPE8"
+      },
+      {
+        "name": "straight leg box jump",
+        "loading": "3x4@69kg",
+        "rpe": "RPE9"
+      }
+    ],
+    "energy": "average",
+    "sleep": "average",
+    "recovery": "normal",
+    "notes": ""
+  },
+  {
     "id": 1783097736844,
     "user": "Dries",
     "date": "2026-07-03",
