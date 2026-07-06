@@ -1,5 +1,51 @@
 [
   {
+    "id": 1783365565327,
+    "user": "Cas",
+    "date": "2026-07-06",
+    "type": "Full body",
+    "exercises": [
+      {
+        "name": "incline dumbbell press",
+        "loading": "3x5@40kg, 2x10@30kg",
+        "rpe": "RPE9"
+      },
+      {
+        "name": "leg press",
+        "loading": "3x8@120kg",
+        "rpe": "RPE5"
+      },
+      {
+        "name": "dips",
+        "loading": "2x8@40kg",
+        "rpe": "RPE9"
+      },
+      {
+        "name": "strict press",
+        "loading": "3x8@60kg",
+        "rpe": "RPE8"
+      },
+      {
+        "name": "lateral raise",
+        "loading": "3x12@16kg",
+        "rpe": "RPE8"
+      },
+      {
+        "name": "skullcrushers",
+        "loading": "3x15@35kg",
+        "rpe": "RPE8"
+      }
+    ],
+    "energy": "below-average",
+    "sleep": "poor",
+    "recovery": "poor",
+    "kps": {
+      "morning": "2",
+      "post": "2"
+    },
+    "notes": "Felt weak today, sleeping bad due to stress and illness."
+  },
+  {
     "id": 1782996890652,
     "user": "Cas",
     "date": "2026-07-02",
