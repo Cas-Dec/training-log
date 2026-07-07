@@ -159,10 +159,10 @@ Examples: 60 min cycling → 4.8 × √60 ≈ 37 (low to medium); 90 min badmint
 Any session note can include `$IMPACT=<level>` to replace the computed loading for that session with the midpoint of the corresponding band. Useful for race days, unusual sport intensity, or activities not in the table:
 
 ```
-Felt like a hard session. $IMPACT=very-high
+Felt like a hard session. $IMPACT=very high
 ```
 
-Parsing: extract `$IMPACT=(\S+)` from the notes string; if present, look up the midpoint and use it as the total session loading, ignoring the formula.
+Parsing: extract `$IMPACT=([a-z ]+)` from the notes string (label matches the band name as written, e.g. `very high`, `medium to high`); if present, look up the midpoint and use it as the total session loading, ignoring the formula.
 
 ---
 

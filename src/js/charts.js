@@ -130,10 +130,12 @@ function renderBodyweightChart() {
 // ── KPS CHARTS ─────────────────────────────────────────────────────
 let kpsLoadingChart = null;
 let kpsKpsChart = null;
+let kpsToleranceChart = null;
 
 function renderKpsSensitivityChart() {
   const wrapLoad = document.getElementById('kps-loading-chart-wrap');
   const wrapKps  = document.getElementById('kps-kps-chart-wrap');
+  const wrapTol  = document.getElementById('kps-tolerance-chart-wrap');
   const empty    = document.getElementById('kps-sensitivity-empty');
 
   const cutoff = Date.now() - TWELVE_WEEKS_MS;
@@ -153,18 +155,21 @@ function renderKpsSensitivityChart() {
     .filter(d => new Date(d).getTime() >= cutoff)
     .sort();
 
-  if (kpsLoadingChart) { kpsLoadingChart.destroy(); kpsLoadingChart = null; }
-  if (kpsKpsChart)     { kpsKpsChart.destroy();     kpsKpsChart = null; }
+  if (kpsLoadingChart)   { kpsLoadingChart.destroy();   kpsLoadingChart = null; }
+  if (kpsKpsChart)       { kpsKpsChart.destroy();       kpsKpsChart = null; }
+  if (kpsToleranceChart) { kpsToleranceChart.destroy(); kpsToleranceChart = null; }
 
   if (!dates.length) {
     wrapLoad.style.display = 'none';
     wrapKps.style.display  = 'none';
+    wrapTol.style.display  = 'none';
     empty.style.display    = '';
     empty.textContent = 'No sessions in the last 12 weeks.';
     return;
   }
   wrapLoad.style.display = '';
   wrapKps.style.display  = '';
+  wrapTol.style.display  = '';
   empty.style.display    = 'none';
 
   const xAxis = { ticks: { color: '#7a7872', font: { size: 11 }, maxTicksLimit: 10 }, grid: { color: '#2e2e2e' } };
@@ -228,6 +233,54 @@ function renderKpsSensitivityChart() {
         x: xAxis,
         y: { ...yAxis, min: 1, max: 6, ticks: { ...yAxis.ticks, stepSize: 1 } },
       }
+    }
+  });
+
+  // Third: patellar load tolerance = today's load / (next morning KPS − this morning KPS),
+  // smoothed with a trailing 7-calendar-day average. Higher = more load tolerated per unit of
+  // next-day pain increase. Days with no next-day reading, or a flat/improved morning KPS
+  // (delta <= 0, i.e. the ratio breaks down), are left as gaps.
+  const DAY_MS = 864e5;
+  const rawTolerance = dates.map((d, i) => {
+    const loading = dayMap[d].loading;
+    const next = dates[i + 1];
+    if (!loading || !next) return null;
+    const before = dayMap[d].morningKps;
+    const after  = dayMap[next].morningKps;
+    if (before == null || after == null) return null;
+    const delta = after - before;
+    return delta > 0 ? loading / delta : null;
+  });
+
+  const smoothedTolerance = dates.map((d, i) => {
+    const t = new Date(d).getTime();
+    let sum = 0, count = 0;
+    for (let j = i; j >= 0; j--) {
+      if (t - new Date(dates[j]).getTime() > 6 * DAY_MS) break;
+      if (rawTolerance[j] != null) { sum += rawTolerance[j]; count++; }
+    }
+    return count ? sum / count : null;
+  });
+
+  kpsToleranceChart = new Chart(document.getElementById('kps-tolerance-chart'), {
+    type: 'line',
+    data: {
+      labels: dates,
+      datasets: [{
+        label: 'Load tolerance (7d avg)',
+        data: smoothedTolerance.map(v => v !== null ? +v.toFixed(2) : null),
+        borderColor: '#4fd1c5',
+        backgroundColor: 'rgba(79,209,197,0.12)',
+        pointBackgroundColor: '#4fd1c5',
+        tension: 0.25,
+        fill: true,
+        spanGaps: true,
+      }]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: { legend: { display: false } },
+      scales: { x: xAxis, y: yAxis },
     }
   });
 }

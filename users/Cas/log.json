@@ -266,6 +266,36 @@
     "notes": "Tired from festival but training felt good."
   },
   {
+    "id": 1782664200000,
+    "user": "Cas",
+    "date": "2026-06-28",
+    "type": "Full body",
+    "exercises": [],
+    "energy": "average",
+    "sleep": "average",
+    "recovery": "normal",
+    "kps": {
+      "morning": null,
+      "post": null
+    },
+    "notes": "Festival, hours of dancing and jumping around. Knees really felt it. $IMPACT=very high"
+  },
+  {
+    "id": 1782577800000,
+    "user": "Cas",
+    "date": "2026-06-27",
+    "type": "Full body",
+    "exercises": [],
+    "energy": "below-average",
+    "sleep": "average",
+    "recovery": "normal",
+    "kps": {
+      "morning": null,
+      "post": null
+    },
+    "notes": "Festival day two, more hours of dancing and jumping. Knees still cranky from yesterday. $IMPACT=very high"
+  },
+  {
     "id": 1782387916398,
     "user": "Cas",
     "date": "2026-06-25",

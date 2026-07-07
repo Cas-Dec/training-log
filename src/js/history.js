@@ -28,8 +28,8 @@ function parseLoading(loading, rpe) {
 }
 
 function sessionPatellarVolume(s) {
-  const impactMatch = (s.notes || '').match(/\$IMPACT=([\w-]+)/i);
-  if (impactMatch) return IMPACT_MIDPOINTS[impactMatch[1].toLowerCase().replace(/_/g,'-')] ?? 0;
+  const impactMatch = (s.notes || '').match(/\$IMPACT=([a-z ]+)/i);
+  if (impactMatch) return IMPACT_MIDPOINTS[impactMatch[1].trim().toLowerCase()] ?? 0;
 
   if (CARDIO_TYPES.includes(s.type)) {
     const entry = lookup.cardio[s.type];
