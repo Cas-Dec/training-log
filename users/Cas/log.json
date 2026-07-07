@@ -1,5 +1,51 @@
 [
   {
+    "id": 1783432337627,
+    "user": "Cas",
+    "date": "2026-07-07",
+    "type": "Full body",
+    "exercises": [
+      {
+        "name": "pull-ups",
+        "loading": "3x15@0kg",
+        "rpe": "RPE8"
+      },
+      {
+        "name": "clean pulls",
+        "loading": "3x6@160kg",
+        "rpe": "RPE7"
+      },
+      {
+        "name": "dumbbell rows",
+        "loading": "3x10@50kg",
+        "rpe": "RPE7.5"
+      },
+      {
+        "name": "single leg calf raises",
+        "loading": "3x12@30kg",
+        "rpe": "RPE8"
+      },
+      {
+        "name": "leg extensions",
+        "loading": "2x10@79kg",
+        "rpe": "RPE7.5"
+      },
+      {
+        "name": "tibialis raises",
+        "loading": "3x25@0kg",
+        "rpe": "RPE5"
+      }
+    ],
+    "energy": "below-average",
+    "sleep": "average",
+    "recovery": "poor",
+    "kps": {
+      "morning": "1.5",
+      "post": "2"
+    },
+    "notes": "Still a bit sick. Will try to sleep long the next two nights to amp up recovery."
+  },
+  {
     "id": 1783365565327,
     "user": "Cas",
     "date": "2026-07-06",
