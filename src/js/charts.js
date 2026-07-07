@@ -1,3 +1,14 @@
+// Every calendar day from startMs to endMs inclusive, as 'YYYY-MM-DD' (UTC).
+// Used as chart labels so the x-axis has a fixed day-per-category width instead
+// of collapsing gaps between logged days.
+function denseDayRange(startMs, endMs) {
+  const days = [];
+  const start = Math.floor(startMs / 864e5) * 864e5;
+  const end   = Math.floor(endMs   / 864e5) * 864e5;
+  for (let t = start; t <= end; t += 864e5) days.push(new Date(t).toISOString().slice(0, 10));
+  return days;
+}
+
 // ── PROGRESSION CHART ─────────────────────────────────────────────
 let progressionChart = null;
 let progressionMetric = 'e1rm';
@@ -30,21 +41,21 @@ function renderProgressionChart() {
   const empty = document.getElementById('progression-empty');
 
   const cutoff = Date.now() - TWELVE_WEEKS_MS;
-  const points = sessions
+  const byDate = {};
+  sessions
     .filter(s => (s.user || 'Cas') === currentUser && new Date(s.date).getTime() >= cutoff)
-    .flatMap(s => (s.exercises || [])
+    .forEach(s => (s.exercises || [])
       .filter(e => e.name === exercise)
-      .map(e => {
+      .forEach(e => {
         const { e1rm, volume } = parseLoading(e.loading, e.rpe);
         const value = progressionMetric === 'volume' ? volume : e1rm;
-        return { date: s.date, value };
-      }))
-    .filter(p => p.value !== null)
-    .sort((a, b) => a.date.localeCompare(b.date));
+        if (value !== null) byDate[s.date] = value;
+      }));
+  const hasData = Object.keys(byDate).length > 0;
 
   if (progressionChart) { progressionChart.destroy(); progressionChart = null; }
 
-  if (!exercise || !points.length) {
+  if (!exercise || !hasData) {
     wrap.style.display = 'none';
     empty.style.display = '';
     empty.textContent = `No ${progressionMetric === 'e1rm' ? 'e1RM' : 'volume'} data for this exercise in the last 12 weeks.`;
@@ -53,18 +64,21 @@ function renderProgressionChart() {
   wrap.style.display = '';
   empty.style.display = 'none';
 
+  const days = denseDayRange(cutoff, Date.now());
+
   progressionChart = new Chart(document.getElementById('progression-chart'), {
     type: 'line',
     data: {
-      labels: points.map(p => p.date),
+      labels: days,
       datasets: [{
         label: exercise,
-        data: points.map(p => p.value),
+        data: days.map(d => byDate[d] ?? null),
         borderColor: '#c8f542',
         backgroundColor: 'rgba(200,245,66,0.12)',
         pointBackgroundColor: '#c8f542',
         tension: 0.25,
         fill: true,
+        spanGaps: true,
       }]
     },
     options: {
@@ -72,7 +86,7 @@ function renderProgressionChart() {
       maintainAspectRatio: false,
       plugins: { legend: { display: false } },
       scales: {
-        x: { ticks: { color: '#7a7872', font: { size: 11 } }, grid: { color: '#2e2e2e' } },
+        x: { ticks: { color: '#7a7872', font: { size: 11 }, maxTicksLimit: 10 }, grid: { color: '#2e2e2e' } },
         y: { ticks: { color: '#7a7872', font: { size: 11 } }, grid: { color: '#2e2e2e' }, min: 0 },
       }
     }
@@ -87,13 +101,15 @@ function renderBodyweightChart() {
   const empty = document.getElementById('bw-empty');
 
   const cutoff = Date.now() - TWELVE_WEEKS_MS;
-  const points = bodyweightLog
+  const byDate = {};
+  bodyweightLog
     .filter(e => new Date(e.date).getTime() >= cutoff)
-    .sort((a, b) => a.date.localeCompare(b.date));
+    .forEach(e => { byDate[e.date] = e.weight; });
+  const hasData = Object.keys(byDate).length > 0;
 
   if (bodyweightChart) { bodyweightChart.destroy(); bodyweightChart = null; }
 
-  if (!points.length) {
+  if (!hasData) {
     wrap.style.display  = 'none';
     empty.style.display = '';
     empty.textContent   = 'No bodyweight logged in the last 12 weeks.';
@@ -102,12 +118,15 @@ function renderBodyweightChart() {
   wrap.style.display  = '';
   empty.style.display = 'none';
 
+  const days = denseDayRange(cutoff, Date.now());
+
   bodyweightChart = new Chart(document.getElementById('bw-chart'), {
     type: 'line',
     data: {
-      labels: points.map(p => p.date),
+      labels: days,
       datasets: [{
-        data: points.map(p => p.weight),
+        data: days.map(d => byDate[d] ?? null),
+        spanGaps: true,
         borderColor: '#c8f542',
         backgroundColor: 'rgba(200,245,66,0.12)',
         pointBackgroundColor: '#c8f542',
@@ -151,15 +170,13 @@ function renderKpsSensitivityChart() {
       dayMap[s.date].postKps = +s.kps.post;
   });
 
-  const dates = Object.keys(dayMap)
-    .filter(d => new Date(d).getTime() >= cutoff)
-    .sort();
+  const hasRecent = Object.keys(dayMap).some(d => new Date(d).getTime() >= cutoff);
 
   if (kpsLoadingChart)   { kpsLoadingChart.destroy();   kpsLoadingChart = null; }
   if (kpsKpsChart)       { kpsKpsChart.destroy();       kpsKpsChart = null; }
   if (kpsToleranceChart) { kpsToleranceChart.destroy(); kpsToleranceChart = null; }
 
-  if (!dates.length) {
+  if (!hasRecent) {
     wrapLoad.style.display = 'none';
     wrapKps.style.display  = 'none';
     wrapTol.style.display  = 'none';
@@ -172,6 +189,8 @@ function renderKpsSensitivityChart() {
   wrapTol.style.display  = '';
   empty.style.display    = 'none';
 
+  const dates = denseDayRange(cutoff, Date.now());
+
   const xAxis = { ticks: { color: '#7a7872', font: { size: 11 }, maxTicksLimit: 10 }, grid: { color: '#2e2e2e' } };
   const yAxis = { ticks: { color: '#7a7872', font: { size: 11 } }, grid: { color: '#2e2e2e' }, beginAtZero: true };
 
@@ -182,7 +201,7 @@ function renderKpsSensitivityChart() {
       labels: dates,
       datasets: [{
         label: 'Patellar load',
-        data: dates.map(d => dayMap[d].loading > 0 ? +dayMap[d].loading.toFixed(1) : null),
+        data: dates.map(d => dayMap[d]?.loading > 0 ? +dayMap[d].loading.toFixed(1) : null),
         backgroundColor: 'rgba(255,107,107,0.55)',
         borderColor: '#ff6b6b',
         borderWidth: 1,
@@ -197,8 +216,8 @@ function renderKpsSensitivityChart() {
   });
 
   // Bottom: KPS history (morning + post)
-  const morningData = dates.map(d => dayMap[d].morningKps);
-  const postData    = dates.map(d => dayMap[d].postKps);
+  const morningData = dates.map(d => dayMap[d]?.morningKps ?? null);
+  const postData    = dates.map(d => dayMap[d]?.postKps ?? null);
   const hasPost     = postData.some(v => v !== null);
 
   const kpsDatasets = [{
@@ -236,17 +255,17 @@ function renderKpsSensitivityChart() {
     }
   });
 
-  // Third: patellar load tolerance = today's load / (next morning KPS − this morning KPS),
+  // Third: patellar load tolerance = today's load / (tomorrow morning KPS − this morning KPS),
   // smoothed with a trailing 7-calendar-day average. Higher = more load tolerated per unit of
-  // next-day pain increase. Days with no next-day reading, or a flat/improved morning KPS
-  // (delta <= 0, i.e. the ratio breaks down), are left as gaps.
+  // next-day pain increase. Days with no session, no tomorrow reading, or a flat/improved
+  // morning KPS (delta <= 0, i.e. the ratio breaks down), are left as gaps.
   const DAY_MS = 864e5;
   const rawTolerance = dates.map((d, i) => {
-    const loading = dayMap[d].loading;
+    const loading = dayMap[d]?.loading;
     const next = dates[i + 1];
     if (!loading || !next) return null;
     const before = dayMap[d].morningKps;
-    const after  = dayMap[next].morningKps;
+    const after  = dayMap[next]?.morningKps;
     if (before == null || after == null) return null;
     const delta = after - before;
     return delta > 0 ? loading / delta : null;
