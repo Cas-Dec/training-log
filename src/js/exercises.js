@@ -44,6 +44,29 @@ function knownExerciseNames() {
   return [...names].sort();
 }
 
+function findLastExerciseData(name) {
+  const q = name.trim().toLowerCase();
+  if (!q) return null;
+  for (const s of sessions) {
+    if ((s.user || 'Cas') !== currentUser) continue;
+    const ex = (s.exercises || []).find(e => e.name && e.name.toLowerCase() === q);
+    if (ex) return ex;
+  }
+  return null;
+}
+
+function applyExerciseAutofill(input) {
+  const data = findLastExerciseData(input.value);
+  if (!data) return;
+  const card = input.closest('.ex-card');
+  const groupsEl = card.querySelector('.ex-set-groups');
+  groupsEl.innerHTML = '';
+  const parts = data.loading ? data.loading.split(',').map(p => p.trim()).filter(Boolean) : [];
+  if (parts.length) parts.forEach(p => addSetGroup(groupsEl.id, p));
+  else addSetGroup(groupsEl.id);
+  card.querySelector('.ex-rpe').value = data.rpe ? data.rpe.replace('RPE', '') : '';
+}
+
 function wireExerciseAutocomplete(input) {
   const row = input.closest('.ex-name-row');
   let activeIdx = -1;
@@ -63,7 +86,7 @@ function wireExerciseAutocomplete(input) {
       const item = document.createElement('div');
       item.className = 'ex-suggestion';
       item.textContent = m;
-      item.addEventListener('mousedown', e => { e.preventDefault(); input.value = m; removeSuggestions(); });
+      item.addEventListener('mousedown', e => { e.preventDefault(); input.value = m; removeSuggestions(); applyExerciseAutofill(input); });
       box.appendChild(item);
     });
     row.appendChild(box);
@@ -90,6 +113,7 @@ function wireExerciseAutocomplete(input) {
       e.preventDefault();
       input.value = items[activeIdx].textContent;
       removeSuggestions();
+      applyExerciseAutofill(input);
       return;
     } else if (e.key === 'Escape') {
       removeSuggestions(); return;
@@ -98,6 +122,7 @@ function wireExerciseAutocomplete(input) {
   });
 
   input.addEventListener('blur', () => setTimeout(removeSuggestions, 150));
+  input.addEventListener('change', () => applyExerciseAutofill(input));
 }
 
 function addExercise(d={}) {
