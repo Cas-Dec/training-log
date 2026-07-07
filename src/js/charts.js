@@ -9,6 +9,11 @@ function denseDayRange(startMs, endMs) {
   return days;
 }
 
+// Earliest timestamp among a list of 'YYYY-MM-DD' date keys.
+function earliestMs(dateKeys) {
+  return Math.min(...dateKeys.map(d => new Date(d).getTime()));
+}
+
 // ── PROGRESSION CHART ─────────────────────────────────────────────
 let progressionChart = null;
 let progressionMetric = 'e1rm';
@@ -64,7 +69,7 @@ function renderProgressionChart() {
   wrap.style.display = '';
   empty.style.display = 'none';
 
-  const days = denseDayRange(cutoff, Date.now());
+  const days = denseDayRange(earliestMs(Object.keys(byDate)), Date.now());
 
   progressionChart = new Chart(document.getElementById('progression-chart'), {
     type: 'line',
@@ -118,7 +123,7 @@ function renderBodyweightChart() {
   wrap.style.display  = '';
   empty.style.display = 'none';
 
-  const days = denseDayRange(cutoff, Date.now());
+  const days = denseDayRange(earliestMs(Object.keys(byDate)), Date.now());
 
   bodyweightChart = new Chart(document.getElementById('bw-chart'), {
     type: 'line',
@@ -170,13 +175,13 @@ function renderKpsSensitivityChart() {
       dayMap[s.date].postKps = +s.kps.post;
   });
 
-  const hasRecent = Object.keys(dayMap).some(d => new Date(d).getTime() >= cutoff);
+  const recentDates = Object.keys(dayMap).filter(d => new Date(d).getTime() >= cutoff);
 
   if (kpsLoadingChart)   { kpsLoadingChart.destroy();   kpsLoadingChart = null; }
   if (kpsKpsChart)       { kpsKpsChart.destroy();       kpsKpsChart = null; }
   if (kpsToleranceChart) { kpsToleranceChart.destroy(); kpsToleranceChart = null; }
 
-  if (!hasRecent) {
+  if (!recentDates.length) {
     wrapLoad.style.display = 'none';
     wrapKps.style.display  = 'none';
     wrapTol.style.display  = 'none';
@@ -189,7 +194,7 @@ function renderKpsSensitivityChart() {
   wrapTol.style.display  = '';
   empty.style.display    = 'none';
 
-  const dates = denseDayRange(cutoff, Date.now());
+  const dates = denseDayRange(earliestMs(recentDates), Date.now());
 
   const xAxis = { ticks: { color: '#7a7872', font: { size: 11 }, maxTicksLimit: 10 }, grid: { color: '#2e2e2e' } };
   const yAxis = { ticks: { color: '#7a7872', font: { size: 11 } }, grid: { color: '#2e2e2e' }, beginAtZero: true };
