@@ -1,5 +1,26 @@
 [
   {
+    "id": 1783520095827,
+    "user": "Dries",
+    "date": "2026-07-07",
+    "type": "Running",
+    "duration": "60",
+    "intensity": "high",
+    "hr": {
+      "avg": null,
+      "max": null
+    },
+    "speed": {
+      "avg": null,
+      "max": null
+    },
+    "exercises": [],
+    "energy": "average",
+    "sleep": "average",
+    "recovery": "normal",
+    "notes": "Same hill sprint sessions as always 3 km warm-up and 2 x 4 hillsprints 120m long and 18m height."
+  },
+  {
     "id": 1783430851755,
     "user": "Dries",
     "date": "2026-07-07",
