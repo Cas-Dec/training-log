@@ -1,5 +1,32 @@
 [
   {
+    "id": 1785249242974,
+    "user": "Dries",
+    "date": "2026-07-28",
+    "type": "Legs",
+    "exercises": [
+      {
+        "name": "squats",
+        "loading": "3x12@102kg",
+        "rpe": "RPE7"
+      },
+      {
+        "name": "romanian deadlifts",
+        "loading": "3x8@160kg",
+        "rpe": "RPE8"
+      },
+      {
+        "name": "seated calve raises",
+        "loading": "3x12@60kg",
+        "rpe": "RPE6"
+      }
+    ],
+    "energy": "average",
+    "sleep": "average",
+    "recovery": "normal",
+    "notes": ""
+  },
+  {
     "id": 1785215479758,
     "user": "Dries",
     "date": "2026-07-28",
