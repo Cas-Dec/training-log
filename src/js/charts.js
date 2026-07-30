@@ -14,6 +14,54 @@ function earliestMs(dateKeys) {
   return Math.min(...dateKeys.map(d => new Date(d).getTime()));
 }
 
+// Aggregate (via `aggregate`, e.g. max/min/mean) of values logged in the
+// last 2 weeks, and the same aggregate over the reference window 10-12
+// weeks before that (falling back to the first 2 weeks of recorded data if
+// there's under 12 weeks of history). Returns null if either is unavailable.
+function computeWindowAggregates(valueByDate, aggregate) {
+  const DAY_MS = 864e5;
+  const dateKeys = Object.keys(valueByDate);
+  if (!dateKeys.length) return null;
+
+  const times = dateKeys.map(d => new Date(d).getTime());
+  const lastTime = Math.max(...times);
+  const firstTime = Math.min(...times);
+
+  const aggInWindow = (startMs, endMs) => {
+    const vals = dateKeys
+      .filter(d => { const t = new Date(d).getTime(); return t >= startMs && t <= endMs; })
+      .map(d => valueByDate[d]);
+    return vals.length ? aggregate(vals) : null;
+  };
+
+  const recent = aggInWindow(lastTime - 14 * DAY_MS, lastTime);
+
+  const hasFullTwelveWeeks = (lastTime - firstTime) >= 84 * DAY_MS;
+  const ref = hasFullTwelveWeeks
+    ? aggInWindow(lastTime - 84 * DAY_MS, lastTime - 70 * DAY_MS)
+    : aggInWindow(firstTime, firstTime + 14 * DAY_MS);
+
+  if (recent == null || ref == null) return null;
+  return { recent, ref };
+}
+
+function computeWindowDelta(valueByDate, aggregate) {
+  const agg = computeWindowAggregates(valueByDate, aggregate);
+  return agg ? agg.recent - agg.ref : null;
+}
+
+// Percent change of the recent-2-week aggregate relative to the reference
+// window aggregate. Null if there's no reference data or it's zero.
+function computeWindowPercentChange(valueByDate, aggregate) {
+  const agg = computeWindowAggregates(valueByDate, aggregate);
+  if (!agg || agg.ref === 0) return null;
+  return ((agg.recent - agg.ref) / agg.ref) * 100;
+}
+
+const maxOf  = vals => Math.max(...vals);
+const minOf  = vals => Math.min(...vals);
+const meanOf = vals => vals.reduce((a, b) => a + b, 0) / vals.length;
+
 // ── PROGRESSION CHART ─────────────────────────────────────────────
 let progressionChart = null;
 let progressionMetric = 'e1rm';
@@ -40,34 +88,15 @@ function populateProgressionSelect() {
   if (names.includes(prev)) sel.value = prev;
 }
 
-// Max e1RM logged in the last 2 weeks minus max e1RM logged in the
-// reference window 10-12 weeks before that (falling back to the first 2
-// weeks of recorded data if the exercise has under 12 weeks of history).
-function computeProgressionDelta(e1rmByDate) {
-  const DAY_MS = 864e5;
-  const dateKeys = Object.keys(e1rmByDate);
-  if (!dateKeys.length) return null;
-
-  const times = dateKeys.map(d => new Date(d).getTime());
-  const lastTime = Math.max(...times);
-  const firstTime = Math.min(...times);
-
-  const maxInWindow = (startMs, endMs) => {
-    const vals = dateKeys
-      .filter(d => { const t = new Date(d).getTime(); return t >= startMs && t <= endMs; })
-      .map(d => e1rmByDate[d]);
-    return vals.length ? Math.max(...vals) : null;
-  };
-
-  const recentMax = maxInWindow(lastTime - 14 * DAY_MS, lastTime);
-
-  const hasFullTwelveWeeks = (lastTime - firstTime) >= 84 * DAY_MS;
-  const refMax = hasFullTwelveWeeks
-    ? maxInWindow(lastTime - 84 * DAY_MS, lastTime - 70 * DAY_MS)
-    : maxInWindow(firstTime, firstTime + 14 * DAY_MS);
-
-  if (recentMax == null || refMax == null) return null;
-  return recentMax - refMax;
+// Writes a delta badge (e.g. "+3.0 kg") into `deltaEl`, colored to match
+// the chart's line, or clears it if there isn't enough data for a delta.
+function renderDeltaBadge(deltaEl, delta, color, { decimals = 1, unit = ' kg' } = {}) {
+  if (delta == null) {
+    deltaEl.textContent = '';
+    return;
+  }
+  deltaEl.textContent = `${delta > 0 ? '+' : ''}${delta.toFixed(decimals)}${unit}`;
+  deltaEl.style.color = color;
 }
 
 function renderProgressionChart() {
@@ -105,13 +134,7 @@ function renderProgressionChart() {
   wrap.style.display = '';
   empty.style.display = 'none';
 
-  const delta = computeProgressionDelta(e1rmByDate);
-  if (delta == null) {
-    deltaEl.textContent = '';
-  } else {
-    deltaEl.textContent = `${delta > 0 ? '+' : ''}${delta.toFixed(1)} kg`;
-    deltaEl.style.color = '#c8f542';
-  }
+  renderDeltaBadge(deltaEl, computeWindowDelta(e1rmByDate, maxOf), '#c8f542');
 
   const days = denseDayRange(earliestMs(Object.keys(byDate)), Date.now());
 
@@ -148,6 +171,7 @@ let bodyweightChart = null;
 function renderBodyweightChart() {
   const wrap  = document.getElementById('bw-chart-wrap');
   const empty = document.getElementById('bw-empty');
+  const deltaEl = document.getElementById('bw-delta');
 
   const cutoff = Date.now() - TWELVE_WEEKS_MS;
   const byDate = {};
@@ -162,10 +186,13 @@ function renderBodyweightChart() {
     wrap.style.display  = 'none';
     empty.style.display = '';
     empty.textContent   = 'No bodyweight logged in the last 12 weeks.';
+    deltaEl.textContent = '';
     return;
   }
   wrap.style.display  = '';
   empty.style.display = 'none';
+
+  renderDeltaBadge(deltaEl, computeWindowDelta(byDate, minOf), '#c8f542');
 
   const days = denseDayRange(earliestMs(Object.keys(byDate)), Date.now());
 
@@ -205,6 +232,7 @@ function renderKpsSensitivityChart() {
   const wrapKps  = document.getElementById('kps-kps-chart-wrap');
   const wrapTol  = document.getElementById('kps-tolerance-chart-wrap');
   const empty    = document.getElementById('kps-sensitivity-empty');
+  const tolDeltaEl = document.getElementById('tolerance-delta');
 
   const cutoff = Date.now() - TWELVE_WEEKS_MS;
 
@@ -231,6 +259,7 @@ function renderKpsSensitivityChart() {
     wrapTol.style.display  = 'none';
     empty.style.display    = '';
     empty.textContent = 'No sessions in the last 12 weeks.';
+    tolDeltaEl.textContent = '';
     return;
   }
   wrapLoad.style.display = '';
@@ -329,6 +358,10 @@ function renderKpsSensitivityChart() {
     }
     return count ? sum / count : null;
   });
+
+  const toleranceByDate = {};
+  dates.forEach((d, i) => { if (smoothedTolerance[i] != null) toleranceByDate[d] = smoothedTolerance[i]; });
+  renderDeltaBadge(tolDeltaEl, computeWindowPercentChange(toleranceByDate, meanOf), '#4fd1c5', { decimals: 0, unit: '%' });
 
   kpsToleranceChart = new Chart(document.getElementById('kps-tolerance-chart'), {
     type: 'line',
