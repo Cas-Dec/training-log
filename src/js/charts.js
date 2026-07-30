@@ -40,13 +40,45 @@ function populateProgressionSelect() {
   if (names.includes(prev)) sel.value = prev;
 }
 
+// Max e1RM logged in the last 2 weeks minus max e1RM logged in the
+// reference window 10-12 weeks before that (falling back to the first 2
+// weeks of recorded data if the exercise has under 12 weeks of history).
+function computeProgressionDelta(e1rmByDate) {
+  const DAY_MS = 864e5;
+  const dateKeys = Object.keys(e1rmByDate);
+  if (!dateKeys.length) return null;
+
+  const times = dateKeys.map(d => new Date(d).getTime());
+  const lastTime = Math.max(...times);
+  const firstTime = Math.min(...times);
+
+  const maxInWindow = (startMs, endMs) => {
+    const vals = dateKeys
+      .filter(d => { const t = new Date(d).getTime(); return t >= startMs && t <= endMs; })
+      .map(d => e1rmByDate[d]);
+    return vals.length ? Math.max(...vals) : null;
+  };
+
+  const recentMax = maxInWindow(lastTime - 14 * DAY_MS, lastTime);
+
+  const hasFullTwelveWeeks = (lastTime - firstTime) >= 84 * DAY_MS;
+  const refMax = hasFullTwelveWeeks
+    ? maxInWindow(lastTime - 84 * DAY_MS, lastTime - 70 * DAY_MS)
+    : maxInWindow(firstTime, firstTime + 14 * DAY_MS);
+
+  if (recentMax == null || refMax == null) return null;
+  return recentMax - refMax;
+}
+
 function renderProgressionChart() {
   const exercise = document.getElementById('progression-exercise').value;
   const wrap = document.getElementById('progression-chart-wrap');
   const empty = document.getElementById('progression-empty');
+  const deltaEl = document.getElementById('progression-delta');
 
   const cutoff = Date.now() - TWELVE_WEEKS_MS;
   const byDate = {};
+  const e1rmByDate = {};
   sessions
     .filter(s => (s.user || 'Cas') === currentUser && new Date(s.date).getTime() >= cutoff)
     .forEach(s => (s.exercises || [])
@@ -55,6 +87,9 @@ function renderProgressionChart() {
         const { e1rm, volume } = parseLoading(e.loading, e.rpe);
         const value = progressionMetric === 'volume' ? volume : e1rm;
         if (value !== null) byDate[s.date] = value;
+        if (e1rm !== null && (e1rmByDate[s.date] === undefined || e1rm > e1rmByDate[s.date])) {
+          e1rmByDate[s.date] = e1rm;
+        }
       }));
   const hasData = Object.keys(byDate).length > 0;
 
@@ -64,10 +99,19 @@ function renderProgressionChart() {
     wrap.style.display = 'none';
     empty.style.display = '';
     empty.textContent = `No ${progressionMetric === 'e1rm' ? 'e1RM' : 'volume'} data for this exercise in the last 12 weeks.`;
+    deltaEl.textContent = '';
     return;
   }
   wrap.style.display = '';
   empty.style.display = 'none';
+
+  const delta = computeProgressionDelta(e1rmByDate);
+  if (delta == null) {
+    deltaEl.textContent = '';
+  } else {
+    deltaEl.textContent = `${delta > 0 ? '+' : ''}${delta.toFixed(1)} kg`;
+    deltaEl.style.color = '#c8f542';
+  }
 
   const days = denseDayRange(earliestMs(Object.keys(byDate)), Date.now());
 
