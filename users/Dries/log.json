@@ -1,5 +1,32 @@
 [
   {
+    "id": 1786985136017,
+    "user": "Dries",
+    "date": "2026-08-15",
+    "type": "Legs",
+    "exercises": [
+      {
+        "name": "power clean",
+        "loading": "3x3@100kg",
+        "rpe": "RPE7"
+      },
+      {
+        "name": "single leg romanian deadlift",
+        "loading": "3x8@24kg",
+        "rpe": "RPE5"
+      },
+      {
+        "name": "box jump",
+        "loading": "3x4",
+        "rpe": "RPE10"
+      }
+    ],
+    "energy": "below-average",
+    "sleep": "good",
+    "recovery": "normal",
+    "notes": ""
+  },
+  {
     "id": 1786744185030,
     "user": "Dries",
     "date": "2026-08-14",
