@@ -1,5 +1,37 @@
 [
   {
+    "id": 1787053697055,
+    "user": "Dries",
+    "date": "2026-08-18",
+    "type": "Legs",
+    "exercises": [
+      {
+        "name": "squats",
+        "loading": "3x10@110kg",
+        "rpe": "RPE7"
+      },
+      {
+        "name": "romanian deadlifts",
+        "loading": "3x8@165kg",
+        "rpe": "RPE6.5"
+      },
+      {
+        "name": "single leg extensions",
+        "loading": "3x10@59kg",
+        "rpe": "RPE8"
+      },
+      {
+        "name": "prone leg curls",
+        "loading": "3x8@73kg",
+        "rpe": "RPE8"
+      }
+    ],
+    "energy": "above-average",
+    "sleep": "poor",
+    "recovery": "good",
+    "notes": ""
+  },
+  {
     "id": 1787033951610,
     "user": "Dries",
     "date": "2026-08-18",
