@@ -80,6 +80,7 @@
   .ex-card { background: var(--bg2); border: 1px solid var(--border); border-radius: var(--radius); padding: 10px; margin-bottom: 8px; }
   .ex-name-row { display: flex; gap: 8px; margin-bottom: 8px; position: relative; }
   .ex-name-row input { padding: 8px 10px; font-size: 14px; }
+  .ex-mode-row { display: flex; gap: 8px; margin-bottom: 8px; }
   .ex-suggestions { position: absolute; top: 100%; left: 0; right: 36px; background: var(--bg2); border: 1px solid var(--border); border-radius: var(--radius); z-index: 100; overflow: hidden; }
   .ex-suggestion { padding: 7px 10px; font-size: 14px; cursor: pointer; }
   .ex-suggestion:hover, .ex-suggestion.active { background: var(--accent); color: #fff; }

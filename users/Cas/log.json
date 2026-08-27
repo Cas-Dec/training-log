@@ -174,8 +174,8 @@
       "max": null
     },
     "speed": {
-      "avg": "6.45",
-      "max": "6.45"
+      "avg": "6:45",
+      "max": "6:45"
     },
     "exercises": [],
     "energy": "above-average",
@@ -358,8 +358,8 @@
       "max": null
     },
     "speed": {
-      "avg": "5.25",
-      "max": "4.48"
+      "avg": "5:25",
+      "max": "4:48"
     },
     "exercises": [],
     "energy": "above-average",
@@ -526,8 +526,8 @@
       "max": null
     },
     "speed": {
-      "avg": "5.33",
-      "max": "4.25"
+      "avg": "5:33",
+      "max": "4:25"
     },
     "exercises": [],
     "energy": "average",
@@ -786,8 +786,8 @@
       "max": null
     },
     "speed": {
-      "avg": "9",
-      "max": "4.75"
+      "avg": "9:00",
+      "max": "4:45"
     },
     "exercises": [],
     "energy": "below-average",

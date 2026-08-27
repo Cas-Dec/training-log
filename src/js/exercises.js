@@ -13,7 +13,29 @@ function rpeOptions() {
   return o;
 }
 
-function addSetGroup(containerId, loading='') {
+// Infer reps/duration and weight/band mode from a stored loading string
+// (e.g. autofill from a previous session) so the card renders the right
+// controls before the user touches anything.
+function detectRepMode(loadingStr) {
+  return /x\s*[\d.]+\s*s\b/i.test(loadingStr || '') ? 'duration' : 'reps';
+}
+
+function detectLoadMode(loadingStr) {
+  const parts = (loadingStr || '').split(',');
+  for (const p of parts) {
+    const m = p.match(/@\s*(\S+)/);
+    if (m && !/^[\d.]+[a-zA-Z]*$/.test(m[1])) return 'band';
+  }
+  return 'weight';
+}
+
+function repsFieldHtml(repMode) {
+  return repMode === 'duration'
+    ? `<input type="number" min="1" class="ex-reps" placeholder="sec">`
+    : `<select class="ex-reps">${numOptions('Reps', 30)}</select>`;
+}
+
+function addSetGroup(containerId, loading='', repMode='reps', loadMode='weight') {
   const container = document.getElementById(containerId);
   const row = document.createElement('div');
   row.className = 'ex-set-row';
@@ -22,9 +44,9 @@ function addSetGroup(containerId, loading='') {
   row.innerHTML = `
     <select class="ex-sets">${numOptions('Sets', 10)}</select>
     <span class="ex-x">×</span>
-    <select class="ex-reps">${numOptions('Reps', 30)}</select>
+    ${repsFieldHtml(repMode)}
     <span class="ex-at">@</span>
-    <input type="text" class="ex-weight" placeholder="20kg" value="${weight}">
+    <input type="text" class="ex-weight" placeholder="${loadMode === 'band' ? 'e.g. red' : '20kg'}" value="${weight}">
     <button class="rm-set-btn" onclick="removeSetGroup(this)">−</button>`;
   container.appendChild(row);
   if (loading) {
@@ -36,6 +58,38 @@ function addSetGroup(containerId, loading='') {
 function removeSetGroup(btn) {
   const row = btn.closest('.ex-set-row');
   if (row.parentElement.children.length > 1) row.remove();
+}
+
+function addSetGroupForCard(id) {
+  const card = document.getElementById('ex-'+id);
+  const groupsEl = card.querySelector('.ex-set-groups');
+  addSetGroup(groupsEl.id, '', card.dataset.repMode, card.dataset.loadMode);
+}
+
+// Reflects card.dataset.repMode/loadMode onto the toggle buttons' active state.
+function syncModeButtons(card) {
+  card.querySelectorAll('[data-rep-mode]').forEach(b => b.classList.toggle('active', b.dataset.repMode === (card.dataset.repMode || 'reps')));
+  card.querySelectorAll('[data-load-mode]').forEach(b => b.classList.toggle('active', b.dataset.loadMode === (card.dataset.loadMode || 'weight')));
+}
+
+function setRepMode(id, mode) {
+  const card = document.getElementById('ex-'+id);
+  card.dataset.repMode = mode;
+  syncModeButtons(card);
+  card.querySelectorAll('.ex-set-row').forEach(row => {
+    const old = row.querySelector('.ex-reps');
+    const el = mode === 'duration'
+      ? Object.assign(document.createElement('input'), { type: 'number', min: '1', className: 'ex-reps', placeholder: 'sec' })
+      : Object.assign(document.createElement('select'), { className: 'ex-reps', innerHTML: numOptions('Reps', 30) });
+    old.replaceWith(el);
+  });
+}
+
+function setLoadMode(id, mode) {
+  const card = document.getElementById('ex-'+id);
+  card.dataset.loadMode = mode;
+  syncModeButtons(card);
+  card.querySelectorAll('.ex-weight').forEach(inp => { inp.placeholder = mode === 'band' ? 'e.g. red' : '20kg'; });
 }
 
 function knownExerciseNames() {
@@ -59,11 +113,14 @@ function applyExerciseAutofill(input) {
   const data = findLastExerciseData(input.value);
   if (!data) return;
   const card = input.closest('.ex-card');
+  card.dataset.repMode = detectRepMode(data.loading);
+  card.dataset.loadMode = detectLoadMode(data.loading);
+  syncModeButtons(card);
   const groupsEl = card.querySelector('.ex-set-groups');
   groupsEl.innerHTML = '';
   const parts = data.loading ? data.loading.split(',').map(p => p.trim()).filter(Boolean) : [];
-  if (parts.length) parts.forEach(p => addSetGroup(groupsEl.id, p));
-  else addSetGroup(groupsEl.id);
+  if (parts.length) parts.forEach(p => addSetGroup(groupsEl.id, p, card.dataset.repMode, card.dataset.loadMode));
+  else addSetGroup(groupsEl.id, '', card.dataset.repMode, card.dataset.loadMode);
   card.querySelector('.ex-rpe').value = data.rpe ? data.rpe.replace('RPE', '') : '';
 }
 
@@ -128,23 +185,38 @@ function wireExerciseAutocomplete(input) {
 function addExercise(d={}) {
   const id = exCount++;
   const groupsId = `ex-${id}-groups`;
+  const repMode = detectRepMode(d.loading);
+  const loadMode = detectLoadMode(d.loading);
   const card = document.createElement('div');
   card.className = 'ex-card'; card.id = 'ex-'+id;
+  card.dataset.repMode = repMode;
+  card.dataset.loadMode = loadMode;
   card.innerHTML = `
     <div class="ex-name-row">
       <input type="text" placeholder="e.g. pull-ups" value="${d.name||''}">
       <button class="rm-btn" onclick="document.getElementById('ex-${id}').remove()">×</button>
     </div>
+    <div class="ex-mode-row">
+      <div class="metric-toggle">
+        <button type="button" class="metric-btn" data-rep-mode="reps" onclick="setRepMode(${id},'reps')">Reps</button>
+        <button type="button" class="metric-btn" data-rep-mode="duration" onclick="setRepMode(${id},'duration')">Duration</button>
+      </div>
+      <div class="metric-toggle">
+        <button type="button" class="metric-btn" data-load-mode="weight" onclick="setLoadMode(${id},'weight')">Weight</button>
+        <button type="button" class="metric-btn" data-load-mode="band" onclick="setLoadMode(${id},'band')">Band</button>
+      </div>
+    </div>
     <div class="ex-set-groups" id="${groupsId}"></div>
     <div class="ex-footer-row">
-      <button class="add-set-btn" onclick="addSetGroup('${groupsId}')">+ set</button>
+      <button class="add-set-btn" onclick="addSetGroupForCard(${id})">+ set</button>
       <select class="ex-rpe">${rpeOptions()}</select>
     </div>`;
   document.getElementById('exercises').appendChild(card);
+  syncModeButtons(card);
   wireExerciseAutocomplete(card.querySelector('.ex-name-row input'));
   const parts = d.loading ? d.loading.split(',').map(p => p.trim()).filter(Boolean) : [];
-  if (parts.length) parts.forEach(p => addSetGroup(groupsId, p));
-  else addSetGroup(groupsId);
+  if (parts.length) parts.forEach(p => addSetGroup(groupsId, p, repMode, loadMode));
+  else addSetGroup(groupsId, '', repMode, loadMode);
   if (d.rpe) card.querySelector('.ex-rpe').value = d.rpe.replace('RPE', '');
 }
 
@@ -162,13 +234,16 @@ function getExercises() {
   return [...document.querySelectorAll('#exercises .ex-card')].map(card => {
     const name = card.querySelector('.ex-name-row input').value.trim().toLowerCase();
     const rpe = card.querySelector('.ex-rpe').value;
+    const repMode = card.dataset.repMode || 'reps';
+    const loadMode = card.dataset.loadMode || 'weight';
     const loadings = [...card.querySelectorAll('.ex-set-row')].map(sr => {
       const sets = sr.querySelector('.ex-sets').value;
-      const reps = sr.querySelector('.ex-reps').value;
+      const repsVal = sr.querySelector('.ex-reps').value;
       const rawWeight = sr.querySelector('.ex-weight').value.trim();
-      if (!sets && !reps && !rawWeight) return null;
-      const weight = normalizeWeight(rawWeight);
-      return (sets && reps ? `${sets}x${reps}` : (sets || reps || '')) + (weight ? `@${weight}` : '');
+      if (!sets && !repsVal && !rawWeight) return null;
+      const weight = loadMode === 'band' ? rawWeight : normalizeWeight(rawWeight);
+      const repsStr = repsVal ? (repMode === 'duration' ? `${repsVal}s` : repsVal) : '';
+      return (sets && repsStr ? `${sets}x${repsStr}` : (sets || repsStr || '')) + (weight ? `@${weight}` : '');
     }).filter(Boolean);
     return { name, loading: loadings.join(', '), rpe: rpe ? `RPE${rpe}` : '' };
   }).filter(e => e.name);

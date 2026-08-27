@@ -36,7 +36,7 @@ function buildContext() {
         s.duration  != null ? `${s.duration}min`  : null,
         s.intensity ?? null,
         s.hr?.avg   != null ? `HR${s.hr.avg}${s.hr.max != null ? '/'+s.hr.max : ''}` : null,
-        s.speed?.avg!= null ? `${s.speed.avg}kph${s.speed.max != null ? '/'+s.speed.max : ''}` : null,
+        s.speed?.avg!= null ? `${s.speed.avg}${s.type === 'Running' ? '/km' : s.type === 'Swimming' ? 'min/100m' : 'kph'}${s.speed.max != null ? '/'+s.speed.max : ''}` : null,
       ].filter(Boolean).join(' ');
     } else {
       details = (s.exercises || [])

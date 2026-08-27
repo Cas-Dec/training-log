@@ -35,12 +35,20 @@ function onTypeChange() {
     if (last?.hr?.avg)    document.getElementById('cardio-hr-avg').value    = last.hr.avg;
     if (last?.hr?.max)    document.getElementById('cardio-hr-max').value    = last.hr.max;
     if (isSpeedType) {
-      const unit = type === 'Running' ? 'min/km' : type === 'Swimming' ? 'min/100m' : 'km/h';
+      const isPace = type === 'Running';
+      const unit = type === 'Running' ? 'mm:ss/km' : type === 'Swimming' ? 'min/100m' : 'km/h';
       const label = type === 'Cycling' ? 'speed' : 'pace';
       document.getElementById('cardio-speed-avg-label').textContent = `Avg ${label} (${unit})`;
       document.getElementById('cardio-speed-max-label').textContent = `Max ${label} (${unit})`;
-      if (last?.speed?.avg) document.getElementById('cardio-speed-avg').value = last.speed.avg;
-      if (last?.speed?.max) document.getElementById('cardio-speed-max').value = last.speed.max;
+      const avgInput = document.getElementById('cardio-speed-avg');
+      const maxInput = document.getElementById('cardio-speed-max');
+      avgInput.type = isPace ? 'text' : 'number';
+      maxInput.type = isPace ? 'text' : 'number';
+      avgInput.placeholder = isPace ? 'e.g. 4:45' : 'optional';
+      maxInput.placeholder = isPace ? 'e.g. 4:30' : 'optional';
+      document.getElementById('cardio-speed-hint').style.display = isPace ? '' : 'none';
+      if (last?.speed?.avg) avgInput.value = last.speed.avg;
+      if (last?.speed?.max) maxInput.value = last.speed.max;
     }
   } else {
     document.getElementById('exercises').innerHTML = '';
@@ -55,6 +63,17 @@ async function saveSession() {
 
   const type = document.getElementById('session-type').value;
   const isCardio = CARDIO_TYPES.includes(type);
+
+  if (type === 'Running') {
+    const pacePattern = /^\d{1,2}:[0-5]\d$/;
+    const avgPace = document.getElementById('cardio-speed-avg').value.trim();
+    const maxPace = document.getElementById('cardio-speed-max').value.trim();
+    if ((avgPace && !pacePattern.test(avgPace)) || (maxPace && !pacePattern.test(maxPace))) {
+      setStatus('Pace must be in mm:ss format, e.g. 4:45.', 'err');
+      return;
+    }
+  }
+
   const session = {
     id: Date.now(),
     user: currentUser,
@@ -87,13 +106,16 @@ async function saveSession() {
     notes: document.getElementById('notes').value.trim(),
   };
 
-  // Register any new exercise names in the shared wiki
+  // Register any new exercise names in the shared wiki.
+  // Awaited (not fire-and-forget) so this commit lands before the log
+  // commit below starts — two concurrent PUTs to the same GitHub branch
+  // race for the ref update and the second one can fail with a 409.
   const newNames = (session.exercises || [])
     .map(e => e.name)
     .filter(n => n && !wikiExercises.includes(n));
   if (newNames.length) {
     wikiExercises = [...new Set([...wikiExercises, ...newNames])].sort();
-    syncWikiToGitHub();
+    await syncWikiToGitHub();
   }
 
   // Save locally first
