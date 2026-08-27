@@ -1,5 +1,46 @@
 [
   {
+    "id": 1787830710776,
+    "user": "Cas",
+    "date": "2026-08-27",
+    "type": "Push",
+    "exercises": [
+      {
+        "name": "incline dumbbell press",
+        "loading": "3x12@34kg",
+        "rpe": "RPE9"
+      },
+      {
+        "name": "weighted sit-ups",
+        "loading": "3x12@10kg",
+        "rpe": "RPE6"
+      },
+      {
+        "name": "strict press",
+        "loading": "3x8@50kg",
+        "rpe": "RPE8"
+      },
+      {
+        "name": "lateral raise",
+        "loading": "3x10@18kg",
+        "rpe": "RPE9.5"
+      },
+      {
+        "name": "cable tricep extensions",
+        "loading": "3x12@27kg",
+        "rpe": "RPE9"
+      }
+    ],
+    "energy": "below-average",
+    "sleep": "average",
+    "recovery": "normal",
+    "kps": {
+      "morning": "3",
+      "post": "3"
+    },
+    "notes": ""
+  },
+  {
     "id": 1787823385615,
     "user": "Cas",
     "date": "2026-08-26",
