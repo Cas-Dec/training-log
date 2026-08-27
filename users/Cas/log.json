@@ -1,5 +1,30 @@
 [
   {
+    "id": 1787823385615,
+    "user": "Cas",
+    "date": "2026-08-26",
+    "type": "Running",
+    "duration": "52",
+    "intensity": "low",
+    "hr": {
+      "avg": null,
+      "max": null
+    },
+    "speed": {
+      "avg": "8",
+      "max": null
+    },
+    "exercises": [],
+    "energy": "above-average",
+    "sleep": "good",
+    "recovery": "poor",
+    "kps": {
+      "morning": "2.5",
+      "post": "3"
+    },
+    "notes": ""
+  },
+  {
     "id": 1787748334174,
     "user": "Cas",
     "date": "2026-08-26",
