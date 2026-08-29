@@ -1,5 +1,51 @@
 [
   {
+    "id": 1788034944397,
+    "user": "Cas",
+    "date": "2026-08-28",
+    "type": "Full body",
+    "exercises": [
+      {
+        "name": "pull-ups",
+        "loading": "3x6@20kg",
+        "rpe": "RPE8.5"
+      },
+      {
+        "name": "bulgarian split squats",
+        "loading": "3x15@0kg",
+        "rpe": "RPE5"
+      },
+      {
+        "name": "dumbbell rows",
+        "loading": "3x12@46kg",
+        "rpe": "RPE8.5"
+      },
+      {
+        "name": "nordic holds",
+        "loading": "3x30s@0kg",
+        "rpe": "RPE9"
+      },
+      {
+        "name": "terminal knee extensions",
+        "loading": "3x25@resistance",
+        "rpe": "RPE5"
+      },
+      {
+        "name": "leg extensions",
+        "loading": "3x20@50kg",
+        "rpe": "RPE5"
+      }
+    ],
+    "energy": "average",
+    "sleep": "average",
+    "recovery": "poor",
+    "kps": {
+      "morning": "3.5",
+      "post": "3.5"
+    },
+    "notes": ""
+  },
+  {
     "id": 1787869985346,
     "user": "Cas",
     "date": "2026-08-27",
