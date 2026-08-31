@@ -1,5 +1,56 @@
 [
   {
+    "id": 1788190304099,
+    "user": "Cas",
+    "date": "2026-08-31",
+    "type": "Push",
+    "exercises": [
+      {
+        "name": "incline dumbbell press",
+        "loading": "3x10@34kg",
+        "rpe": "RPE8"
+      },
+      {
+        "name": "weighted sit-ups",
+        "loading": "3x12@20kg",
+        "rpe": "RPE7"
+      },
+      {
+        "name": "strict press",
+        "loading": "3x10@50kg",
+        "rpe": "RPE8"
+      },
+      {
+        "name": "bulgarian split squats",
+        "loading": "3x15@0kg",
+        "rpe": "RPE5"
+      },
+      {
+        "name": "cable tricep extensions",
+        "loading": "3x12@30kg",
+        "rpe": "RPE8.5"
+      },
+      {
+        "name": "nordic holds",
+        "loading": "3x30s@0kg",
+        "rpe": "RPE9"
+      },
+      {
+        "name": "chest fly",
+        "loading": "3x10@100kg",
+        "rpe": "RPE8"
+      }
+    ],
+    "energy": "average",
+    "sleep": "average",
+    "recovery": "normal",
+    "kps": {
+      "morning": "4",
+      "post": "4"
+    },
+    "notes": ""
+  },
+  {
     "id": 1788114940240,
     "user": "Cas",
     "date": "2026-08-30",
