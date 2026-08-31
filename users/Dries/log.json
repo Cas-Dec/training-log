@@ -1,5 +1,22 @@
 [
   {
+    "id": 1788168229071,
+    "user": "Dries",
+    "date": "2026-08-29",
+    "type": "Rugby",
+    "duration": "120",
+    "intensity": "high",
+    "hr": {
+      "avg": null,
+      "max": null
+    },
+    "exercises": [],
+    "energy": "average",
+    "sleep": "average",
+    "recovery": "normal",
+    "notes": "Rugby game"
+  },
+  {
     "id": 1788168186698,
     "user": "Dries",
     "date": "2026-08-28",
