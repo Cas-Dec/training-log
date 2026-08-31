@@ -1,5 +1,37 @@
 [
   {
+    "id": 1788168050667,
+    "user": "Dries",
+    "date": "2026-08-27",
+    "type": "Legs",
+    "exercises": [
+      {
+        "name": "squats",
+        "loading": "4x10@120kg",
+        "rpe": "RPE8"
+      },
+      {
+        "name": "power clean",
+        "loading": "4x3@100kg",
+        "rpe": "RPE7"
+      },
+      {
+        "name": "single leg extensions",
+        "loading": "3x10@61kg",
+        "rpe": "RPE8"
+      },
+      {
+        "name": "prone leg curls",
+        "loading": "3x8@78kg",
+        "rpe": "RPE8"
+      }
+    ],
+    "energy": "average",
+    "sleep": "average",
+    "recovery": "normal",
+    "notes": ""
+  },
+  {
     "id": 1787830349833,
     "user": "Dries",
     "date": "2026-08-26",
