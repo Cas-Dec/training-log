@@ -1,5 +1,47 @@
 [
   {
+    "id": 1788263892710,
+    "user": "Dries",
+    "date": "2026-08-31",
+    "type": "Upper body",
+    "exercises": [
+      {
+        "name": "pull-ups",
+        "loading": "3x10",
+        "rpe": "RPE9.5"
+      },
+      {
+        "name": "overhead press",
+        "loading": "3x10@65kg",
+        "rpe": "RPE9.5"
+      },
+      {
+        "name": "lateral raise",
+        "loading": "3x12@16kg",
+        "rpe": "RPE8"
+      },
+      {
+        "name": "rear delt machine fly",
+        "loading": "3x12@79kg",
+        "rpe": "RPE7"
+      },
+      {
+        "name": "bosuball crunch",
+        "loading": "2x12@15kg",
+        "rpe": "RPE8.5"
+      },
+      {
+        "name": "pallof press",
+        "loading": "3x10",
+        "rpe": ""
+      }
+    ],
+    "energy": "average",
+    "sleep": "average",
+    "recovery": "normal",
+    "notes": ""
+  },
+  {
     "id": 1788168229071,
     "user": "Dries",
     "date": "2026-08-29",
