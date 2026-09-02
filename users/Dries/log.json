@@ -1,5 +1,26 @@
 [
   {
+    "id": 1788329855215,
+    "user": "Dries",
+    "date": "2026-09-01",
+    "type": "Running",
+    "duration": "40",
+    "intensity": "low",
+    "hr": {
+      "avg": null,
+      "max": null
+    },
+    "speed": {
+      "avg": null,
+      "max": null
+    },
+    "exercises": [],
+    "energy": "average",
+    "sleep": "average",
+    "recovery": "normal",
+    "notes": ""
+  },
+  {
     "id": 1788263949024,
     "user": "Dries",
     "date": "2026-09-01",
