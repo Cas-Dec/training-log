@@ -1,5 +1,22 @@
 [
   {
+    "id": 1788455195661,
+    "user": "Dries",
+    "date": "2026-09-03",
+    "type": "Legs",
+    "exercises": [
+      {
+        "name": "squats",
+        "loading": "4x10@125kg",
+        "rpe": "RPE9"
+      }
+    ],
+    "energy": "average",
+    "sleep": "poor",
+    "recovery": "poor",
+    "notes": "Had to stop the leg session due to fatigue"
+  },
+  {
     "id": 1788455150295,
     "user": "Dries",
     "date": "2026-09-02",
