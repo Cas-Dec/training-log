@@ -1,5 +1,51 @@
 [
   {
+    "id": 1789076116275,
+    "user": "Cas",
+    "date": "2026-09-10",
+    "type": "Pull",
+    "exercises": [
+      {
+        "name": "pull-ups",
+        "loading": "3x10@0kg",
+        "rpe": "RPE8"
+      },
+      {
+        "name": "lat cable pull downs",
+        "loading": "3x12@35kg",
+        "rpe": "RPE8.5"
+      },
+      {
+        "name": "preacher curls",
+        "loading": "3x15@30kg",
+        "rpe": "RPE8.5"
+      },
+      {
+        "name": "bulgarian split squats",
+        "loading": "3x15@0kg",
+        "rpe": "RPE5"
+      },
+      {
+        "name": "nordic holds",
+        "loading": "3x30s@0kg",
+        "rpe": "RPE7"
+      },
+      {
+        "name": "isometric squat",
+        "loading": "3x10s@0kg",
+        "rpe": "RPE10"
+      }
+    ],
+    "energy": "average",
+    "sleep": "",
+    "recovery": "",
+    "kps": {
+      "morning": "3",
+      "post": "3"
+    },
+    "notes": ""
+  },
+  {
     "id": 1788972929536,
     "user": "Cas",
     "date": "2026-09-08",
