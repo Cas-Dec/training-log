@@ -32,6 +32,23 @@
     "notes": ""
   },
   {
+    "id": 1789029661891,
+    "user": "Dries",
+    "date": "2026-09-09",
+    "type": "Rugby",
+    "duration": "120",
+    "intensity": "medium",
+    "hr": {
+      "avg": null,
+      "max": null
+    },
+    "exercises": [],
+    "energy": "average",
+    "sleep": "average",
+    "recovery": "normal",
+    "notes": ""
+  },
+  {
     "id": 1789029626430,
     "user": "Dries",
     "date": "2026-09-09",
