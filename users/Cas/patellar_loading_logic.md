@@ -93,16 +93,28 @@ For exercises with multiple set groups (e.g. `3x8@80kg, 1x6@90kg`), compute load
 | Leg press | 0.5 | 0.6 | 0.85 |
 | Leg extension | 0.5 | 0.6 | 1.00 |
 | Bulgarian split squat | 1.0 | 0.6 | 0.70 |
+| Front-foot-raised (FFR) Bulgarian split squat | 1.0 | 0.6 | 0.80 |
 | Lunge | 1.0 | 0.6 | 0.70 |
 | Step-up | 1.0 | 0.6 | 0.70 |
+| Goblet squat | 0.5 | 0.6 | 0.90 |
 | Clean & jerk / power clean (catch) | 0.5 | 1.0 | 1.00 |
 | Clean pull / snatch pull | 0.5 | 1.0 | 0.20 |
 | Romanian deadlift | 0.5 | 0.6 | 0.20 |
-| Vertical jump / box jump | 0.5 | 1.0 | 0.90 |
-| Wall sit / isometric hold | 0.5 | 0.2 | 0.85 |
+| Vertical jump / box jump / straight-leg box jump | 0.5 | 1.0 | 0.90 |
+| Wall sit / isometric squat / Nordic hold (reverse Nordic, Spanish-squat-style bilateral quad isometric) | 0.5 | 0.2 | 0.85 |
+| Single-leg extension | 1.0 | 0.6 | 1.00 |
+| Terminal knee extension (short-arc, near full extension) | 1.0 | 0.6 | 0.30 |
 | Upper body (bench, row, curl, press) | 0.0 | — | 0.00 |
+| Hip-hinge with fixed knee angle (Zercher hip extension, hip thrust, good morning) | 0.5 | — | 0.00 |
+| Nordic hamstring curl/fall, prone leg curl (hamstring-dominant, negligible quad/patellar tendon component) | — | — | 0.00 |
 
 *For unlisted exercises: match to the nearest row by movement pattern.*
+
+**Note on "Nordic hold":** this user's log uses "nordic holds" for a bilateral quad isometric (reverse Nordic / Spanish squat — kneeling, leaning back, quads under sustained tension at moderate-deep knee flexion), not the hamstring-dominant Nordic curl. It's grouped with wall sit / isometric squat since all three are bilateral, isometric, similar knee-flexion depth. Log as `sets x duration_sec @ weight` (e.g. `3x30@0kg`) so it parses under the same `SxR@W` volume formula as weighted sets — a bare `N@Wkg` (no rep/duration term) fails the loading parser and silently contributes zero. One existing "nordic holds" entry (2026-08-25 session, `3@0kg`) predates this convention and needs its hold duration filled in manually to compute correctly.
+
+**Note on terminal knee extension / other band-resisted exercises:** loading strings like `3x25@resistance` don't carry a numeric weight, so the parser (`@\s*([\d.]+)`) treats the added weight as 0 and the exercise contributes no loading regardless of its lookup entry. If you want these to actually register, log an estimated resistance-equivalent in kg instead of the literal word "resistance".
+
+**Exercises deliberately left out of the lookup:** movements with negligible patellar tendon involvement are omitted rather than given a token near-zero factor, consistent with how upper-body exercises are already handled. This currently includes Zercher hip extensions, Nordic hamstring falls, and prone leg curls (see table above).
 
 ---
 
@@ -116,6 +128,8 @@ Two reference workouts anchor the "maximal" end of the scale:
 | 5×5 back squat 180 kg | 0.080 × 265 × √25 | ≈ **106** |
 
 Both come in at ≥ 100, calibrating the top of the scale. Note: the back squat factor (0.080) is empirically scaled for typical multi-rep volumes; the theoretical product 0.5 × 0.6 × 0.85 = 0.255 was calibrated for the log₁₀ formula and produces inflated values under √.
+
+**2026-09-15 additions** (FFR Bulgarian split squat, Nordic hold, isometric squat, goblet squat, single-leg extension, terminal knee extension, straight-leg box jump): `strain_factor` for these was derived by taking the closest already-calibrated exercise in the same weight-bearing class (bodyweight vs. machine-added-weight) and scaling its factor by the ratio of new `leg_factor × speed_factor × loading_factor` to the reference row's product — not independently fitted to real sessions. Treat these as starting estimates; once a few sessions with KPS feedback exist, use the coach's lookup-update mechanism to retune them.
 
 ---
 

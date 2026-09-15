@@ -39,6 +39,34 @@
     "vertical jumps": {
       "strain_factor": 0.1847,
       "bodyweight": true
+    },
+    "ffr bulgarian split squats": {
+      "strain_factor": 0.0798,
+      "bodyweight": true
+    },
+    "nordic holds": {
+      "strain_factor": 0.016,
+      "bodyweight": true
+    },
+    "isometric squat": {
+      "strain_factor": 0.016,
+      "bodyweight": true
+    },
+    "goblet squats": {
+      "strain_factor": 0.0587,
+      "bodyweight": true
+    },
+    "single leg extensions": {
+      "strain_factor": 0.4416,
+      "bodyweight": false
+    },
+    "terminal knee extensions": {
+      "strain_factor": 0.132,
+      "bodyweight": false
+    },
+    "straight leg box jump": {
+      "strain_factor": 0.1847,
+      "bodyweight": true
     }
   },
   "cardio": {

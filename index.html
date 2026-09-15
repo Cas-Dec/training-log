@@ -563,6 +563,29 @@ function patellarVol(sets, reps) {
 }
 let lookup = { exercises: {}, cardio: {} };
 let bodyweightLog = [];
+
+// Exercises where the base resistance is the lifter's own bodyweight and a logged
+// "@Wkg" is weight ADDED on top of it (e.g. weighted pull-ups/dips) — distinct from
+// lookup.exercises[...].bodyweight, which marks whether a *patellar-loading* exercise
+// also moves bodyweight through space (used for the tendon-load model, not e1RM).
+const BODYWEIGHT_LOADED_EXERCISES = new Set(['pull-ups', 'chin-ups', 'dips', 'push-ups', 'muscle-ups']);
+
+function isBodyweightLoadedExercise(name) {
+  return BODYWEIGHT_LOADED_EXERCISES.has((name || '').toLowerCase().trim());
+}
+
+// Bodyweight logged closest in time to `dateStr`, falling back to the current
+// BODYWEIGHT_KG if nothing has been logged yet.
+function nearestBodyweightKg(dateStr) {
+  if (!bodyweightLog.length) return BODYWEIGHT_KG;
+  const target = new Date(dateStr).getTime();
+  let best = bodyweightLog[0], bestDiff = Infinity;
+  for (const e of bodyweightLog) {
+    const diff = Math.abs(new Date(e.date).getTime() - target);
+    if (diff < bestDiff) { bestDiff = diff; best = e; }
+  }
+  return best.weight;
+}
 let coreInstructions = '';
 let userContextMd = '';
 let wikiExercises = [];
@@ -1187,7 +1210,7 @@ function resetForm() {
 // ── HISTORY ────────────────────────────────────────────────────────
 const TWELVE_WEEKS_MS = 84 * 864e5;
 
-function parseLoading(loading, rpe) {
+function parseLoading(loading, rpe, { bodyweight = false, bodyweightKg = 0 } = {}) {
   loading = loading || '';
   const parts = loading.split(',').map(p => p.trim()).filter(Boolean);
   if (!parts.length) return { sets: null, reps: null, e1rm: null, volume: null };
@@ -1199,12 +1222,15 @@ function parseLoading(loading, rpe) {
     const w = part.match(/@\s*([\d.]+)/);
     const sets = sr ? parseFloat(sr[1]) : null;
     const reps = sr ? parseFloat(sr[2]) : null;
-    const weight = w ? parseFloat(w[1]) : null;
+    // A bodyweight-loaded exercise with no "@Wkg" token (unweighted set) still has a
+    // load — its bodyweight — so treat a missing weight as 0 added rather than unknown.
+    const weight = w ? parseFloat(w[1]) : (bodyweight ? 0 : null);
     if (firstSets === null) { firstSets = sets; firstReps = reps; }
     if (sets !== null && reps !== null && weight !== null) {
+      const totalWeight = bodyweight ? weight + bodyweightKg : weight;
       const maxReps = reps * rpeMult;
-      totalVolume += sets * maxReps * weight;
-      const e1rm = weight * (1 + maxReps / 30);
+      totalVolume += sets * maxReps * totalWeight;
+      const e1rm = totalWeight * (1 + maxReps / 30);
       if (maxE1rm === null || e1rm > maxE1rm) maxE1rm = e1rm;
     } else {
       volumeValid = false;
@@ -1410,6 +1436,7 @@ function renderProgressionChart() {
   const deltaEl = document.getElementById('progression-delta');
 
   const cutoff = Date.now() - TWELVE_WEEKS_MS;
+  const bodyweight = isBodyweightLoadedExercise(exercise);
   const byDate = {};
   const e1rmByDate = {};
   sessions
@@ -1417,7 +1444,11 @@ function renderProgressionChart() {
     .forEach(s => (s.exercises || [])
       .filter(e => e.name === exercise)
       .forEach(e => {
-        const { e1rm, volume } = parseLoading(e.loading, e.rpe);
+        const bodyweightKg = bodyweight ? nearestBodyweightKg(s.date) : 0;
+        const { e1rm: rawE1rm, volume } = parseLoading(e.loading, e.rpe, { bodyweight, bodyweightKg });
+        // Bodyweight is included when parsing (so effort/extrapolation from reps is correct),
+        // but the displayed e1RM is the added-weight equivalent, not total load.
+        const e1rm = bodyweight && rawE1rm !== null ? rawE1rm - bodyweightKg : rawE1rm;
         const value = progressionMetric === 'volume' ? volume : e1rm;
         if (value !== null) byDate[s.date] = value;
         if (e1rm !== null && (e1rmByDate[s.date] === undefined || e1rm > e1rmByDate[s.date])) {

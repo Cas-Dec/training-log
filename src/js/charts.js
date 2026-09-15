@@ -106,6 +106,7 @@ function renderProgressionChart() {
   const deltaEl = document.getElementById('progression-delta');
 
   const cutoff = Date.now() - TWELVE_WEEKS_MS;
+  const bodyweight = isBodyweightLoadedExercise(exercise);
   const byDate = {};
   const e1rmByDate = {};
   sessions
@@ -113,7 +114,11 @@ function renderProgressionChart() {
     .forEach(s => (s.exercises || [])
       .filter(e => e.name === exercise)
       .forEach(e => {
-        const { e1rm, volume } = parseLoading(e.loading, e.rpe);
+        const bodyweightKg = bodyweight ? nearestBodyweightKg(s.date) : 0;
+        const { e1rm: rawE1rm, volume } = parseLoading(e.loading, e.rpe, { bodyweight, bodyweightKg });
+        // Bodyweight is included when parsing (so effort/extrapolation from reps is correct),
+        // but the displayed e1RM is the added-weight equivalent, not total load.
+        const e1rm = bodyweight && rawE1rm !== null ? rawE1rm - bodyweightKg : rawE1rm;
         const value = progressionMetric === 'volume' ? volume : e1rm;
         if (value !== null) byDate[s.date] = value;
         if (e1rm !== null && (e1rmByDate[s.date] === undefined || e1rm > e1rmByDate[s.date])) {

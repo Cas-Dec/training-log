@@ -719,7 +719,7 @@
       },
       {
         "name": "nordic holds",
-        "loading": "3@0kg",
+        "loading": "3x30s@0kg",
         "rpe": "RPE5"
       },
       {

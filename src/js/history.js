@@ -1,7 +1,7 @@
 // ── HISTORY ────────────────────────────────────────────────────────
 const TWELVE_WEEKS_MS = 84 * 864e5;
 
-function parseLoading(loading, rpe) {
+function parseLoading(loading, rpe, { bodyweight = false, bodyweightKg = 0 } = {}) {
   loading = loading || '';
   const parts = loading.split(',').map(p => p.trim()).filter(Boolean);
   if (!parts.length) return { sets: null, reps: null, e1rm: null, volume: null };
@@ -13,12 +13,15 @@ function parseLoading(loading, rpe) {
     const w = part.match(/@\s*([\d.]+)/);
     const sets = sr ? parseFloat(sr[1]) : null;
     const reps = sr ? parseFloat(sr[2]) : null;
-    const weight = w ? parseFloat(w[1]) : null;
+    // A bodyweight-loaded exercise with no "@Wkg" token (unweighted set) still has a
+    // load — its bodyweight — so treat a missing weight as 0 added rather than unknown.
+    const weight = w ? parseFloat(w[1]) : (bodyweight ? 0 : null);
     if (firstSets === null) { firstSets = sets; firstReps = reps; }
     if (sets !== null && reps !== null && weight !== null) {
+      const totalWeight = bodyweight ? weight + bodyweightKg : weight;
       const maxReps = reps * rpeMult;
-      totalVolume += sets * maxReps * weight;
-      const e1rm = weight * (1 + maxReps / 30);
+      totalVolume += sets * maxReps * totalWeight;
+      const e1rm = totalWeight * (1 + maxReps / 30);
       if (maxE1rm === null || e1rm > maxE1rm) maxE1rm = e1rm;
     } else {
       volumeValid = false;

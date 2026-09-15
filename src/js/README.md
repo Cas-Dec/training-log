@@ -76,7 +76,7 @@ Session and bodyweight logging.
 ### 5. `history.js`
 Session list and patellar load model.
 
-- `parseLoading(loading, rpe)` — parses a loading string (e.g. `"4x8@100, 1x6@105"`) with optional RPE. Returns `{ sets, reps, e1rm, volume }` where `e1rm` uses the Epley formula with RPE-adjusted max reps, and `volume` is RPE-adjusted tonnage. Fallback when no RPE: multiplier = 1 (equivalent to RPE 10).
+- `parseLoading(loading, rpe, { bodyweight, bodyweightKg })` — parses a loading string (e.g. `"4x8@100, 1x6@105"`) with optional RPE. Returns `{ sets, reps, e1rm, volume }` where `e1rm` uses the Epley formula with RPE-adjusted max reps, and `volume` is RPE-adjusted tonnage. Fallback when no RPE: multiplier = 1 (equivalent to RPE 10). When `bodyweight` is true (see `isBodyweightLoadedExercise()` in `state.js`), `bodyweightKg` is added to each set's weight before computing e1rm/volume — a missing `@Wkg` token is then treated as 0 added weight instead of an invalid set, so unweighted bodyweight sets (e.g. plain pull-ups) still produce an e1RM.
 - `sessionPatellarVolume(s)` — computes the patellar loading score for a session. Formula for strength: `strain_factor × weight × patellarVol(sets, reps)`, summed across exercises. For cardio: `loading_min × patellarVol(duration)`. Volume formula (`sqrt` or `log10`) is set in `src/loading_model.json`. Respects `$IMPACT=<label>` note override.
 - `renderHistory()` — renders the stats row, progression chart, bodyweight chart, KPS section, and session card list.
 
@@ -85,7 +85,7 @@ Session list and patellar load model.
 ### 6. `charts.js`
 All Chart.js rendering. Each function destroys its previous chart instance before creating a new one.
 
-- `renderProgressionChart()` — line chart of e1RM or RPE-adjusted volume for the selected exercise, last 12 weeks. Metric toggled by `setProgressionMetric()`.
+- `renderProgressionChart()` — line chart of e1RM or RPE-adjusted volume for the selected exercise, last 12 weeks. Metric toggled by `setProgressionMetric()`. For bodyweight-loaded exercises (`isBodyweightLoadedExercise()`), `parseLoading()` is given the nearest-dated bodyweight so effort is extrapolated off total load, but the charted e1RM has that bodyweight subtracted back out before display — the number shown is the added-weight equivalent (e.g. "+15kg pull-up e1RM"), not total load.
 - `renderBodyweightChart()` — line chart of bodyweight entries, last 12 weeks.
 - `renderKpsSensitivityChart()` — two stacked charts: patellar loading per day (bars) and morning/post KPS over time (lines). Cas only.
 
