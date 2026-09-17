@@ -153,6 +153,13 @@ async function askCoach(q) {
     conversationHistory.push({ role: 'assistant', content: text });
     assistantDiv.innerHTML = marked.parse(text);
 
+    const elabBtn = document.createElement('button');
+    elabBtn.className = 'btn btn-ghost';
+    elabBtn.style.marginTop = '12px';
+    elabBtn.textContent = 'Elaborate';
+    elabBtn.onclick = () => askCoach('Elaborate.');
+    assistantDiv.appendChild(elabBtn);
+
     // Detect lookup-update JSON blocks and offer Apply button
     for (const [, jsonStr] of [...text.matchAll(/```json\n([\s\S]*?)\n```/g)]) {
       try {
