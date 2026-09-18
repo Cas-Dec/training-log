@@ -1,5 +1,41 @@
 [
   {
+    "id": 1789727476274,
+    "user": "Cas",
+    "date": "2026-09-18",
+    "type": "Push",
+    "exercises": [
+      {
+        "name": "incline dumbbell press",
+        "loading": "3x8@34kg",
+        "rpe": "RPE7"
+      },
+      {
+        "name": "strict press",
+        "loading": "3x6@50kg",
+        "rpe": "RPE6"
+      },
+      {
+        "name": "tibialis raises",
+        "loading": "1x25@0kg",
+        "rpe": "RPE5"
+      },
+      {
+        "name": "bulgarian split squats",
+        "loading": "3x10@0kg",
+        "rpe": "RPE5"
+      }
+    ],
+    "energy": "average",
+    "sleep": "average",
+    "recovery": "poor",
+    "kps": {
+      "morning": "4.5",
+      "post": "4"
+    },
+    "notes": ""
+  },
+  {
     "id": 1789727367984,
     "user": "Cas",
     "date": "2026-09-17",
