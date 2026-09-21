@@ -8,6 +8,10 @@
       "strain_factor": 0.0698,
       "bodyweight": true
     },
+    "band distracted split squats": {
+      "strain_factor": 0.0698,
+      "bodyweight": true
+    },
     "romanian deadlifts": {
       "strain_factor": 0.019,
       "bodyweight": true
