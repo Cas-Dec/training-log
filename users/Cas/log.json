@@ -61,6 +61,27 @@
     "notes": ""
   },
   {
+    "id": 1790077992345,
+    "user": "Cas",
+    "date": "2026-09-21",
+    "type": "Badminton",
+    "duration": "120",
+    "intensity": "low",
+    "hr": {
+      "avg": null,
+      "max": null
+    },
+    "exercises": [],
+    "energy": "average",
+    "sleep": "average",
+    "recovery": "normal",
+    "kps": {
+      "morning": null,
+      "post": null
+    },
+    "notes": ""
+  },
+  {
     "id": 1790001601030,
     "user": "Cas",
     "date": "2026-09-21",
