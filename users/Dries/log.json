@@ -1,5 +1,37 @@
 [
   {
+    "id": 1790066084514,
+    "user": "Dries",
+    "date": "2026-09-22",
+    "type": "Upper body",
+    "exercises": [
+      {
+        "name": "pull-ups",
+        "loading": "3x11",
+        "rpe": "RPE9.5"
+      },
+      {
+        "name": "overhead press",
+        "loading": "3x8@70kg",
+        "rpe": "RPE9.5"
+      },
+      {
+        "name": "lateral raise",
+        "loading": "3x15@16kg",
+        "rpe": "RPE8"
+      },
+      {
+        "name": "weighted curl-ups",
+        "loading": "3x10",
+        "rpe": ""
+      }
+    ],
+    "energy": "average",
+    "sleep": "average",
+    "recovery": "normal",
+    "notes": ""
+  },
+  {
     "id": 1789409058485,
     "user": "Dries",
     "date": "2026-09-13",
