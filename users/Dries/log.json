@@ -1,5 +1,47 @@
 [
   {
+    "id": 1790318336845,
+    "user": "Dries",
+    "date": "2026-09-24",
+    "type": "Legs",
+    "exercises": [
+      {
+        "name": "squats",
+        "loading": "4x5@140kg",
+        "rpe": "RPE7"
+      },
+      {
+        "name": "power clean",
+        "loading": "4x3@100kg",
+        "rpe": "RPE7"
+      },
+      {
+        "name": "prone leg curls",
+        "loading": "3x8@77kg",
+        "rpe": "RPE8"
+      },
+      {
+        "name": "leg extensions",
+        "loading": "3x12@115kg",
+        "rpe": "RPE6"
+      },
+      {
+        "name": "ab roll out",
+        "loading": "3x10",
+        "rpe": "RPE7"
+      },
+      {
+        "name": "bosuball crunch",
+        "loading": "3x12@20kg",
+        "rpe": "RPE8.5"
+      }
+    ],
+    "energy": "below-average",
+    "sleep": "average",
+    "recovery": "normal",
+    "notes": ""
+  },
+  {
     "id": 1790232544817,
     "user": "Dries",
     "date": "2026-09-23",
