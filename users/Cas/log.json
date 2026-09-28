@@ -1,5 +1,88 @@
 [
   {
+    "id": 1790591137222,
+    "user": "Cas",
+    "date": "2026-09-27",
+    "type": "Badminton",
+    "duration": "60",
+    "intensity": "high",
+    "hr": {
+      "avg": null,
+      "max": null
+    },
+    "exercises": [],
+    "energy": "average",
+    "sleep": "average",
+    "recovery": "normal",
+    "kps": {
+      "morning": null,
+      "post": "4"
+    },
+    "notes": ""
+  },
+  {
+    "id": 1790590473004,
+    "user": "Cas",
+    "date": "2026-09-26",
+    "type": "Badminton",
+    "duration": "60",
+    "intensity": "high",
+    "hr": {
+      "avg": null,
+      "max": null
+    },
+    "exercises": [],
+    "energy": "",
+    "sleep": "",
+    "recovery": "",
+    "kps": {
+      "morning": null,
+      "post": null
+    },
+    "notes": ""
+  },
+  {
+    "id": 1790590288269,
+    "user": "Cas",
+    "date": "2026-09-25",
+    "type": "Full body",
+    "exercises": [
+      {
+        "name": "pull-ups",
+        "loading": "3x12@0kg",
+        "rpe": "RPE7.5"
+      },
+      {
+        "name": "incline dumbbell press",
+        "loading": "3x8@40kg",
+        "rpe": "RPE9"
+      },
+      {
+        "name": "spanish squat",
+        "loading": "5x45s",
+        "rpe": "RPE7"
+      },
+      {
+        "name": "chest fly",
+        "loading": "3x12@107kg",
+        "rpe": "RPE8"
+      },
+      {
+        "name": "rear delt machine fly",
+        "loading": "3x10@93kg",
+        "rpe": "RPE8"
+      }
+    ],
+    "energy": "",
+    "sleep": "",
+    "recovery": "",
+    "kps": {
+      "morning": null,
+      "post": null
+    },
+    "notes": ""
+  },
+  {
     "id": 1790114005807,
     "user": "Cas",
     "date": "2026-09-22",
