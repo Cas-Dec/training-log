@@ -86,6 +86,11 @@
       "strain_factor": 0,
       "bodyweight": false,
       "e1rm_bodyweight": false
+    },
+    "spanish squat": {
+      "strain_factor": 0.0337,
+      "bodyweight": true,
+      "e1rm_bodyweight": true
     }
   },
   "cardio": {
