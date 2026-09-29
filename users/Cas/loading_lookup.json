@@ -29,7 +29,8 @@
     },
     "clean pulls": {
       "strain_factor": 0.0131,
-      "bodyweight": true
+      "bodyweight": true,
+      "e1rm_bodyweight": false
     },
     "pauze power clean + jerk": {
       "strain_factor": 0.0437,
