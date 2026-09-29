@@ -155,6 +155,11 @@
         "rpe": "RPE9"
       },
       {
+        "name": "dips",
+        "loading": "3x10@30kg",
+        "rpe": "RPE8"
+      },
+      {
         "name": "spanish squat",
         "loading": "5x45s",
         "rpe": "RPE7"
