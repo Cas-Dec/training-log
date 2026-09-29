@@ -10,6 +10,7 @@ function showPage(p) {
 // ── SETTINGS ───────────────────────────────────────────────────────
 function openSettings() {
   document.getElementById('settings-modal').classList.add('active');
+  updateStrainBackfillBtn();
   const preview = document.getElementById('user-context-preview');
   preview.innerHTML = userContextMd
     ? marked.parse(userContextMd)

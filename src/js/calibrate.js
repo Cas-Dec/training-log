@@ -1,12 +1,13 @@
 // ── STRAIN CALIBRATION ─────────────────────────────────────────────
 // When Cas logs an exercise that has never been logged before and has no
-// patellar lookup entry, a short wizard asks whether it loads the tendon,
-// whether it is single-leg, whether bodyweight counts, and then which of four
-// known exercise/loading combos felt most similar. The chosen combo's modelled
-// strain is used to back-solve the new exercise's strain_factor.
+// lookup entry, a short wizard asks whether the logged weight is added on top
+// of bodyweight (e1rm_bodyweight, for the e1RM chart), whether it loads the
+// patellar tendon, whether the knee carries bodyweight, and then which IMPACT
+// level (LOADING_MODEL.impact_scale) the strain felt like. The level's midpoint
+// is used to back-solve the new exercise's strain_factor.
+// The same wizard runs from Settings over every logged exercise still missing
+// from the lookup (or only missing e1rm_bodyweight), to backfill the database.
 
-const CAL_ROUND1 = [0.35, 0.7, 1.4, 2.8];   // wide spread around the prior guess
-const CAL_ROUND2 = [0.6, 0.85, 1.15, 1.6];  // narrow spread around the first pick
 let cal = null;
 
 function escHtml(s) {
@@ -26,18 +27,60 @@ function newPatellarCandidates(exercises) {
   });
 }
 
-function startStrainCalibration(exercises) {
+// Every exercise Cas has logged that has no lookup entry, or whose entry lacks
+// e1rm_bodyweight (e1rmOnly: only that question is asked), most recently logged
+// first, each with its logged loadings (newest first) to calibrate against.
+function missingStrainExercises() {
+  const byKey = new Map();
+  sessions.forEach(s => {
+    if ((s.user || 'Cas') !== 'Cas' || CARDIO_TYPES.includes(s.type)) return;
+    (s.exercises || []).forEach(e => {
+      const key = (e.name || '').toLowerCase().trim();
+      const entry = lookup.exercises[key];
+      if (!key || (entry && 'e1rm_bodyweight' in entry)) return;
+      if (!byKey.has(key)) byKey.set(key, { name: key, history: [], e1rmOnly: !!entry });
+      byKey.get(key).history.push({ loading: e.loading, rpe: e.rpe, date: s.date });
+    });
+  });
+  return [...byKey.values()];
+}
+
+function updateStrainBackfillBtn() {
+  const btn = document.getElementById('strain-backfill-btn');
+  if (!btn) return;
+  const n = currentUser === 'Cas' ? missingStrainExercises().length : 0;
+  btn.style.display = n ? '' : 'none';
+  btn.textContent = `Complete exercise database (${n} exercise${n === 1 ? '' : 's'} incomplete)`;
+}
+
+function startStrainBackfill() {
+  closeSettings();
+  startStrainCalibration(missingStrainExercises(), true);
+}
+
+function startStrainCalibration(exercises, backfill = false) {
   if (!exercises.length) return;
-  cal = { queue: exercises.slice() };
+  cal = { queue: exercises.slice(), total: exercises.length, backfill };
   nextStrainCalibration();
 }
 
 function nextStrainCalibration() {
   const ex = cal?.queue.shift();
   if (!ex) { closeStrainModal(); return; }
-  cal = { queue: cal.queue, key: ex.name.toLowerCase().trim(), loading: ex.loading, rpe: ex.rpe };
+  const history = ex.history || [{ loading: ex.loading, rpe: ex.rpe, date: null }];
+  cal = {
+    queue: cal.queue, total: cal.total, backfill: cal.backfill,
+    key: ex.name.toLowerCase().trim(), e1rmOnly: !!ex.e1rmOnly, history, ...history[0],
+  };
   document.getElementById('strain-modal').classList.add('active');
-  renderStrainStep('tendon');
+  renderStrainStep('e1rm');
+}
+
+function setE1rmBodyweight(val) {
+  cal.e1rmBw = val;
+  if (!cal.e1rmOnly) { renderStrainStep('tendon'); return; }
+  applyLookupUpdate({ exercises: { [cal.key]: { e1rm_bodyweight: val } } });
+  nextStrainCalibration();
 }
 
 function closeStrainModal() {
@@ -45,9 +88,16 @@ function closeStrainModal() {
   cal = null;
 }
 
+// "today's squats" for a just-logged exercise, "your squats on 2026-09-21" when backfilling.
+function strainWhen() {
+  return cal.date ? `your ${escHtml(cal.key)} on ${cal.date}` : `today's ${escHtml(cal.key)}`;
+}
+
 function strainHeader(title) {
   const lbl = `${escHtml(cal.key)}${cal.loading ? ' · ' + escHtml(cal.loading) : ''}`;
-  return `<div class="modal-header"><h3>${title}</h3>
+  const done = cal.total - cal.queue.length;
+  const progress = cal.total > 1 ? ` <span class="strain-progress">${done}/${cal.total}</span>` : '';
+  return `<div class="modal-header"><h3>${title}${progress}</h3>
       <button class="modal-close" onclick="nextStrainCalibration()" aria-label="Skip">×</button></div>
     <p><span class="strain-ex">${lbl}</span></p>`;
 }
@@ -58,159 +108,70 @@ function strainChoice(label, onclick, cls = 'btn-ghost') {
 
 function renderStrainStep(step, extra) {
   const body = document.getElementById('strain-body');
-  if (step === 'tendon') {
-    body.innerHTML = strainHeader('New exercise logged') +
+  if (step === 'e1rm') {
+    body.innerHTML = strainHeader(cal.backfill ? 'Exercise database' : 'New exercise logged') +
+      `<p>For strength progress (e1RM): is the weight you log added on top of your bodyweight, like weighted pull-ups or dips?</p>` +
+      strainChoice('Yes — bodyweight + logged weight', 'setE1rmBodyweight(true)') +
+      strainChoice('No — just the logged weight', 'setE1rmBodyweight(false)') +
+      strainChoice(cal.queue.length ? 'Skip for now' : 'Ask me later', 'nextStrainCalibration()', 'btn-link') +
+      (cal.queue.length ? strainChoice('Stop', 'closeStrainModal()', 'btn-link') : '');
+  } else if (step === 'tendon') {
+    body.innerHTML = strainHeader('Patellar tendon') +
       `<p>Does this exercise strain your patellar tendon?</p>` +
-      strainChoice('Yes', "renderStrainStep('legs')") +
-      strainChoice('No', 'saveNoStrain()') +
-      strainChoice('Ask me later', 'nextStrainCalibration()', 'btn-link');
-  } else if (step === 'legs') {
-    body.innerHTML = strainHeader('Legs') +
-      `<p>Is this exercise done one leg at a time, or both legs together?</p>` +
-      strainChoice('One leg at a time', 'cal.legs=1; renderStrainStep(\'bw\')') +
-      strainChoice('Both legs', 'cal.legs=2; renderStrainStep(\'bw\')');
+      strainChoice('Yes', "renderStrainStep('bw')") +
+      strainChoice('No', 'saveNoStrain()');
   } else if (step === 'bw') {
-    body.innerHTML = strainHeader('Bodyweight') +
-      `<p>Is your bodyweight part of the strain (e.g. squats, lunges, jumps — not machines)?</p>` +
+    body.innerHTML = strainHeader('Bodyweight on the knee') +
+      `<p>Does your knee carry your bodyweight in this exercise (e.g. squats, lunges, jumps — not machines)?</p>` +
       strainChoice('Yes — my bodyweight is loaded', 'cal.bodyweight=true; beginStrainCompare()') +
       strainChoice('No — only the external weight', 'cal.bodyweight=false; beginStrainCompare()');
   } else if (step === 'nobase') {
     body.innerHTML = strainHeader('Can’t calibrate') +
-      `<p>This loading has no numeric weight/reps the model can use (e.g. bands), so a strain factor can't be derived from it. Ask the coach to set one instead.</p>` +
-      strainChoice('OK', 'nextStrainCalibration()', 'btn-primary');
+      `<p>No logged loading of this exercise has numeric sets × reps (and weight) the model can use (e.g. bands), so a strain factor can't be derived from it.</p>` +
+      strainChoice('Enter a factor manually', "renderStrainStep('result', '')") +
+      strainChoice('Skip', 'nextStrainCalibration()', 'btn-link');
   } else if (step === 'result') {
-    const f = extra;
-    const ref = Object.entries(lookup.exercises)
-      .filter(([k, v]) => v.strain_factor > 0 && !!v.bodyweight === cal.bodyweight)
-      .sort((a, b) => Math.abs(Math.log(a[1].strain_factor / f)) - Math.abs(Math.log(b[1].strain_factor / f)))
-      .slice(0, 3)
-      .map(([k, v]) => `${escHtml(k)} ${v.strain_factor}`).join(' · ');
     body.innerHTML = strainHeader('Calibrated') +
-      `<p>Strain factor: <input type="number" id="strain-factor-input" step="0.0001" min="0" value="${f}" style="width:110px;display:inline-block;padding:6px 8px"> ${cal.bodyweight ? '(+ bodyweight)' : ''}</p>
-       ${ref ? `<p style="font-size:12px">Closest known factors: ${ref}</p>` : ''}` +
+      `<p>Strain factor: <input type="number" id="strain-factor-input" step="0.0001" min="0" value="${extra}" style="width:110px;display:inline-block;padding:6px 8px"> ${cal.bodyweight ? '(+ bodyweight)' : ''}</p>` +
       strainChoice('Save to lookup', 'saveStrainFactor()', 'btn-primary') +
-      strainChoice('Redo comparisons', 'beginStrainCompare()', 'btn-link');
+      (cal.base ? strainChoice('Pick a different level', 'beginStrainCompare()', 'btn-link') : '');
   }
 }
 
 function saveNoStrain() {
-  applyLookupUpdate({ exercises: { [cal.key]: { strain_factor: 0, bodyweight: false } } });
+  applyLookupUpdate({ exercises: { [cal.key]: { strain_factor: 0, bodyweight: false, e1rm_bodyweight: cal.e1rmBw } } });
   nextStrainCalibration();
 }
 
 function saveStrainFactor() {
   const f = parseFloat(document.getElementById('strain-factor-input').value);
   if (isNaN(f) || f < 0) return;
-  applyLookupUpdate({ exercises: { [cal.key]: { strain_factor: +f.toFixed(4), bodyweight: cal.bodyweight, legs: cal.legs } } });
+  applyLookupUpdate({ exercises: { [cal.key]: { strain_factor: +f.toFixed(4), bodyweight: cal.bodyweight, e1rm_bodyweight: cal.e1rmBw } } });
   nextStrainCalibration();
 }
 
-// Starting guess for the factor: geometric mean of known factors with the same
-// bodyweight flag. Single-leg roughly doubles a machine exercise's tendon load
-// (cf. leg extensions vs single leg extensions); for bodyweight movements the
-// bilateral deficit is smaller.
-function strainPrior() {
-  const fs = Object.values(lookup.exercises)
-    .filter(v => v.strain_factor > 0 && !!v.bodyweight === cal.bodyweight)
-    .map(v => v.strain_factor);
-  const all = fs.length ? fs : Object.values(lookup.exercises).map(v => v.strain_factor).filter(f => f > 0);
-  const gm = all.length ? Math.exp(all.reduce((a, f) => a + Math.log(f), 0) / all.length) : 0.05;
-  return gm * (cal.legs === 1 ? (cal.bodyweight ? 1.25 : 2) : 1);
-}
-
 function beginStrainCompare() {
-  // Modelled strain of the new exercise if its factor were 1.
-  cal.base = loadingStrain({ strain_factor: 1, bodyweight: cal.bodyweight }, cal.loading, cal.rpe);
-  if (!cal.base) { renderStrainStep('nobase'); return; }
-  cal.pool = strainCandidatePool();
-  if (!cal.pool.length) { renderStrainStep('result', +strainPrior().toFixed(4)); return; }
-  cal.round = 1;
-  cal.center = strainPrior() * cal.base;
+  // Calibrate against the most recent logged loading the model can compute a
+  // strain for (at factor 1) — skipping e.g. band-only entries.
+  const unit = { strain_factor: 1, bodyweight: cal.bodyweight };
+  const usable = cal.history.find(h => loadingStrain(unit, h.loading, h.rpe) > 0);
+  if (!usable) { cal.base = 0; renderStrainStep('nobase'); return; }
+  Object.assign(cal, usable);
+  cal.base = loadingStrain(unit, cal.loading, cal.rpe);
   renderStrainCompare();
-}
-
-// Every known knee-loading exercise × loading combos Cas has actually logged
-// (per set-group), plus the same weights at 1–5 sets, with their modelled strain.
-// Exercises with no history are left out, and exercises that are ever logged
-// with added weight only appear with weight — "snatch 3x15" is meaningless.
-function strainCandidatePool() {
-  const pool = [], seen = new Set();
-  const add = (key, entry, sets, reps, added) => {
-    const loading = `${sets}x${reps}` + (added ? `@${added}kg` : '');
-    const id = key + '|' + loading;
-    if (seen.has(id)) return;
-    const strain = loadingStrain(entry, loading, '');
-    if (strain > 0) {
-      seen.add(id);
-      pool.push({ key, loading: added ? loading : `${loading} (bodyweight)`, strain });
-    }
-  };
-  for (const [key, entry] of Object.entries(lookup.exercises)) {
-    if (key === cal.key || !(entry.strain_factor > 0)) continue;
-    const combos = [];
-    sessions.forEach(s => {
-      if ((s.user || 'Cas') !== 'Cas') return;
-      (s.exercises || []).forEach(e => {
-        if ((e.name || '').toLowerCase().trim() !== key) return;
-        (e.loading || '').split(',').map(p => p.trim()).forEach(part => {
-          const sr = part.match(/^([\d.]+)\s*x\s*([\d.]+)(s?)/i);
-          const w = part.match(/@\s*([\d.]+)\s*kg/i);
-          if (!sr || sr[3]) return; // skip timed holds — "3x30s" reads oddly as a comparison
-          combos.push({ reps: +sr[2], added: w ? +w[1] : 0 });
-        });
-      });
-    });
-    const weighted = combos.some(c => c.added > 0);
-    combos
-      .filter(c => !weighted || c.added > 0)
-      .forEach(c => { for (let n = 1; n <= 5; n++) add(key, entry, n, c.reps, c.added); });
-  }
-  return pool;
-}
-
-// Pick one candidate per target strain, preferring distinct exercises.
-function pickStrainOptions(targets) {
-  const used = new Set(), picked = [];
-  for (const t of targets) {
-    const dist = c => Math.abs(Math.log(c.strain / t));
-    const fresh = cal.pool.filter(c => !used.has(c.key) && !picked.includes(c));
-    const src = fresh.length ? fresh : cal.pool.filter(c => !picked.includes(c));
-    if (!src.length) break;
-    const best = src.reduce((a, b) => dist(b) < dist(a) ? b : a);
-    used.add(best.key);
-    picked.push(best);
-  }
-  return picked.sort((a, b) => a.strain - b.strain);
 }
 
 function renderStrainCompare() {
-  const mults = cal.round === 1 ? CAL_ROUND1 : CAL_ROUND2;
-  cal.options = pickStrainOptions(mults.map(m => cal.center * m));
-  const letters = 'abcd';
+  // Low → high, excluding "none" (the Yes/No step covers that).
+  cal.levels = LOADING_MODEL.impact_scale.filter(t => t.midpoint > 0).sort((a, b) => a.min - b.min);
   document.getElementById('strain-body').innerHTML =
-    strainHeader(`Compare (${cal.round}/2)`) +
-    `<p>Which of these felt <strong>most similar</strong> in patellar tendon strain to today's ${escHtml(cal.key)}?</p>` +
-    cal.options.map((o, i) =>
-      strainChoice(`<span class="strain-letter">${letters[i]})</span> ${escHtml(o.key)} <span class="strain-load">${escHtml(o.loading)}</span>`, `pickStrain(${i})`)
-    ).join('') +
-    `<div class="strain-edge">
-      <button class="btn btn-link" onclick="shiftStrain(0.25)">Less than all of these</button>
-      <button class="btn btn-link" onclick="shiftStrain(4)">More than all of these</button>
-    </div>`;
-}
-
-function shiftStrain(mult) {
-  cal.center *= cal.round === 1 ? mult : Math.sqrt(mult);
-  renderStrainCompare();
+    strainHeader('Impact') +
+    `<p>How much did ${strainWhen()} strain your patellar tendon?</p>` +
+    cal.levels.map((t, i) =>
+      strainChoice(escHtml(t.name), `pickStrain(${i})`)
+    ).join('');
 }
 
 function pickStrain(i) {
-  const o = cal.options[i];
-  if (cal.round === 1) {
-    cal.round = 2;
-    cal.center = o.strain;
-    renderStrainCompare();
-  } else {
-    renderStrainStep('result', +(o.strain / cal.base).toFixed(4));
-  }
+  renderStrainStep('result', +(cal.levels[i].midpoint / cal.base).toFixed(4));
 }

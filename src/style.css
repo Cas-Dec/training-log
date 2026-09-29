@@ -216,10 +216,8 @@
 
   /* STRAIN CALIBRATION */
   .strain-ex { font-family: var(--font-mono); color: var(--accent); }
+  .strain-progress { font-size: 12px; font-weight: 400; color: var(--muted); margin-left: 6px; }
   .strain-opt { margin-bottom: 8px; text-align: left; }
-  .strain-letter { color: var(--muted); margin-right: 4px; }
-  .strain-load { font-family: var(--font-mono); color: var(--muted); margin-left: 6px; }
-  .strain-edge { display: flex; justify-content: space-between; gap: 8px; margin-top: 4px; }
   .btn-link { background: none; border: none; color: var(--muted); font-size: 12px; padding: 6px 0; text-decoration: underline; cursor: pointer; }
   .btn-link:hover { color: var(--text); }
 

@@ -33,7 +33,7 @@ When changing `worker.js`, redeploy to Cloudflare manually after pushing.
 | `src/js/history.js` | `parseLoading()`, `sessionPatellarVolume()`, `renderHistory()` |
 | `src/js/charts.js` | Progression chart and KPS sensitivity chart |
 | `src/js/coach.js` | `buildContext()`, `askCoach()`, `editUserContext()`, `tuneLoadings()` |
-| `src/js/calibrate.js` | New-exercise patellar strain wizard: asks legs/bodyweight, then compares against known exercises to back-solve `strain_factor` |
+| `src/js/calibrate.js` | Exercise wizard (new exercises on save, or Settings backfill): e1RM bodyweight? tendon? knee bodyweight? impact level → sets `e1rm_bodyweight`, `bodyweight`, back-solves `strain_factor` |
 | `src/js/main.js` | Navigation, export, `initApp()`, `loadAll()` (entry point) |
 
 `build.py` concatenates the JS modules in the order listed above (load order matters — `state.js` must be first, `main.js` last).
@@ -104,7 +104,7 @@ Three pages (`log`, `history`, `coach`) are toggled by adding/removing the `acti
 
 ## Patellar loading model
 
-Formula: `leg_factor × speed_factor × loading_factor × weight × log₁₀(10 + sets × reps)`
+Formula: `strain_factor × weight × √(sets × reps) × exp(max(0, RPE − 8))` (volume formula and RPE threshold from `src/loading_model.json`). Unilateral work has no separate term — it is baked into `strain_factor`.
 
 - `bodyweight: true` exercises add `BODYWEIGHT_KG` (85 kg) to the bar weight.
 - Multi-set loading strings (e.g., `"4x8@60kg, 1x6@65kg"`) are comma-separated; each part is summed.

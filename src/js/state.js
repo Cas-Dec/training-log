@@ -19,10 +19,15 @@ let bodyweightLog = [];
 // "@Wkg" is weight ADDED on top of it (e.g. weighted pull-ups/dips) — distinct from
 // lookup.exercises[...].bodyweight, which marks whether a *patellar-loading* exercise
 // also moves bodyweight through space (used for the tendon-load model, not e1RM).
+// A per-exercise lookup.exercises[...].e1rm_bodyweight (set via the calibration
+// wizard) takes precedence; this set is the fallback for unanswered exercises.
 const BODYWEIGHT_LOADED_EXERCISES = new Set(['pull-ups', 'chin-ups', 'dips', 'push-ups', 'muscle-ups']);
 
 function isBodyweightLoadedExercise(name) {
-  return BODYWEIGHT_LOADED_EXERCISES.has((name || '').toLowerCase().trim());
+  const key = (name || '').toLowerCase().trim();
+  const entry = lookup.exercises[key];
+  if (entry && typeof entry.e1rm_bodyweight === 'boolean') return entry.e1rm_bodyweight;
+  return BODYWEIGHT_LOADED_EXERCISES.has(key);
 }
 
 // Bodyweight logged closest in time to `dateStr`, falling back to the current
