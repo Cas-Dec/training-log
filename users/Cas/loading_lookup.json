@@ -66,7 +66,8 @@
     },
     "terminal knee extensions": {
       "strain_factor": 0.132,
-      "bodyweight": false
+      "bodyweight": false,
+      "e1rm_bodyweight": false
     },
     "straight leg box jump": {
       "strain_factor": 0.1847,
