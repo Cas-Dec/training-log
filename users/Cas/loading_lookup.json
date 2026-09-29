@@ -81,6 +81,11 @@
       "strain_factor": 0,
       "bodyweight": false,
       "e1rm_bodyweight": false
+    },
+    "good mornings": {
+      "strain_factor": 0,
+      "bodyweight": false,
+      "e1rm_bodyweight": false
     }
   },
   "cardio": {
