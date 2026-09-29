@@ -2,7 +2,8 @@
   "exercises": {
     "squats": {
       "strain_factor": 0.0555,
-      "bodyweight": true
+      "bodyweight": true,
+      "e1rm_bodyweight": false
     },
     "bulgarian split squats": {
       "strain_factor": 0.0698,
