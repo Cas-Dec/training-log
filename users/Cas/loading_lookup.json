@@ -142,6 +142,11 @@
       "strain_factor": 0,
       "bodyweight": false,
       "e1rm_bodyweight": false
+    },
+    "nordic hamstring falls": {
+      "strain_factor": 0,
+      "bodyweight": false,
+      "e1rm_bodyweight": true
     }
   },
   "cardio": {
