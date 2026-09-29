@@ -192,6 +192,11 @@
       "strain_factor": 0,
       "bodyweight": false,
       "e1rm_bodyweight": false
+    },
+    "back extensions": {
+      "strain_factor": 0,
+      "bodyweight": false,
+      "e1rm_bodyweight": false
     }
   },
   "cardio": {
