@@ -129,8 +129,10 @@ function beginStrainCompare() {
   renderStrainCompare();
 }
 
-// Every known knee-loading exercise × loading combos Cas has actually done
+// Every known knee-loading exercise × loading combos Cas has actually logged
 // (per set-group), plus the same weights at 1–5 sets, with their modelled strain.
+// Exercises with no history are left out, and exercises that are ever logged
+// with added weight only appear with weight — "snatch 3x15" is meaningless.
 function strainCandidatePool() {
   const pool = [], seen = new Set();
   const add = (key, entry, sets, reps, added) => {
@@ -138,7 +140,10 @@ function strainCandidatePool() {
     const id = key + '|' + loading;
     if (seen.has(id)) return;
     const strain = loadingStrain(entry, loading, '');
-    if (strain > 0) { seen.add(id); pool.push({ key, loading, strain }); }
+    if (strain > 0) {
+      seen.add(id);
+      pool.push({ key, loading: added ? loading : `${loading} (bodyweight)`, strain });
+    }
   };
   for (const [key, entry] of Object.entries(lookup.exercises)) {
     if (key === cal.key || !(entry.strain_factor > 0)) continue;
@@ -155,8 +160,10 @@ function strainCandidatePool() {
         });
       });
     });
-    if (!combos.length && entry.bodyweight) [5, 10, 15].forEach(r => combos.push({ reps: r, added: 0 }));
-    combos.forEach(c => { for (let n = 1; n <= 5; n++) add(key, entry, n, c.reps, c.added); });
+    const weighted = combos.some(c => c.added > 0);
+    combos
+      .filter(c => !weighted || c.added > 0)
+      .forEach(c => { for (let n = 1; n <= 5; n++) add(key, entry, n, c.reps, c.added); });
   }
   return pool;
 }
