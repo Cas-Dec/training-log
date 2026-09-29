@@ -47,7 +47,8 @@
     },
     "ffr bulgarian split squats": {
       "strain_factor": 0.0798,
-      "bodyweight": true
+      "bodyweight": true,
+      "e1rm_bodyweight": true
     },
     "nordic holds": {
       "strain_factor": 0.016,
