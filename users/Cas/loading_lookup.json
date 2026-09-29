@@ -215,6 +215,11 @@
       "strain_factor": 0,
       "bodyweight": false,
       "e1rm_bodyweight": false
+    },
+    "leg press": {
+      "strain_factor": 0.0893,
+      "bodyweight": false,
+      "e1rm_bodyweight": false
     }
   },
   "cardio": {
