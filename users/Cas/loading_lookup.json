@@ -71,11 +71,16 @@
     "straight leg box jump": {
       "strain_factor": 0.1847,
       "bodyweight": true
+    },
+    "incline dumbbell press": {
+      "strain_factor": 0,
+      "bodyweight": false,
+      "e1rm_bodyweight": false
     }
   },
   "cardio": {
     "Badminton": {
-      "loading_min": 9.0
+      "loading_min": 9
     },
     "Swimming": {
       "loading_min": 0
@@ -84,7 +89,7 @@
       "loading_min": 8.5
     },
     "Running": {
-      "loading_min": 10.0
+      "loading_min": 10
     },
     "Cycling": {
       "loading_min": 4.8
