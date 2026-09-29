@@ -16,7 +16,8 @@
     },
     "romanian deadlifts": {
       "strain_factor": 0.019,
-      "bodyweight": true
+      "bodyweight": true,
+      "e1rm_bodyweight": false
     },
     "clean": {
       "strain_factor": 0.0483,
