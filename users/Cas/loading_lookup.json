@@ -236,6 +236,11 @@
       "strain_factor": 0.0338,
       "bodyweight": true,
       "e1rm_bodyweight": true
+    },
+    "rear delt dumbbell fly": {
+      "strain_factor": 0,
+      "bodyweight": false,
+      "e1rm_bodyweight": false
     }
   },
   "cardio": {
