@@ -39,6 +39,8 @@ Login, token handling, and all GitHub/Worker sync functions.
 **Lookup sync**
 - `syncLookupFromWorker()` — GETs `users/{User}/loading_lookup.json` via Worker; falls back to the static file. Called on `initApp()`.
 - `syncLookupToGitHub()` — PUTs current `lookup` to GitHub. Called after `applyLookupUpdate()` and `resetLookup()`.
+- `syncContextToGitHub()`, `syncWikiToGitHub()`, `syncBodyweightToGitHub()` — PUT `userContextMd`, `wikiExercises`, `bodyweightLog`.
+- All four are built by `makeWorkerSync(path, label, body)`: serialized and coalesced (one PUT in flight, plus one more if the state changed meanwhile; one retry), and show a sticky error toast (`showToast()`) with tap-to-retry if the final attempt fails.
 - `applyLookupUpdate(update)` — merges a `{"type":"lookup-update", exercises:{…}}` object into `lookup`, persists to localStorage and GitHub. Called from the coach's Apply button.
 - `resetLookup()` — clears `lookup`, reloads defaults from the static file.
 

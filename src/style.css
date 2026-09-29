@@ -214,6 +214,17 @@
   .modal-close:hover { color: var(--text); }
   .modal-panel p { font-size: 13px; color: var(--muted); margin-bottom: 14px; }
 
+  /* TOAST */
+  .toast {
+    display: none; position: fixed; left: 50%; bottom: 20px; transform: translateX(-50%); z-index: 400;
+    max-width: min(440px, calc(100% - 32px)); padding: 12px 16px; border-radius: var(--radius);
+    background: var(--bg2); border: 1px solid var(--border); font-size: 13px; cursor: pointer;
+    box-shadow: 0 6px 24px rgba(0,0,0,.4);
+  }
+  .toast.active { display: block; }
+  .toast-ok { border-color: var(--accent); color: var(--accent); }
+  .toast-err { border-color: var(--red); color: var(--red); }
+
   /* STRAIN CALIBRATION */
   .strain-ex { font-family: var(--font-mono); color: var(--accent); }
   .strain-progress { font-size: 12px; font-weight: 400; color: var(--muted); margin-left: 6px; }

@@ -71,24 +71,61 @@ async function syncLookupFromWorker() {
   } catch(e) {}
 }
 
-async function syncLookupToGitHub() {
-  try {
-    await authFetch(`${WORKER}/lookup`, {
-      method: 'PUT',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ lookup, message: 'Update loading lookup' }),
-    });
-  } catch(e) {}
+// Builds a sync function that PUTs `body()` (the whole current state) to a
+// Worker path. Each PUT sends the full state, so rapid successive changes
+// (e.g. answering the calibration wizard) are coalesced: one PUT in flight at a
+// time, and one more afterwards if anything changed meanwhile — concurrent PUTs
+// would race on the file's sha and fail with a 409. On load the app replaces
+// local state with GitHub's copy, so an unsynced change is lost on reload:
+// if the final attempt (after one retry) fails, a sticky toast says so and
+// offers a retry.
+function makeWorkerSync(path, label, body) {
+  let inFlight = null, dirty = false;
+  const put = async () => {
+    try {
+      const res = await authFetch(`${WORKER}${path}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(body()),
+      });
+      return res.ok;
+    } catch(e) { return false; }
+  };
+  const sync = () => {
+    dirty = true;
+    if (inFlight) return inFlight;
+    inFlight = (async () => {
+      let ok = true;
+      while (dirty) {
+        dirty = false;
+        ok = await put() || await put(); // one retry
+      }
+      inFlight = null;
+      if (!ok) showToast(`${label} sync to GitHub failed — your last change will be lost on reload. Tap to retry.`, 'err', sync);
+      return ok;
+    })();
+    return inFlight;
+  };
+  return sync;
 }
 
-async function syncContextToGitHub(content) {
-  try {
-    await authFetch(`${WORKER}/context`, {
-      method: 'PUT',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ content, message: 'Update user context' }),
-    });
-  } catch(e) {}
+const syncLookupToGitHub = makeWorkerSync('/lookup', 'Loading lookup',
+  () => ({ lookup, message: 'Update loading lookup' }));
+const syncContextToGitHub = makeWorkerSync('/context', 'User context',
+  () => ({ content: userContextMd, message: 'Update user context' }));
+const syncWikiToGitHub = makeWorkerSync('/wiki', 'Exercise list',
+  () => ({ exercises: wikiExercises, message: 'Update exercise wiki' }));
+const syncBodyweightToGitHub = makeWorkerSync('/bodyweight', 'Bodyweight',
+  () => ({ entries: bodyweightLog, message: 'Update bodyweight log' }));
+
+// Error toasts stay until tapped; tapping runs onTap (e.g. a retry) if given.
+function showToast(msg, type = 'ok', onTap = null) {
+  const el = document.getElementById('toast');
+  el.textContent = msg;
+  el.className = `toast toast-${type} active`;
+  el.onclick = () => { el.classList.remove('active'); if (onTap) onTap(); };
+  clearTimeout(showToast.timer);
+  if (type !== 'err') showToast.timer = setTimeout(() => el.classList.remove('active'), 8000);
 }
 
 // GitHub (users/{currentUser}/log.json) is the source of truth. The only local
@@ -156,7 +193,7 @@ function applyContextUpdate(content) {
   userContextMd = content;
   const preview = document.getElementById('user-context-preview');
   if (preview) preview.innerHTML = marked.parse(userContextMd);
-  syncContextToGitHub(content);
+  syncContextToGitHub();
 }
 
 async function resetLookup() {
@@ -184,16 +221,6 @@ function applyLookupUpdate(update) {
   syncLookupToGitHub();
 }
 
-async function syncWikiToGitHub() {
-  try {
-    await authFetch(`${WORKER}/wiki`, {
-      method: 'PUT',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ exercises: wikiExercises, message: 'Update exercise wiki' }),
-    });
-  } catch(e) {}
-}
-
 async function syncBodyweightFromWorker() {
   try {
     const res = await authFetch(`${WORKER}/bodyweight`);
@@ -211,16 +238,6 @@ async function syncBodyweightFromWorker() {
   if (cached) try {
     bodyweightLog = JSON.parse(cached);
     if (bodyweightLog.length) BODYWEIGHT_KG = bodyweightLog[0].weight;
-  } catch(e) {}
-}
-
-async function syncBodyweightToGitHub() {
-  try {
-    await authFetch(`${WORKER}/bodyweight`, {
-      method: 'PUT',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ entries: bodyweightLog, message: 'Update bodyweight log' }),
-    });
   } catch(e) {}
 }
 
