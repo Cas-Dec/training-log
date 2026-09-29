@@ -67,7 +67,8 @@
     },
     "goblet squats": {
       "strain_factor": 0.0587,
-      "bodyweight": true
+      "bodyweight": true,
+      "e1rm_bodyweight": true
     },
     "single leg extensions": {
       "strain_factor": 0.4416,
