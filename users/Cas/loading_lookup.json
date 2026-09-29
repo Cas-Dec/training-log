@@ -35,7 +35,8 @@
     },
     "pauze power clean + jerk": {
       "strain_factor": 0.0437,
-      "bodyweight": true
+      "bodyweight": true,
+      "e1rm_bodyweight": false
     },
     "snatch": {
       "strain_factor": 0.1118,
