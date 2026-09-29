@@ -1,26 +1,5 @@
 [
   {
-    "id": 1790689492987,
-    "user": "Cas",
-    "date": "2026-09-29",
-    "type": "Legs",
-    "exercises": [
-      {
-        "name": "broad jumps",
-        "loading": "3x10@10kg",
-        "rpe": "RPE7.5"
-      }
-    ],
-    "energy": "average",
-    "sleep": "average",
-    "recovery": "normal",
-    "kps": {
-      "morning": null,
-      "post": null
-    },
-    "notes": ""
-  },
-  {
     "id": 1790682835373,
     "user": "Cas",
     "date": "2026-09-29",
