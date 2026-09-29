@@ -51,7 +51,8 @@
     },
     "nordic holds": {
       "strain_factor": 0.016,
-      "bodyweight": true
+      "bodyweight": true,
+      "e1rm_bodyweight": true
     },
     "isometric squat": {
       "strain_factor": 0.016,
