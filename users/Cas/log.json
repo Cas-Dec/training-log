@@ -1,5 +1,26 @@
 [
   {
+    "id": 1790689492987,
+    "user": "Cas",
+    "date": "2026-09-29",
+    "type": "Legs",
+    "exercises": [
+      {
+        "name": "broad jumps",
+        "loading": "3x10@10kg",
+        "rpe": "RPE7.5"
+      }
+    ],
+    "energy": "average",
+    "sleep": "average",
+    "recovery": "normal",
+    "kps": {
+      "morning": null,
+      "post": null
+    },
+    "notes": ""
+  },
+  {
     "id": 1790682835373,
     "user": "Cas",
     "date": "2026-09-29",
@@ -53,6 +74,23 @@
       "morning": "3.5",
       "post": "3.5"
     },
+    "notes": ""
+  },
+  {
+    "id": 1790615646849,
+    "user": "Dries",
+    "date": "2026-09-28",
+    "type": "Rugby",
+    "duration": "90",
+    "intensity": "medium",
+    "hr": {
+      "avg": null,
+      "max": null
+    },
+    "exercises": [],
+    "energy": "average",
+    "sleep": "average",
+    "recovery": "normal",
     "notes": ""
   },
   {
@@ -139,6 +177,90 @@
     "notes": ""
   },
   {
+    "id": 1790615571885,
+    "user": "Dries",
+    "date": "2026-09-25",
+    "type": "Upper body",
+    "exercises": [
+      {
+        "name": "pull-ups",
+        "loading": "3x12",
+        "rpe": "RPE9.5"
+      },
+      {
+        "name": "overhead press",
+        "loading": "3x8@70kg",
+        "rpe": "RPE9.5"
+      },
+      {
+        "name": "lateral raise",
+        "loading": "3x12@20kg",
+        "rpe": "RPE8"
+      },
+      {
+        "name": "rear delt machine fly",
+        "loading": "3x12@86kg",
+        "rpe": "RPE7"
+      },
+      {
+        "name": "ab roll out",
+        "loading": "3x10",
+        "rpe": "RPE7"
+      },
+      {
+        "name": "plank",
+        "loading": "2x120s",
+        "rpe": "RPE8.5"
+      }
+    ],
+    "energy": "average",
+    "sleep": "average",
+    "recovery": "normal",
+    "notes": ""
+  },
+  {
+    "id": 1790615364025,
+    "user": "Dries",
+    "date": "2026-09-25",
+    "type": "Upper body",
+    "exercises": [
+      {
+        "name": "weighted pull-ups",
+        "loading": "4x6@22kg",
+        "rpe": "RPE8"
+      },
+      {
+        "name": "dips",
+        "loading": "4x6@55kg",
+        "rpe": "RPE8"
+      },
+      {
+        "name": "flat dumbbell press",
+        "loading": "3x10@46kg",
+        "rpe": "RPE8"
+      },
+      {
+        "name": "seated machine rows",
+        "loading": "2x10@55kg",
+        "rpe": "RPE9"
+      },
+      {
+        "name": "bicep curls",
+        "loading": "2x12@18kg",
+        "rpe": "RPE7.5"
+      },
+      {
+        "name": "triceps push down",
+        "loading": "2x12@42kg",
+        "rpe": "RPE8.5"
+      }
+    ],
+    "energy": "average",
+    "sleep": "average",
+    "recovery": "normal",
+    "notes": ""
+  },
+  {
     "id": 1790590288269,
     "user": "Cas",
     "date": "2026-09-25",
@@ -177,6 +299,166 @@
       "morning": null,
       "post": null
     },
+    "notes": ""
+  },
+  {
+    "id": 1790318336845,
+    "user": "Dries",
+    "date": "2026-09-24",
+    "type": "Legs",
+    "exercises": [
+      {
+        "name": "squats",
+        "loading": "4x5@140kg",
+        "rpe": "RPE7"
+      },
+      {
+        "name": "power clean",
+        "loading": "4x3@100kg",
+        "rpe": "RPE7"
+      },
+      {
+        "name": "prone leg curls",
+        "loading": "3x8@77kg",
+        "rpe": "RPE8"
+      },
+      {
+        "name": "leg extensions",
+        "loading": "3x12@115kg",
+        "rpe": "RPE6"
+      },
+      {
+        "name": "ab roll out",
+        "loading": "3x10",
+        "rpe": "RPE7"
+      },
+      {
+        "name": "bosuball crunch",
+        "loading": "3x12@20kg",
+        "rpe": "RPE8.5"
+      }
+    ],
+    "energy": "below-average",
+    "sleep": "average",
+    "recovery": "normal",
+    "notes": ""
+  },
+  {
+    "id": 1790232544817,
+    "user": "Dries",
+    "date": "2026-09-23",
+    "type": "Rugby",
+    "duration": "90",
+    "intensity": "medium",
+    "hr": {
+      "avg": null,
+      "max": null
+    },
+    "exercises": [],
+    "energy": "average",
+    "sleep": "average",
+    "recovery": "normal",
+    "notes": ""
+  },
+  {
+    "id": 1790232532517,
+    "user": "Dries",
+    "date": "2026-09-23",
+    "type": "Upper body",
+    "exercises": [
+      {
+        "name": "weighted pull-ups",
+        "loading": "4x6@22kg",
+        "rpe": "RPE8"
+      },
+      {
+        "name": "dips",
+        "loading": "4x6@55kg",
+        "rpe": "RPE8"
+      },
+      {
+        "name": "flat dumbbell press",
+        "loading": "3x10@46kg",
+        "rpe": "RPE8"
+      },
+      {
+        "name": "seated machine rows",
+        "loading": "2x10@55kg",
+        "rpe": "RPE9"
+      },
+      {
+        "name": "bicep curls",
+        "loading": "2x12@18kg",
+        "rpe": "RPE7.5"
+      },
+      {
+        "name": "triceps push down",
+        "loading": "2x12@42kg",
+        "rpe": "RPE8.5"
+      }
+    ],
+    "energy": "average",
+    "sleep": "average",
+    "recovery": "normal",
+    "notes": ""
+  },
+  {
+    "id": 1790153067389,
+    "user": "Dries",
+    "date": "2026-09-22",
+    "type": "Legs",
+    "exercises": [
+      {
+        "name": "squats",
+        "loading": "5x3@152.5kg",
+        "rpe": "RPE7"
+      },
+      {
+        "name": "romanian deadlifts",
+        "loading": "3x8@170kg",
+        "rpe": "RPE8"
+      },
+      {
+        "name": "prone leg curls",
+        "loading": "3x8@77kg",
+        "rpe": "RPE8"
+      }
+    ],
+    "energy": "average",
+    "sleep": "average",
+    "recovery": "normal",
+    "notes": ""
+  },
+  {
+    "id": 1790066084514,
+    "user": "Dries",
+    "date": "2026-09-22",
+    "type": "Upper body",
+    "exercises": [
+      {
+        "name": "pull-ups",
+        "loading": "3x11",
+        "rpe": "RPE9.5"
+      },
+      {
+        "name": "overhead press",
+        "loading": "3x8@70kg",
+        "rpe": "RPE9.5"
+      },
+      {
+        "name": "lateral raise",
+        "loading": "3x15@16kg",
+        "rpe": "RPE8"
+      },
+      {
+        "name": "weighted curl-ups",
+        "loading": "3x10",
+        "rpe": ""
+      }
+    ],
+    "energy": "average",
+    "sleep": "average",
+    "recovery": "normal",
     "notes": ""
   },
   {
@@ -262,6 +544,23 @@
     "notes": ""
   },
   {
+    "id": 1790066117606,
+    "user": "Dries",
+    "date": "2026-09-21",
+    "type": "Rugby",
+    "duration": "90",
+    "intensity": "low",
+    "hr": {
+      "avg": null,
+      "max": null
+    },
+    "exercises": [],
+    "energy": "average",
+    "sleep": "average",
+    "recovery": "normal",
+    "notes": ""
+  },
+  {
     "id": 1790077992345,
     "user": "Cas",
     "date": "2026-09-21",
@@ -327,6 +626,23 @@
       "post": "4"
     },
     "notes": ""
+  },
+  {
+    "id": 1790232715727,
+    "user": "Dries",
+    "date": "2026-09-20",
+    "type": "Rugby",
+    "duration": "120",
+    "intensity": "high",
+    "hr": {
+      "avg": null,
+      "max": null
+    },
+    "exercises": [],
+    "energy": "average",
+    "sleep": "average",
+    "recovery": "normal",
+    "notes": "Rugby game"
   },
   {
     "id": 1789981502500,
@@ -618,6 +934,60 @@
     "notes": ""
   },
   {
+    "id": 1789409058485,
+    "user": "Dries",
+    "date": "2026-09-13",
+    "type": "Upper body",
+    "exercises": [
+      {
+        "name": "pull-ups",
+        "loading": "3x11",
+        "rpe": "RPE9.5"
+      },
+      {
+        "name": "overhead press",
+        "loading": "3x10@65kg",
+        "rpe": "RPE9.5"
+      },
+      {
+        "name": "lateral raise",
+        "loading": "3x12@18kg",
+        "rpe": "RPE8"
+      },
+      {
+        "name": "rear delt machine fly",
+        "loading": "3x12@86kg",
+        "rpe": "RPE7"
+      },
+      {
+        "name": "pallof press",
+        "loading": "3x10",
+        "rpe": ""
+      }
+    ],
+    "energy": "average",
+    "sleep": "average",
+    "recovery": "poor",
+    "notes": ""
+  },
+  {
+    "id": 1789408795756,
+    "user": "Dries",
+    "date": "2026-09-13",
+    "type": "Rugby",
+    "duration": "120",
+    "intensity": "high",
+    "hr": {
+      "avg": null,
+      "max": null
+    },
+    "exercises": [],
+    "energy": "average",
+    "sleep": "average",
+    "recovery": "normal",
+    "notes": ""
+  },
+  {
     "id": 1789391919745,
     "user": "Cas",
     "date": "2026-09-13",
@@ -636,6 +1006,65 @@
       "morning": "3",
       "post": "3"
     },
+    "notes": ""
+  },
+  {
+    "id": 1789408770283,
+    "user": "Dries",
+    "date": "2026-09-11",
+    "type": "Rugby",
+    "duration": "90",
+    "intensity": "medium",
+    "hr": {
+      "avg": null,
+      "max": null
+    },
+    "exercises": [],
+    "energy": "average",
+    "sleep": "average",
+    "recovery": "normal",
+    "notes": ""
+  },
+  {
+    "id": 1789408673183,
+    "user": "Dries",
+    "date": "2026-09-11",
+    "type": "Upper body",
+    "exercises": [
+      {
+        "name": "weighted pull-ups",
+        "loading": "3x8@20kg",
+        "rpe": "RPE9.5"
+      },
+      {
+        "name": "dips",
+        "loading": "3x8@50kg",
+        "rpe": "RPE8.5"
+      },
+      {
+        "name": "flat dumbbell press",
+        "loading": "3x10@44kg",
+        "rpe": "RPE8"
+      },
+      {
+        "name": "seated machine rows",
+        "loading": "2x10@55kg",
+        "rpe": "RPE9"
+      },
+      {
+        "name": "bicep curls",
+        "loading": "3x12@18kg",
+        "rpe": "RPE7.5"
+      },
+      {
+        "name": "triceps push down",
+        "loading": "3x12@42kg",
+        "rpe": "RPE8.5"
+      }
+    ],
+    "energy": "average",
+    "sleep": "average",
+    "recovery": "normal",
     "notes": ""
   },
   {
@@ -677,6 +1106,38 @@
       "morning": "3.5",
       "post": "3.5"
     },
+    "notes": ""
+  },
+  {
+    "id": 1789029530594,
+    "user": "Dries",
+    "date": "2026-09-10",
+    "type": "Legs",
+    "exercises": [
+      {
+        "name": "squats",
+        "loading": "4x6@140kg",
+        "rpe": "RPE9"
+      },
+      {
+        "name": "romanian deadlifts",
+        "loading": "3x8@170kg",
+        "rpe": "RPE8"
+      },
+      {
+        "name": "prone leg curls",
+        "loading": "3x8@82kg",
+        "rpe": "RPE8"
+      },
+      {
+        "name": "single leg extensions",
+        "loading": "3x10@61kg",
+        "rpe": "RPE8"
+      }
+    ],
+    "energy": "average",
+    "sleep": "average",
+    "recovery": "normal",
     "notes": ""
   },
   {
@@ -744,6 +1205,156 @@
       "morning": "3",
       "post": "3"
     },
+    "notes": ""
+  },
+  {
+    "id": 1789029661891,
+    "user": "Dries",
+    "date": "2026-09-09",
+    "type": "Rugby",
+    "duration": "120",
+    "intensity": "medium",
+    "hr": {
+      "avg": null,
+      "max": null
+    },
+    "exercises": [],
+    "energy": "average",
+    "sleep": "average",
+    "recovery": "normal",
+    "notes": ""
+  },
+  {
+    "id": 1789029626430,
+    "user": "Dries",
+    "date": "2026-09-09",
+    "type": "Upper body",
+    "exercises": [
+      {
+        "name": "weighted pull-ups",
+        "loading": "4x6@20kg",
+        "rpe": "RPE9.5"
+      },
+      {
+        "name": "dips",
+        "loading": "4x6@50kg",
+        "rpe": "RPE8.5"
+      },
+      {
+        "name": "flat dumbbell press",
+        "loading": "3x9@44kg",
+        "rpe": "RPE8"
+      },
+      {
+        "name": "seated machine rows",
+        "loading": "2x10@55kg",
+        "rpe": "RPE9"
+      },
+      {
+        "name": "bicep curls",
+        "loading": "3x12@18kg",
+        "rpe": "RPE7.5"
+      },
+      {
+        "name": "triceps push down",
+        "loading": "3x12@42kg",
+        "rpe": "RPE8.5"
+      }
+    ],
+    "energy": "average",
+    "sleep": "average",
+    "recovery": "normal",
+    "notes": ""
+  },
+  {
+    "id": 1789029544339,
+    "user": "Dries",
+    "date": "2026-09-08",
+    "type": "Legs",
+    "exercises": [
+      {
+        "name": "squats",
+        "loading": "4x6@140kg",
+        "rpe": "RPE9"
+      },
+      {
+        "name": "romanian deadlifts",
+        "loading": "3x8@170kg",
+        "rpe": "RPE8"
+      },
+      {
+        "name": "prone leg curls",
+        "loading": "3x8@82kg",
+        "rpe": "RPE8"
+      },
+      {
+        "name": "single leg extensions",
+        "loading": "3x10@61kg",
+        "rpe": "RPE8"
+      }
+    ],
+    "energy": "average",
+    "sleep": "average",
+    "recovery": "normal",
+    "notes": ""
+  },
+  {
+    "id": 1788848155168,
+    "user": "Dries",
+    "date": "2026-09-08",
+    "type": "Rugby",
+    "duration": "90",
+    "intensity": "medium",
+    "hr": {
+      "avg": null,
+      "max": null
+    },
+    "exercises": [],
+    "energy": "average",
+    "sleep": "average",
+    "recovery": "normal",
+    "notes": ""
+  },
+  {
+    "id": 1788848111694,
+    "user": "Dries",
+    "date": "2026-09-08",
+    "type": "Upper body",
+    "exercises": [
+      {
+        "name": "pull-ups",
+        "loading": "3x11",
+        "rpe": "RPE9.5"
+      },
+      {
+        "name": "overhead press",
+        "loading": "3x10@65kg",
+        "rpe": "RPE9.5"
+      },
+      {
+        "name": "lateral raise",
+        "loading": "3x12@16kg",
+        "rpe": "RPE8"
+      },
+      {
+        "name": "rear delt machine fly",
+        "loading": "3x12@79kg",
+        "rpe": "RPE7"
+      },
+      {
+        "name": "bosuball crunch",
+        "loading": "3x12@20kg",
+        "rpe": "RPE8.5"
+      },
+      {
+        "name": "pallof press",
+        "loading": "3x10",
+        "rpe": ""
+      }
+    ],
+    "energy": "average",
+    "sleep": "average",
+    "recovery": "normal",
     "notes": ""
   },
   {
@@ -896,6 +1507,130 @@
     "notes": ""
   },
   {
+    "id": 1788455195661,
+    "user": "Dries",
+    "date": "2026-09-03",
+    "type": "Legs",
+    "exercises": [
+      {
+        "name": "squats",
+        "loading": "4x10@125kg",
+        "rpe": "RPE9"
+      }
+    ],
+    "energy": "average",
+    "sleep": "poor",
+    "recovery": "poor",
+    "notes": "Had to stop the leg session due to fatigue"
+  },
+  {
+    "id": 1788455150295,
+    "user": "Dries",
+    "date": "2026-09-02",
+    "type": "Rugby",
+    "duration": "120",
+    "intensity": "medium",
+    "hr": {
+      "avg": null,
+      "max": null
+    },
+    "exercises": [],
+    "energy": "average",
+    "sleep": "average",
+    "recovery": "normal",
+    "notes": ""
+  },
+  {
+    "id": 1788455137094,
+    "user": "Dries",
+    "date": "2026-09-02",
+    "type": "Upper body",
+    "exercises": [
+      {
+        "name": "weighted pull-ups",
+        "loading": "4x6@20kg",
+        "rpe": "RPE9.5"
+      },
+      {
+        "name": "dips",
+        "loading": "4x6@50kg",
+        "rpe": "RPE8.5"
+      },
+      {
+        "name": "flat dumbbell press",
+        "loading": "3x9@44kg",
+        "rpe": "RPE8"
+      },
+      {
+        "name": "seated machine rows",
+        "loading": "2x10@50kg",
+        "rpe": "RPE9"
+      },
+      {
+        "name": "bicep curls",
+        "loading": "3x12@18kg",
+        "rpe": "RPE7.5"
+      },
+      {
+        "name": "triceps push down",
+        "loading": "3x12@40kg",
+        "rpe": "RPE8.5"
+      }
+    ],
+    "energy": "average",
+    "sleep": "average",
+    "recovery": "normal",
+    "notes": ""
+  },
+  {
+    "id": 1788329855215,
+    "user": "Dries",
+    "date": "2026-09-01",
+    "type": "Running",
+    "duration": "40",
+    "intensity": "low",
+    "hr": {
+      "avg": null,
+      "max": null
+    },
+    "speed": {
+      "avg": null,
+      "max": null
+    },
+    "exercises": [],
+    "energy": "average",
+    "sleep": "average",
+    "recovery": "normal",
+    "notes": ""
+  },
+  {
+    "id": 1788263949024,
+    "user": "Dries",
+    "date": "2026-09-01",
+    "type": "Legs",
+    "exercises": [
+      {
+        "name": "squats",
+        "loading": "4x8@135kg",
+        "rpe": "RPE8"
+      },
+      {
+        "name": "romanian deadlifts",
+        "loading": "3x8@160kg",
+        "rpe": "RPE5"
+      },
+      {
+        "name": "prone leg curls",
+        "loading": "3x8@78kg",
+        "rpe": "RPE8"
+      }
+    ],
+    "energy": "below-average",
+    "sleep": "poor",
+    "recovery": "good",
+    "notes": ""
+  },
+  {
     "id": 1788301948697,
     "user": "Cas",
     "date": "2026-09-01",
@@ -914,6 +1649,48 @@
       "morning": "4",
       "post": "4.5"
     },
+    "notes": ""
+  },
+  {
+    "id": 1788263892710,
+    "user": "Dries",
+    "date": "2026-08-31",
+    "type": "Upper body",
+    "exercises": [
+      {
+        "name": "pull-ups",
+        "loading": "3x10",
+        "rpe": "RPE9.5"
+      },
+      {
+        "name": "overhead press",
+        "loading": "3x10@65kg",
+        "rpe": "RPE9.5"
+      },
+      {
+        "name": "lateral raise",
+        "loading": "3x12@16kg",
+        "rpe": "RPE8"
+      },
+      {
+        "name": "rear delt machine fly",
+        "loading": "3x12@79kg",
+        "rpe": "RPE7"
+      },
+      {
+        "name": "bosuball crunch",
+        "loading": "2x12@15kg",
+        "rpe": "RPE8.5"
+      },
+      {
+        "name": "pallof press",
+        "loading": "3x10",
+        "rpe": ""
+      }
+    ],
+    "energy": "average",
+    "sleep": "average",
+    "recovery": "normal",
     "notes": ""
   },
   {
@@ -989,6 +1766,23 @@
     "notes": ""
   },
   {
+    "id": 1788168229071,
+    "user": "Dries",
+    "date": "2026-08-29",
+    "type": "Rugby",
+    "duration": "120",
+    "intensity": "high",
+    "hr": {
+      "avg": null,
+      "max": null
+    },
+    "exercises": [],
+    "energy": "average",
+    "sleep": "average",
+    "recovery": "normal",
+    "notes": "Rugby game"
+  },
+  {
     "id": 1788035041326,
     "user": "Cas",
     "date": "2026-08-29",
@@ -1011,6 +1805,48 @@
       "morning": "2.5",
       "post": "2"
     },
+    "notes": ""
+  },
+  {
+    "id": 1788168186698,
+    "user": "Dries",
+    "date": "2026-08-28",
+    "type": "Upper body",
+    "exercises": [
+      {
+        "name": "weighted pull-ups",
+        "loading": "4x6@20kg",
+        "rpe": "RPE9.5"
+      },
+      {
+        "name": "dips",
+        "loading": "1x8@40kg, 2x8@45kg",
+        "rpe": "RPE8.5"
+      },
+      {
+        "name": "flat dumbbell press",
+        "loading": "3x8@44kg",
+        "rpe": "RPE8"
+      },
+      {
+        "name": "seated machine rows",
+        "loading": "3x10@50kg",
+        "rpe": "RPE9"
+      },
+      {
+        "name": "bicep curls",
+        "loading": "3x12@18kg",
+        "rpe": "RPE7.5"
+      },
+      {
+        "name": "triceps push down",
+        "loading": "3x12@40kg",
+        "rpe": "RPE8.5"
+      }
+    ],
+    "energy": "average",
+    "sleep": "average",
+    "recovery": "normal",
     "notes": ""
   },
   {
@@ -1057,6 +1893,55 @@
       "morning": "3.5",
       "post": "3.5"
     },
+    "notes": ""
+  },
+  {
+    "id": 1788168064307,
+    "user": "Dries",
+    "date": "2026-08-27",
+    "type": "Rugby",
+    "duration": "120",
+    "intensity": "medium",
+    "hr": {
+      "avg": null,
+      "max": null
+    },
+    "exercises": [],
+    "energy": "average",
+    "sleep": "average",
+    "recovery": "normal",
+    "notes": ""
+  },
+  {
+    "id": 1788168050667,
+    "user": "Dries",
+    "date": "2026-08-27",
+    "type": "Legs",
+    "exercises": [
+      {
+        "name": "squats",
+        "loading": "4x10@120kg",
+        "rpe": "RPE8"
+      },
+      {
+        "name": "power clean",
+        "loading": "4x3@100kg",
+        "rpe": "RPE7"
+      },
+      {
+        "name": "single leg extensions",
+        "loading": "3x10@61kg",
+        "rpe": "RPE8"
+      },
+      {
+        "name": "prone leg curls",
+        "loading": "3x8@78kg",
+        "rpe": "RPE8"
+      }
+    ],
+    "energy": "average",
+    "sleep": "average",
+    "recovery": "normal",
     "notes": ""
   },
   {
@@ -1119,6 +2004,55 @@
       "morning": "3",
       "post": "3"
     },
+    "notes": ""
+  },
+  {
+    "id": 1787830349833,
+    "user": "Dries",
+    "date": "2026-08-26",
+    "type": "Rugby",
+    "duration": "120",
+    "intensity": "medium",
+    "hr": {
+      "avg": null,
+      "max": null
+    },
+    "exercises": [],
+    "energy": "average",
+    "sleep": "average",
+    "recovery": "normal",
+    "notes": ""
+  },
+  {
+    "id": 1787830322779,
+    "user": "Dries",
+    "date": "2026-08-26",
+    "type": "Upper body",
+    "exercises": [
+      {
+        "name": "weighted pull-ups",
+        "loading": "4x6@20kg",
+        "rpe": "RPE9.5"
+      },
+      {
+        "name": "dips",
+        "loading": "1x8@40kg, 2x8@45kg",
+        "rpe": "RPE8.5"
+      },
+      {
+        "name": "flat dumbbell press",
+        "loading": "3x8@44kg",
+        "rpe": "RPE8"
+      },
+      {
+        "name": "seated machine rows",
+        "loading": "3x10@50kg",
+        "rpe": "RPE9"
+      }
+    ],
+    "energy": "average",
+    "sleep": "average",
+    "recovery": "normal",
     "notes": ""
   },
   {
@@ -1210,6 +2144,38 @@
       "morning": "2.5",
       "post": "2"
     },
+    "notes": ""
+  },
+  {
+    "id": 1787740317420,
+    "user": "Dries",
+    "date": "2026-08-25",
+    "type": "Legs",
+    "exercises": [
+      {
+        "name": "squats",
+        "loading": "4x8@130kg",
+        "rpe": "RPE8"
+      },
+      {
+        "name": "romanian deadlifts",
+        "loading": "3x8@170kg",
+        "rpe": "RPE6.5"
+      },
+      {
+        "name": "single leg extensions",
+        "loading": "3x10@61kg",
+        "rpe": "RPE8"
+      },
+      {
+        "name": "prone leg curls",
+        "loading": "3x8@78kg",
+        "rpe": "RPE8"
+      }
+    ],
+    "energy": "average",
+    "sleep": "average",
+    "recovery": "normal",
     "notes": ""
   },
   {
@@ -1310,6 +2276,499 @@
     "notes": ""
   },
   {
+    "id": 1787276308173,
+    "user": "Dries",
+    "date": "2026-08-20",
+    "type": "Legs",
+    "exercises": [
+      {
+        "name": "squats",
+        "loading": "4x10@110kg",
+        "rpe": "RPE7"
+      },
+      {
+        "name": "romanian deadlifts",
+        "loading": "3x8@170kg",
+        "rpe": "RPE6.5"
+      },
+      {
+        "name": "single leg extensions",
+        "loading": "3x10@59kg",
+        "rpe": "RPE8"
+      },
+      {
+        "name": "prone leg curls",
+        "loading": "3x8@78kg",
+        "rpe": "RPE8"
+      }
+    ],
+    "energy": "average",
+    "sleep": "good",
+    "recovery": "normal",
+    "notes": ""
+  },
+  {
+    "id": 1787276239124,
+    "user": "Dries",
+    "date": "2026-08-19",
+    "type": "Rugby",
+    "duration": "120",
+    "intensity": "high",
+    "hr": {
+      "avg": null,
+      "max": null
+    },
+    "exercises": [],
+    "energy": "average",
+    "sleep": "average",
+    "recovery": "normal",
+    "notes": ""
+  },
+  {
+    "id": 1787276223564,
+    "user": "Dries",
+    "date": "2026-08-19",
+    "type": "Upper body",
+    "exercises": [
+      {
+        "name": "weighted pull-ups",
+        "loading": "4x6@20kg",
+        "rpe": "RPE9.5"
+      },
+      {
+        "name": "dips",
+        "loading": "4x8@40kg",
+        "rpe": "RPE8.5"
+      },
+      {
+        "name": "flat dumbbell press",
+        "loading": "3x10@42kg",
+        "rpe": "RPE8"
+      },
+      {
+        "name": "seated machine rows",
+        "loading": "3x10@50kg",
+        "rpe": "RPE9"
+      },
+      {
+        "name": "triceps push down",
+        "loading": "3x12@40kg",
+        "rpe": "RPE8.5"
+      },
+      {
+        "name": "bicep curls",
+        "loading": "3x12@18kg",
+        "rpe": "RPE7.5"
+      }
+    ],
+    "energy": "average",
+    "sleep": "average",
+    "recovery": "normal",
+    "notes": ""
+  },
+  {
+    "id": 1787053697055,
+    "user": "Dries",
+    "date": "2026-08-18",
+    "type": "Legs",
+    "exercises": [
+      {
+        "name": "squats",
+        "loading": "3x10@110kg",
+        "rpe": "RPE7"
+      },
+      {
+        "name": "romanian deadlifts",
+        "loading": "3x8@165kg",
+        "rpe": "RPE6.5"
+      },
+      {
+        "name": "single leg extensions",
+        "loading": "3x10@59kg",
+        "rpe": "RPE8"
+      },
+      {
+        "name": "prone leg curls",
+        "loading": "3x8@73kg",
+        "rpe": "RPE8"
+      }
+    ],
+    "energy": "above-average",
+    "sleep": "poor",
+    "recovery": "good",
+    "notes": ""
+  },
+  {
+    "id": 1787033951610,
+    "user": "Dries",
+    "date": "2026-08-18",
+    "type": "Rugby",
+    "duration": "90",
+    "intensity": "medium",
+    "hr": {
+      "avg": null,
+      "max": null
+    },
+    "exercises": [],
+    "energy": "average",
+    "sleep": "average",
+    "recovery": "normal",
+    "notes": ""
+  },
+  {
+    "id": 1787033950378,
+    "user": "Dries",
+    "date": "2026-08-18",
+    "type": "Rugby",
+    "duration": "90",
+    "intensity": "medium",
+    "hr": {
+      "avg": null,
+      "max": null
+    },
+    "exercises": [],
+    "energy": "average",
+    "sleep": "average",
+    "recovery": "normal",
+    "notes": ""
+  },
+  {
+    "id": 1786985253400,
+    "user": "Dries",
+    "date": "2026-08-17",
+    "type": "Upper body",
+    "exercises": [
+      {
+        "name": "clean pulls",
+        "loading": "3x10",
+        "rpe": "RPE8"
+      },
+      {
+        "name": "overhead press",
+        "loading": "1x10@60kg, 2x10@65kg",
+        "rpe": "RPE9.5"
+      },
+      {
+        "name": "lateral raise",
+        "loading": "3x12@16kg",
+        "rpe": "RPE8"
+      },
+      {
+        "name": "rear delt machine fly",
+        "loading": "3x12@73kg",
+        "rpe": "RPE7"
+      }
+    ],
+    "energy": "average",
+    "sleep": "good",
+    "recovery": "normal",
+    "notes": ""
+  },
+  {
+    "id": 1786985136017,
+    "user": "Dries",
+    "date": "2026-08-15",
+    "type": "Legs",
+    "exercises": [
+      {
+        "name": "power clean",
+        "loading": "3x3@100kg",
+        "rpe": "RPE7"
+      },
+      {
+        "name": "single leg romanian deadlift",
+        "loading": "3x8@24kg",
+        "rpe": "RPE5"
+      },
+      {
+        "name": "box jump",
+        "loading": "3x4",
+        "rpe": "RPE10"
+      }
+    ],
+    "energy": "below-average",
+    "sleep": "good",
+    "recovery": "normal",
+    "notes": ""
+  },
+  {
+    "id": 1786744185030,
+    "user": "Dries",
+    "date": "2026-08-14",
+    "type": "Rugby",
+    "duration": "120",
+    "intensity": "medium",
+    "hr": {
+      "avg": null,
+      "max": null
+    },
+    "exercises": [],
+    "energy": "average",
+    "sleep": "average",
+    "recovery": "normal",
+    "notes": ""
+  },
+  {
+    "id": 1786744173060,
+    "user": "Dries",
+    "date": "2026-08-14",
+    "type": "Upper body",
+    "exercises": [
+      {
+        "name": "weighted pull-ups",
+        "loading": "4x5@20kg",
+        "rpe": "RPE9.5"
+      },
+      {
+        "name": "dips",
+        "loading": "4x6@50kg",
+        "rpe": "RPE8.5"
+      },
+      {
+        "name": "seated machine rows",
+        "loading": "3x10@50kg",
+        "rpe": "RPE9"
+      },
+      {
+        "name": "flat dumbbell press",
+        "loading": "3x10@42kg",
+        "rpe": "RPE8"
+      },
+      {
+        "name": "bicep curls",
+        "loading": "2x12@18kg",
+        "rpe": "RPE7.5"
+      },
+      {
+        "name": "triceps push down",
+        "loading": "2x12@46kg",
+        "rpe": "RPE8.5"
+      }
+    ],
+    "energy": "average",
+    "sleep": "average",
+    "recovery": "normal",
+    "notes": ""
+  },
+  {
+    "id": 1786688928008,
+    "user": "Dries",
+    "date": "2026-08-13",
+    "type": "Legs",
+    "exercises": [
+      {
+        "name": "squats",
+        "loading": "3x12@102kg",
+        "rpe": "RPE8"
+      },
+      {
+        "name": "romanian deadlifts",
+        "loading": "3x8@160kg",
+        "rpe": "RPE6"
+      },
+      {
+        "name": "single leg extensions",
+        "loading": "3x10@59kg",
+        "rpe": "RPE8"
+      }
+    ],
+    "energy": "average",
+    "sleep": "average",
+    "recovery": "normal",
+    "notes": ""
+  },
+  {
+    "id": 1786613329843,
+    "user": "Dries",
+    "date": "2026-08-12",
+    "type": "Rugby",
+    "duration": "120",
+    "intensity": "high",
+    "hr": {
+      "avg": null,
+      "max": null
+    },
+    "exercises": [],
+    "energy": "average",
+    "sleep": "average",
+    "recovery": "normal",
+    "notes": ""
+  },
+  {
+    "id": 1786613305746,
+    "user": "Dries",
+    "date": "2026-08-12",
+    "type": "Upper body",
+    "exercises": [
+      {
+        "name": "weighted pull-ups",
+        "loading": "4x5@20kg",
+        "rpe": "RPE9.5"
+      },
+      {
+        "name": "dips",
+        "loading": "3x8@40kg",
+        "rpe": "RPE6.5"
+      },
+      {
+        "name": "seated machine rows",
+        "loading": "3x10@50kg",
+        "rpe": "RPE9"
+      },
+      {
+        "name": "flat dumbbell press",
+        "loading": "3x10@42kg",
+        "rpe": "RPE8"
+      },
+      {
+        "name": "bicep curls",
+        "loading": "2x12@16kg",
+        "rpe": "RPE7.5"
+      },
+      {
+        "name": "triceps push down",
+        "loading": "2x12@46kg",
+        "rpe": "RPE8.5"
+      }
+    ],
+    "energy": "average",
+    "sleep": "average",
+    "recovery": "normal",
+    "notes": ""
+  },
+  {
+    "id": 1786528228982,
+    "user": "Dries",
+    "date": "2026-08-11",
+    "type": "Rugby",
+    "duration": "105",
+    "intensity": "low",
+    "hr": {
+      "avg": null,
+      "max": null
+    },
+    "exercises": [],
+    "energy": "average",
+    "sleep": "average",
+    "recovery": "normal",
+    "notes": "Beach rugby."
+  },
+  {
+    "id": 1786528202684,
+    "user": "Dries",
+    "date": "2026-08-11",
+    "type": "Legs",
+    "exercises": [
+      {
+        "name": "squats",
+        "loading": "3x12@102kg",
+        "rpe": "RPE8"
+      },
+      {
+        "name": "romanian deadlifts",
+        "loading": "3x8@140kg",
+        "rpe": "RPE6"
+      },
+      {
+        "name": "single leg extensions",
+        "loading": "3x10@69kg",
+        "rpe": "RPE8"
+      },
+      {
+        "name": "prone leg curls",
+        "loading": "3x8@64kg",
+        "rpe": "RPE8"
+      }
+    ],
+    "energy": "average",
+    "sleep": "average",
+    "recovery": "normal",
+    "notes": ""
+  },
+  {
+    "id": 1786391240599,
+    "user": "Dries",
+    "date": "2026-08-10",
+    "type": "Rugby",
+    "duration": "105",
+    "intensity": "high",
+    "hr": {
+      "avg": null,
+      "max": null
+    },
+    "exercises": [],
+    "energy": "below-average",
+    "sleep": "poor",
+    "recovery": "normal",
+    "notes": ""
+  },
+  {
+    "id": 1786391137862,
+    "user": "Dries",
+    "date": "2026-08-10",
+    "type": "Upper body",
+    "exercises": [
+      {
+        "name": "pull-ups",
+        "loading": "3x11",
+        "rpe": "RPE9.5"
+      },
+      {
+        "name": "overhead press",
+        "loading": "3x10@60kg",
+        "rpe": "RPE9.5"
+      },
+      {
+        "name": "lateral raise",
+        "loading": "3x12@16kg",
+        "rpe": "RPE8"
+      },
+      {
+        "name": "rear delt machine fly",
+        "loading": "3x12@73kg",
+        "rpe": "RPE7"
+      }
+    ],
+    "energy": "below-average",
+    "sleep": "poor",
+    "recovery": "normal",
+    "notes": ""
+  },
+  {
+    "id": 1786356763653,
+    "user": "Dries",
+    "date": "2026-08-10",
+    "type": "Rugby",
+    "duration": "90",
+    "intensity": "high",
+    "hr": {
+      "avg": null,
+      "max": null
+    },
+    "exercises": [],
+    "energy": "average",
+    "sleep": "average",
+    "recovery": "normal",
+    "notes": ""
+  },
+  {
+    "id": 1786356783645,
+    "user": "Dries",
+    "date": "2026-08-08",
+    "type": "Rugby",
+    "duration": "90",
+    "intensity": "high",
+    "hr": {
+      "avg": null,
+      "max": null
+    },
+    "exercises": [],
+    "energy": "average",
+    "sleep": "average",
+    "recovery": "normal",
+    "notes": "Beach rugby"
+  },
+  {
     "id": 1785415632447,
     "user": "Cas",
     "date": "2026-07-30",
@@ -1377,6 +2836,71 @@
     "notes": ""
   },
   {
+    "id": 1785300760803,
+    "user": "Dries",
+    "date": "2026-07-28",
+    "type": "Running",
+    "duration": "60",
+    "intensity": "high",
+    "hr": {
+      "avg": null,
+      "max": null
+    },
+    "speed": {
+      "avg": null,
+      "max": null
+    },
+    "exercises": [],
+    "energy": "average",
+    "sleep": "average",
+    "recovery": "normal",
+    "notes": "Hill sprints"
+  },
+  {
+    "id": 1785249242974,
+    "user": "Dries",
+    "date": "2026-07-28",
+    "type": "Legs",
+    "exercises": [
+      {
+        "name": "squats",
+        "loading": "3x12@102kg",
+        "rpe": "RPE7"
+      },
+      {
+        "name": "romanian deadlifts",
+        "loading": "3x8@160kg",
+        "rpe": "RPE8"
+      },
+      {
+        "name": "seated calve raises",
+        "loading": "3x12@60kg",
+        "rpe": "RPE6"
+      }
+    ],
+    "energy": "average",
+    "sleep": "average",
+    "recovery": "normal",
+    "notes": ""
+  },
+  {
+    "id": 1785215479758,
+    "user": "Dries",
+    "date": "2026-07-28",
+    "type": "Rugby",
+    "duration": "75",
+    "intensity": "medium",
+    "hr": {
+      "avg": null,
+      "max": null
+    },
+    "exercises": [],
+    "energy": "average",
+    "sleep": "average",
+    "recovery": "normal",
+    "notes": ""
+  },
+  {
     "id": 1785240048105,
     "user": "Cas",
     "date": "2026-07-28",
@@ -1420,6 +2944,48 @@
       "morning": "1.5",
       "post": "1.5"
     },
+    "notes": ""
+  },
+  {
+    "id": 1785153260575,
+    "user": "Dries",
+    "date": "2026-07-27",
+    "type": "Upper body",
+    "exercises": [
+      {
+        "name": "pull-ups",
+        "loading": "3x12",
+        "rpe": "RPE9.5"
+      },
+      {
+        "name": "overhead press",
+        "loading": "1x10@65kg, 1x9@65kg, 1x7@65kg",
+        "rpe": "RPE9.5"
+      },
+      {
+        "name": "lateral raise",
+        "loading": "3x12@16kg",
+        "rpe": "RPE8"
+      },
+      {
+        "name": "rear delt machine fly",
+        "loading": "3x12@79kg",
+        "rpe": "RPE7"
+      },
+      {
+        "name": "bosuball crunch",
+        "loading": "2x12@15kg",
+        "rpe": "RPE8.5"
+      },
+      {
+        "name": "hanging knees to chest",
+        "loading": "2x12",
+        "rpe": "RPE7"
+      }
+    ],
+    "energy": "average",
+    "sleep": "average",
+    "recovery": "normal",
     "notes": ""
   },
   {
@@ -1469,6 +3035,48 @@
     "notes": ""
   },
   {
+    "id": 1783520290228,
+    "user": "Dries",
+    "date": "2026-07-08",
+    "type": "Upper body",
+    "exercises": [
+      {
+        "name": "pull-ups",
+        "loading": "3x6@30kg",
+        "rpe": "RPE9.5"
+      },
+      {
+        "name": "dips",
+        "loading": "3x6@57kg",
+        "rpe": "RPE8.5"
+      },
+      {
+        "name": "flat dumbbell press",
+        "loading": "3x8@48kg",
+        "rpe": "RPE9"
+      },
+      {
+        "name": "seated machine rows",
+        "loading": "3x10@55kg",
+        "rpe": "RPE9"
+      },
+      {
+        "name": "bicep curls",
+        "loading": "2x12@18kg",
+        "rpe": "RPE7.5"
+      },
+      {
+        "name": "pulley skull skruchers",
+        "loading": "2x12@38kg",
+        "rpe": "RPE8"
+      }
+    ],
+    "energy": "below-average",
+    "sleep": "average",
+    "recovery": "normal",
+    "notes": ""
+  },
+  {
     "id": 1783550519613,
     "user": "Cas",
     "date": "2026-07-08",
@@ -1491,6 +3099,64 @@
       "morning": "2",
       "post": "2"
     },
+    "notes": ""
+  },
+  {
+    "id": 1783520095827,
+    "user": "Dries",
+    "date": "2026-07-07",
+    "type": "Running",
+    "duration": "60",
+    "intensity": "high",
+    "hr": {
+      "avg": null,
+      "max": null
+    },
+    "speed": {
+      "avg": null,
+      "max": null
+    },
+    "exercises": [],
+    "energy": "average",
+    "sleep": "average",
+    "recovery": "normal",
+    "notes": "Same hill sprint sessions as always 3 km warm-up and 2 x 4 hillsprints 120m long and 18m height."
+  },
+  {
+    "id": 1783430851755,
+    "user": "Dries",
+    "date": "2026-07-07",
+    "type": "Legs",
+    "exercises": [
+      {
+        "name": "squats",
+        "loading": "1x1@180kg",
+        "rpe": "RPE9.5"
+      },
+      {
+        "name": "squats",
+        "loading": "3x5@150kg",
+        "rpe": "RPE7.5"
+      },
+      {
+        "name": "romanian deadlifts",
+        "loading": "3x8@180kg",
+        "rpe": "RPE8"
+      },
+      {
+        "name": "single leg extensions",
+        "loading": "3x10@64kg",
+        "rpe": "RPE9.5"
+      },
+      {
+        "name": "prone leg curls",
+        "loading": "3x8@89kg",
+        "rpe": "RPE9"
+      }
+    ],
+    "energy": "average",
+    "sleep": "poor",
+    "recovery": "good",
     "notes": ""
   },
   {
@@ -1540,6 +3206,38 @@
     "notes": "Still a bit sick. Will try to sleep long the next two nights to amp up recovery."
   },
   {
+    "id": 1783350387801,
+    "user": "Dries",
+    "date": "2026-07-06",
+    "type": "Upper body",
+    "exercises": [
+      {
+        "name": "pull-ups",
+        "loading": "2x12, 1x10",
+        "rpe": "RPE8"
+      },
+      {
+        "name": "overhead press",
+        "loading": "1x10@70kg, 1x8@70kg, 1x10@60kg",
+        "rpe": "RPE9.5"
+      },
+      {
+        "name": "lateral raise",
+        "loading": "3x10@18kg",
+        "rpe": "RPE8"
+      },
+      {
+        "name": "rear delt machine fly",
+        "loading": "3x12@79kg",
+        "rpe": "RPE7"
+      }
+    ],
+    "energy": "above-average",
+    "sleep": "good",
+    "recovery": "good",
+    "notes": ""
+  },
+  {
     "id": 1783365565327,
     "user": "Cas",
     "date": "2026-07-06",
@@ -1584,6 +3282,192 @@
       "post": "2"
     },
     "notes": "Felt weak today, sleeping bad due to stress and illness."
+  },
+  {
+    "id": 1783181707496,
+    "user": "Dries",
+    "date": "2026-07-04",
+    "type": "Legs",
+    "exercises": [
+      {
+        "name": "power clean",
+        "loading": "3x3@110kg",
+        "rpe": "RPE9.5"
+      },
+      {
+        "name": "bulgarian split squats",
+        "loading": "3x8@90kg",
+        "rpe": "RPE7"
+      },
+      {
+        "name": "zercher hip extensions",
+        "loading": "3x10@60kg",
+        "rpe": "RPE8"
+      },
+      {
+        "name": "straight leg box jump",
+        "loading": "3x4@69kg",
+        "rpe": "RPE9"
+      }
+    ],
+    "energy": "average",
+    "sleep": "average",
+    "recovery": "normal",
+    "notes": ""
+  },
+  {
+    "id": 1783097736844,
+    "user": "Dries",
+    "date": "2026-07-03",
+    "type": "Upper body",
+    "exercises": [
+      {
+        "name": "pull-ups",
+        "loading": "4x6@20kg",
+        "rpe": "RPE9"
+      },
+      {
+        "name": "dips",
+        "loading": "3x6@55kg",
+        "rpe": "RPE8"
+      },
+      {
+        "name": "machine press",
+        "loading": "3x10@89kg",
+        "rpe": "RPE8"
+      },
+      {
+        "name": "back machine rows",
+        "loading": "3x12@120kg",
+        "rpe": "RPE8"
+      },
+      {
+        "name": "bicep machine curls",
+        "loading": "3x12@45kg",
+        "rpe": "RPE8.5"
+      },
+      {
+        "name": "machine triceps mress",
+        "loading": "3x12@70kg",
+        "rpe": ""
+      }
+    ],
+    "energy": "average",
+    "sleep": "average",
+    "recovery": "normal",
+    "notes": ""
+  },
+  {
+    "id": 1783097478199,
+    "user": "Dries",
+    "date": "2026-07-03",
+    "type": "Cycling",
+    "duration": "120",
+    "intensity": "medium",
+    "hr": {
+      "avg": null,
+      "max": null
+    },
+    "speed": {
+      "avg": null,
+      "max": null
+    },
+    "exercises": [],
+    "energy": "average",
+    "sleep": "average",
+    "recovery": "normal",
+    "notes": ""
+  },
+  {
+    "id": 1782993076133,
+    "user": "Dries",
+    "date": "2026-07-02",
+    "type": "Legs",
+    "exercises": [
+      {
+        "name": "squats",
+        "loading": "1x3@165kg, 1x3@160kg, 1x3@150kg",
+        "rpe": "RPE9.5"
+      },
+      {
+        "name": "romanian deadlifts",
+        "loading": "3x12@120kg",
+        "rpe": "RPE5"
+      },
+      {
+        "name": "prone leg curls",
+        "loading": "2x10@82kg",
+        "rpe": "RPE8"
+      },
+      {
+        "name": "single leg extensions",
+        "loading": "2x10@69kg",
+        "rpe": "RPE8"
+      }
+    ],
+    "energy": "average",
+    "sleep": "poor",
+    "recovery": "poor",
+    "notes": "Mom woke me up to early :'("
+  },
+  {
+    "id": 1782988834274,
+    "user": "Dries",
+    "date": "2026-07-02",
+    "type": "Rugby",
+    "duration": "90",
+    "intensity": "medium",
+    "hr": {
+      "avg": null,
+      "max": null
+    },
+    "exercises": [],
+    "energy": "average",
+    "sleep": "average",
+    "recovery": "normal",
+    "notes": "Beach rugby sessie"
+  },
+  {
+    "id": 1782988795274,
+    "user": "Dries",
+    "date": "2026-07-02",
+    "type": "Upper body",
+    "exercises": [
+      {
+        "name": "pull-ups",
+        "loading": "3x6@27kg, 1x5@27kg",
+        "rpe": "RPE9"
+      },
+      {
+        "name": "dips",
+        "loading": "4x6@55kg",
+        "rpe": "RPE8"
+      },
+      {
+        "name": "flat dumbbell press",
+        "loading": "3x8@48kg",
+        "rpe": "RPE9"
+      },
+      {
+        "name": "seated machine rows",
+        "loading": "3x10@55kg",
+        "rpe": "RPE7.5"
+      },
+      {
+        "name": "bicep curls",
+        "loading": "2x12@20kg",
+        "rpe": "RPE7"
+      },
+      {
+        "name": "triceps push down",
+        "loading": "2x12@45kg",
+        "rpe": "RPE8.5"
+      }
+    ],
+    "energy": "average",
+    "sleep": "average",
+    "recovery": "normal",
+    "notes": ""
   },
   {
     "id": 1782996890652,
@@ -1662,6 +3546,59 @@
     "notes": ""
   },
   {
+    "id": 1782886489674,
+    "user": "Dries",
+    "date": "2026-06-30",
+    "type": "Running",
+    "duration": "50",
+    "intensity": "high",
+    "hr": {
+      "avg": null,
+      "max": null
+    },
+    "speed": {
+      "avg": null,
+      "max": null
+    },
+    "exercises": [],
+    "energy": "average",
+    "sleep": "average",
+    "recovery": "normal",
+    "notes": "Hill sprints"
+  },
+  {
+    "id": 1782819838468,
+    "user": "Dries",
+    "date": "2026-06-30",
+    "type": "Legs",
+    "exercises": [
+      {
+        "name": "squats",
+        "loading": "4x4@157kg",
+        "rpe": "RPE9.5"
+      },
+      {
+        "name": "romanian deadlifts",
+        "loading": "3x8@170kg",
+        "rpe": "RPE8.5"
+      },
+      {
+        "name": "prone leg curls",
+        "loading": "2x8@86kg",
+        "rpe": "RPE8.5"
+      },
+      {
+        "name": "single leg extensions",
+        "loading": "2x10@61kg",
+        "rpe": "RPE8.5"
+      }
+    ],
+    "energy": "below-average",
+    "sleep": "average",
+    "recovery": "normal",
+    "notes": "Energy was okay but the body was not on point"
+  },
+  {
     "id": 1782827455814,
     "user": "Cas",
     "date": "2026-06-30",
@@ -1696,6 +3633,48 @@
       "post": "4.5"
     },
     "notes": "Feeling sick and inflamed. Reduced load, yet still had to stop session early."
+  },
+  {
+    "id": 1782773998341,
+    "user": "Dries",
+    "date": "2026-06-29",
+    "type": "Upper body",
+    "exercises": [
+      {
+        "name": "pull-ups",
+        "loading": "3x10",
+        "rpe": "RPE8"
+      },
+      {
+        "name": "overhead press",
+        "loading": "1x10@70kg, 1x8@70kg, 1x6@70kg",
+        "rpe": "RPE8.5"
+      },
+      {
+        "name": "lateral raise",
+        "loading": "3x12@16kg",
+        "rpe": "RPE6"
+      },
+      {
+        "name": "rear delt fly",
+        "loading": "3x12@74kg",
+        "rpe": "RPE7.5"
+      },
+      {
+        "name": "hanging knees to chest",
+        "loading": "2x12",
+        "rpe": "RPE7"
+      },
+      {
+        "name": "bosuball crunch",
+        "loading": "2x12@15kg",
+        "rpe": "RPE8.5"
+      }
+    ],
+    "energy": "average",
+    "sleep": "average",
+    "recovery": "normal",
+    "notes": ""
   },
   {
     "id": 1782805804261,
@@ -1775,6 +3754,23 @@
     "notes": "Festival, hours of dancing and jumping around. Knees really felt it. $IMPACT=very high"
   },
   {
+    "id": 1782712493887,
+    "user": "Dries",
+    "date": "2026-06-27",
+    "type": "Rugby",
+    "duration": "40",
+    "intensity": "high",
+    "hr": {
+      "avg": null,
+      "max": null
+    },
+    "exercises": [],
+    "energy": "average",
+    "sleep": "average",
+    "recovery": "normal",
+    "notes": "4 beach rugby games of 10 min"
+  },
+  {
     "id": 1782577800000,
     "user": "Cas",
     "date": "2026-06-27",
@@ -1788,6 +3784,156 @@
       "post": null
     },
     "notes": "Festival day two, more hours of dancing and jumping. Knees still cranky from yesterday. $IMPACT=very high"
+  },
+  {
+    "id": 1782505548613,
+    "user": "Dries",
+    "date": "2026-06-26",
+    "type": "Rugby",
+    "duration": "60",
+    "intensity": "low",
+    "hr": {
+      "avg": null,
+      "max": null
+    },
+    "exercises": [],
+    "energy": "average",
+    "sleep": "average",
+    "recovery": "normal",
+    "notes": ""
+  },
+  {
+    "id": 1782505546046,
+    "user": "Dries",
+    "date": "2026-06-26",
+    "type": "Rugby",
+    "duration": "60",
+    "intensity": "low",
+    "hr": {
+      "avg": null,
+      "max": null
+    },
+    "exercises": [],
+    "energy": "average",
+    "sleep": "average",
+    "recovery": "normal",
+    "notes": ""
+  },
+  {
+    "id": 1782487708259,
+    "user": "Dries",
+    "date": "2026-06-25",
+    "type": "Upper body",
+    "exercises": [
+      {
+        "name": "pull-ups",
+        "loading": "3x6@27kg, 1x6@25kg",
+        "rpe": "RPE8.5"
+      },
+      {
+        "name": "dips",
+        "loading": "3x6@55kg, 1x5@50kg",
+        "rpe": "RPE8"
+      },
+      {
+        "name": "flat dumbbell press",
+        "loading": "3x8@48kg",
+        "rpe": "RPE9"
+      },
+      {
+        "name": "seated machine rows",
+        "loading": "3x10@55kg",
+        "rpe": "RPE8.5"
+      },
+      {
+        "name": "bicep curls",
+        "loading": "1x10@22kg, 1x10@20kg",
+        "rpe": "RPE8"
+      },
+      {
+        "name": "triceps push down",
+        "loading": "2x11@50kg",
+        "rpe": "RPE6.5"
+      }
+    ],
+    "energy": "average",
+    "sleep": "average",
+    "recovery": "normal",
+    "notes": ""
+  },
+  {
+    "id": 1782375174475,
+    "user": "Dries",
+    "date": "2026-06-25",
+    "type": "Legs",
+    "exercises": [
+      {
+        "name": "squats",
+        "loading": "4x5@130kg",
+        "rpe": "RPE5.5"
+      },
+      {
+        "name": "leg press",
+        "loading": "3x10@210kg",
+        "rpe": "RPE6.5"
+      },
+      {
+        "name": "prone leg curls",
+        "loading": "2x10@75kg",
+        "rpe": "RPE6.5"
+      },
+      {
+        "name": "leg press calve raises",
+        "loading": "3x12@120kg",
+        "rpe": "RPE5"
+      },
+      {
+        "name": "copenhagen plank 20s",
+        "loading": "",
+        "rpe": "RPE5"
+      }
+    ],
+    "energy": "below-average",
+    "sleep": "poor",
+    "recovery": "normal",
+    "notes": ""
+  },
+  {
+    "id": 1782375163026,
+    "user": "Dries",
+    "date": "2026-06-25",
+    "type": "Legs",
+    "exercises": [
+      {
+        "name": "squats",
+        "loading": "4x5@130kg",
+        "rpe": "RPE5.5"
+      },
+      {
+        "name": "leg press",
+        "loading": "3x10@210kg",
+        "rpe": "RPE6.5"
+      },
+      {
+        "name": "prone leg curls",
+        "loading": "2x10@75kg",
+        "rpe": "RPE6.5"
+      },
+      {
+        "name": "leg press calve raises",
+        "loading": "3x12@120kg",
+        "rpe": "RPE5"
+      },
+      {
+        "name": "copenhagen plank 20s",
+        "loading": "2",
+        "rpe": "RPE5"
+      }
+    ],
+    "energy": "below-average",
+    "sleep": "poor",
+    "recovery": "normal",
+    "notes": "Between to exams, a bit stressed and very hot to get a good night of sleep. -> light session. Next week we go hard again"
   },
   {
     "id": 1782387916398,
@@ -1839,6 +3985,69 @@
       "post": "2.5"
     },
     "notes": ""
+  },
+  {
+    "id": 1782307642594,
+    "user": "Dries",
+    "date": "2026-06-24",
+    "type": "Upper body",
+    "exercises": [
+      {
+        "name": "pull-ups",
+        "loading": "3x6@27kg, 1x6",
+        "rpe": "RPE8.5"
+      },
+      {
+        "name": "dips",
+        "loading": "3x6@55kg, 1x5@50kg",
+        "rpe": "RPE8"
+      },
+      {
+        "name": "flat dumbbell press",
+        "loading": "3x8@48kg",
+        "rpe": "RPE9"
+      },
+      {
+        "name": "seated machine rows",
+        "loading": "3x10@55kg",
+        "rpe": "RPE8.5"
+      },
+      {
+        "name": "bicep curls",
+        "loading": "1x10@22kg, 1x10@20kg, 1x10@14kg",
+        "rpe": "RPE8"
+      },
+      {
+        "name": "skullcrushers",
+        "loading": "2x11@53kg",
+        "rpe": "RPE6.5"
+      }
+    ],
+    "energy": "average",
+    "sleep": "average",
+    "recovery": "normal",
+    "notes": ""
+  },
+  {
+    "id": 1782289178639,
+    "user": "Dries",
+    "date": "2026-06-24",
+    "type": "Running",
+    "duration": "50",
+    "intensity": "high",
+    "hr": {
+      "avg": null,
+      "max": null
+    },
+    "speed": {
+      "avg": null,
+      "max": null
+    },
+    "exercises": [],
+    "energy": "average",
+    "sleep": "average",
+    "recovery": "good",
+    "notes": "hill sprints same session as last hill sprint session."
   },
   {
     "id": 1782306599746,
@@ -1919,6 +4128,38 @@
       "morning": "2",
       "post": "2"
     },
+    "notes": ""
+  },
+  {
+    "id": 1782220011089,
+    "user": "Dries",
+    "date": "2026-06-23",
+    "type": "Legs",
+    "exercises": [
+      {
+        "name": "squats",
+        "loading": "2x6@157kg, 2x6@152kg",
+        "rpe": "RPE8.5"
+      },
+      {
+        "name": "romanian deadlifts",
+        "loading": "2x8@170kg",
+        "rpe": "RPE7"
+      },
+      {
+        "name": "single leg extensions",
+        "loading": "2x10@63kg",
+        "rpe": "RPE8.5"
+      },
+      {
+        "name": "prone leg curls",
+        "loading": "2x10@89kg",
+        "rpe": "RPE8.5"
+      }
+    ],
+    "energy": "above-average",
+    "sleep": "poor",
+    "recovery": "normal",
     "notes": ""
   },
   {
