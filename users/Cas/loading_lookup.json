@@ -7,7 +7,8 @@
     },
     "bulgarian split squats": {
       "strain_factor": 0.0698,
-      "bodyweight": true
+      "bodyweight": true,
+      "e1rm_bodyweight": true
     },
     "band distracted split squats": {
       "strain_factor": 0.0698,
