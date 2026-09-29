@@ -203,6 +203,11 @@
       "strain_factor": 0,
       "bodyweight": false,
       "e1rm_bodyweight": false
+    },
+    "single leg calf raises": {
+      "strain_factor": 0,
+      "bodyweight": false,
+      "e1rm_bodyweight": true
     }
   },
   "cardio": {
