@@ -44,22 +44,28 @@ function sessionPatellarVolume(s) {
 
   return (s.exercises || []).reduce((sum, e) => {
     const entry = lookup.exercises[(e.name || '').toLowerCase().trim()];
-    if (!entry || !entry.strain_factor) return sum;
-    const rpeNum = e.rpe ? parseFloat((e.rpe + '').match(/[\d.]+/)?.[0]) : null;
-    const thresh = LOADING_MODEL.rpe_threshold ?? 8;
-    const rpeMult = (rpeNum != null && rpeNum > thresh) ? Math.exp(rpeNum - thresh) : 1;
-    const parts = (e.loading || '').split(',').map(p => p.trim()).filter(Boolean);
-    return sum + parts.reduce((pSum, part) => {
-      const sr = part.match(/^([\d.]+)\s*x\s*([\d.]+)/i);
-      const w = part.match(/@\s*([\d.]+)/);
-      const sets = sr ? parseFloat(sr[1]) : null;
-      const reps = sr ? parseFloat(sr[2]) : null;
-      if (!sets || !reps) return pSum;
-      const added = w ? parseFloat(w[1]) : 0;
-      const weight = entry.bodyweight ? BODYWEIGHT_KG + added : added;
-      if (!weight) return pSum;
-      return pSum + entry.strain_factor * weight * patellarVol(sets, reps) * rpeMult;
-    }, 0);
+    return sum + loadingStrain(entry, e.loading, e.rpe);
+  }, 0);
+}
+
+// Patellar strain of one exercise's loading string (e.g. "3x8@60kg, 1x6@65kg")
+// under a lookup entry { strain_factor, bodyweight }.
+function loadingStrain(entry, loading, rpe) {
+  if (!entry || !entry.strain_factor) return 0;
+  const rpeNum = rpe ? parseFloat((rpe + '').match(/[\d.]+/)?.[0]) : null;
+  const thresh = LOADING_MODEL.rpe_threshold ?? 8;
+  const rpeMult = (rpeNum != null && rpeNum > thresh) ? Math.exp(rpeNum - thresh) : 1;
+  const parts = (loading || '').split(',').map(p => p.trim()).filter(Boolean);
+  return parts.reduce((pSum, part) => {
+    const sr = part.match(/^([\d.]+)\s*x\s*([\d.]+)/i);
+    const w = part.match(/@\s*([\d.]+)/);
+    const sets = sr ? parseFloat(sr[1]) : null;
+    const reps = sr ? parseFloat(sr[2]) : null;
+    if (!sets || !reps) return pSum;
+    const added = w ? parseFloat(w[1]) : 0;
+    const weight = entry.bodyweight ? BODYWEIGHT_KG + added : added;
+    if (!weight) return pSum;
+    return pSum + entry.strain_factor * weight * patellarVol(sets, reps) * rpeMult;
   }, 0);
 }
 

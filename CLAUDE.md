@@ -33,6 +33,7 @@ When changing `worker.js`, redeploy to Cloudflare manually after pushing.
 | `src/js/history.js` | `parseLoading()`, `sessionPatellarVolume()`, `renderHistory()` |
 | `src/js/charts.js` | Progression chart and KPS sensitivity chart |
 | `src/js/coach.js` | `buildContext()`, `askCoach()`, `editUserContext()`, `tuneLoadings()` |
+| `src/js/calibrate.js` | New-exercise patellar strain wizard: asks legs/bodyweight, then compares against known exercises to back-solve `strain_factor` |
 | `src/js/main.js` | Navigation, export, `initApp()`, `loadAll()` (entry point) |
 
 `build.py` concatenates the JS modules in the order listed above (load order matters — `state.js` must be first, `main.js` last).

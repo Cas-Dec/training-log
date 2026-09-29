@@ -16,6 +16,7 @@ JS_MODULES = [
     "history.js",
     "charts.js",
     "coach.js",
+    "calibrate.js",
     "main.js",
 ]
 

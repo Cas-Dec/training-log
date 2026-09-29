@@ -106,6 +106,9 @@ async function saveSession() {
     notes: document.getElementById('notes').value.trim(),
   };
 
+  // Detect never-logged exercises before this session joins `sessions`.
+  const toCalibrate = newPatellarCandidates(session.exercises);
+
   // Register any new exercise names in the shared wiki.
   // Awaited (not fire-and-forget) so this commit lands before the log
   // commit below starts — two concurrent PUTs to the same GitHub branch
@@ -129,6 +132,7 @@ async function saveSession() {
   else setStatus('Saved locally. GitHub sync failed.', 'err');
 
   resetForm();
+  startStrainCalibration(toCalibrate);
 }
 
 function setStatus(msg, type) {
