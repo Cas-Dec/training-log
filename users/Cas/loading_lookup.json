@@ -107,6 +107,11 @@
       "strain_factor": 0.3227,
       "bodyweight": false,
       "e1rm_bodyweight": false
+    },
+    "dumbbell rows": {
+      "strain_factor": 0,
+      "bodyweight": false,
+      "e1rm_bodyweight": false
     }
   },
   "cardio": {
