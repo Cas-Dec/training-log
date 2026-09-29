@@ -39,7 +39,8 @@
     },
     "leg extensions": {
       "strain_factor": 0.2208,
-      "bodyweight": false
+      "bodyweight": false,
+      "e1rm_bodyweight": false
     },
     "vertical jumps": {
       "strain_factor": 0.1847,
