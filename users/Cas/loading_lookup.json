@@ -132,6 +132,11 @@
       "strain_factor": 0,
       "bodyweight": false,
       "e1rm_bodyweight": true
+    },
+    "tibialis raises": {
+      "strain_factor": 0,
+      "bodyweight": false,
+      "e1rm_bodyweight": true
     }
   },
   "cardio": {
