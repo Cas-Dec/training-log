@@ -231,6 +231,11 @@
       "strain_factor": 0,
       "bodyweight": false,
       "e1rm_bodyweight": false
+    },
+    "step-ups": {
+      "strain_factor": 0.0338,
+      "bodyweight": true,
+      "e1rm_bodyweight": true
     }
   },
   "cardio": {
