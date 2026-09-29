@@ -220,6 +220,11 @@
       "strain_factor": 0.0893,
       "bodyweight": false,
       "e1rm_bodyweight": false
+    },
+    "dips": {
+      "strain_factor": 0,
+      "bodyweight": false,
+      "e1rm_bodyweight": true
     }
   },
   "cardio": {
