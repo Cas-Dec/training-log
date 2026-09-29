@@ -154,6 +154,11 @@
       "strain_factor": 0,
       "bodyweight": false,
       "e1rm_bodyweight": true
+    },
+    "barbell side bends": {
+      "strain_factor": 0,
+      "bodyweight": false,
+      "e1rm_bodyweight": false
     }
   },
   "cardio": {
