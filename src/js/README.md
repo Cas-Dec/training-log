@@ -33,8 +33,8 @@ Login, token handling, and all GitHub/Worker sync functions.
 - `getTokenPayload()` — decodes the local JWT without a network call.
 
 **Session sync**
-- `syncToGitHub()` — merges local `sessions` with the remote log (dedup by `session.id`) then PUTs the merged array. Called after every `saveSession()`.
-- `pullFromGitHub()` — fetches remote log, merges into local `sessions`, updates `localStorage['tl_sessions']`. Called on `initApp()`.
+- `syncToGitHub()` — fetches the remote log (aborts if that fails), merges in this device's pending (not yet uploaded) sessions, then PUTs only `currentUser`'s sessions. Clears their ids from `localStorage['tl_pending']` on success. Called after every `saveSession()`.
+- `pullFromGitHub()` — fetches remote log; local `sessions` becomes remote + pending sessions, updates `localStorage['tl_sessions']`. Called on `initApp()`. Remote is the source of truth: sessions deleted on GitHub don't come back.
 
 **Lookup sync**
 - `syncLookupFromWorker()` — GETs `users/{User}/loading_lookup.json` via Worker; falls back to the static file. Called on `initApp()`.

@@ -91,23 +91,54 @@ async function syncContextToGitHub(content) {
   } catch(e) {}
 }
 
+// GitHub (users/{currentUser}/log.json) is the source of truth. The only local
+// sessions that survive a sync are ones saved on this device that haven't been
+// uploaded yet (ids in tl_pending) — so sessions deleted on GitHub stay deleted,
+// and another user's sessions cached on a shared device never leak into this
+// user's log.
+function pendingIds() {
+  try { return new Set(JSON.parse(localStorage.getItem('tl_pending') || '[]')); } catch(e) { return new Set(); }
+}
+
+function setPendingIds(ids) {
+  localStorage.setItem('tl_pending', JSON.stringify([...ids]));
+}
+
+function markPending(id) {
+  const ids = pendingIds();
+  ids.add(id);
+  setPendingIds(ids);
+}
+
+// Remote sessions of the current user, plus this device's pending sessions
+// (of any user — another user's pending ones are kept until they log in here).
+function mergeWithRemote(remote) {
+  const pending = pendingIds();
+  const remoteIds = new Set(remote.map(s => s.id));
+  const merged = [...sessions.filter(s => pending.has(s.id) && !remoteIds.has(s.id)), ...remote];
+  merged.sort((a,b) => b.date.localeCompare(a.date));
+  sessions = merged;
+  localStorage.setItem('tl_sessions', JSON.stringify(sessions));
+}
+
 async function syncToGitHub() {
   try {
-    // Merge with remote before writing
+    // Never write without a fresh remote copy to merge onto.
     const getRes = await authFetch(`${WORKER}/log`);
-    if (getRes.ok) {
-      const { sessions: remote } = await getRes.json();
-      const remoteIds = new Set(remote.map(s => s.id));
-      const merged = [...sessions.filter(s => !remoteIds.has(s.id)), ...remote];
-      merged.sort((a,b) => b.date.localeCompare(a.date));
-      sessions = merged;
-      localStorage.setItem('tl_sessions', JSON.stringify(sessions));
-    }
+    if (!getRes.ok) return false;
+    const { sessions: remote } = await getRes.json();
+    mergeWithRemote(remote);
+    const mine = sessions.filter(s => (s.user || 'Cas') === currentUser);
     const putRes = await authFetch(`${WORKER}/log`, {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ sessions, message: `Add session ${sessions[0]?.date || ''}` }),
+      body: JSON.stringify({ sessions: mine, message: `Add session ${mine[0]?.date || ''}` }),
     });
+    if (putRes.ok) {
+      const pending = pendingIds();
+      mine.forEach(s => pending.delete(s.id));
+      setPendingIds(pending);
+    }
     return putRes.ok;
   } catch(e) { return false; }
 }
@@ -117,12 +148,7 @@ async function pullFromGitHub() {
     const res = await authFetch(`${WORKER}/log`);
     if (!res.ok) return;
     const { sessions: remote } = await res.json();
-    // Remote wins on ID conflicts — GitHub is the source of truth for pulls
-    const remoteIds = new Set(remote.map(s => s.id));
-    const merged = [...sessions.filter(s => !remoteIds.has(s.id)), ...remote];
-    merged.sort((a,b) => b.date.localeCompare(a.date));
-    sessions = merged;
-    localStorage.setItem('tl_sessions', JSON.stringify(sessions));
+    mergeWithRemote(remote);
   } catch(e) {}
 }
 

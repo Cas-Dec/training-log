@@ -124,6 +124,7 @@ async function saveSession() {
   // Save locally first
   sessions.unshift(session);
   localStorage.setItem('tl_sessions', JSON.stringify(sessions));
+  markPending(session.id);
   setStatus('Saved locally…', 'pending');
 
   // Sync to GitHub via Worker

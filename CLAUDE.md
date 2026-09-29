@@ -51,11 +51,11 @@ A Cloudflare Worker (`worker.js`) handles login, token issuance (HMAC-signed JWT
 - `localStorage['tl_lookup']` — local mirror of loading_lookup; seeded on load, updated via Worker.
 
 ### Sync logic (`syncToGitHub`, `pullFromGitHub`)
-On every save, the app:
-1. Fetches `users/{user}/log.json` from GitHub via Worker GET `/log` to get its `sha`.
-2. Merges remote sessions with local ones, deduplicating by `session.id` (a `Date.now()` timestamp).
+GitHub is the source of truth. `saveSession()` records the new session's id in `localStorage['tl_pending']`; on every save, the app:
+1. Fetches `users/{user}/log.json` from GitHub via Worker GET `/log` (aborts the sync if this fails).
+2. Merges remote sessions with local *pending* ones only, deduplicating by `session.id` (a `Date.now()` timestamp). Non-pending local sessions are dropped, so sessions deleted on GitHub stay deleted.
 3. Sorts the merged array by date descending.
-4. PUTs the merged content back via Worker PUT `/log`.
+4. PUTs only `currentUser`'s sessions back via Worker PUT `/log`, then clears their pending ids. (`tl_sessions` is shared between users on one device, so without this filter another user's cached sessions would leak into this user's log.)
 
 ### Lookup sync (`syncLookupFromWorker`, `syncLookupToGitHub`)
 - On `initApp()`, `syncLookupFromWorker()` fetches `GET /lookup` from the Worker, which reads `users/{user}/loading_lookup.json` from GitHub. Falls back to the static file at `./users/{User}/loading_lookup.json`.
