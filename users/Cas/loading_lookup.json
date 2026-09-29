@@ -127,6 +127,11 @@
       "strain_factor": 0,
       "bodyweight": false,
       "e1rm_bodyweight": false
+    },
+    "pull-ups": {
+      "strain_factor": 0,
+      "bodyweight": false,
+      "e1rm_bodyweight": true
     }
   },
   "cardio": {
