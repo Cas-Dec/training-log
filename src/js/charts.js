@@ -241,9 +241,10 @@ function renderKpsSensitivityChart() {
 
   const cutoff = Date.now() - TWELVE_WEEKS_MS;
 
-  // Aggregate per day
+  // Aggregate per day. `sessions` is newest-first, so walk it chronologically (by id = log time):
+  // morning KPS comes from the day's first session, post KPS from its last.
   const dayMap = {};
-  sessions.filter(s => (s.user || 'Cas') === 'Cas').forEach(s => {
+  sessions.filter(s => (s.user || 'Cas') === 'Cas').sort((a, b) => a.id - b.id).forEach(s => {
     if (!dayMap[s.date]) dayMap[s.date] = { loading: 0, morningKps: null, postKps: null };
     dayMap[s.date].loading += sessionPatellarVolume(s);
     if (s.kps?.morning != null && s.kps.morning !== '' && dayMap[s.date].morningKps === null)
@@ -341,11 +342,13 @@ function renderKpsSensitivityChart() {
   // Third: for each calendar day, take its peak KPS (the higher of morning/post, whichever were
   // logged), then the day-over-day rise = next day's peak − today's peak, walking every
   // consecutive calendar day across full history regardless of whether either day had a
-  // session. Per calendar month, sum only the *positive* rises (a drop or hold contributes
-  // nothing — recoveries can't cancel out flare-ups) and divide by that month's total patellar
-  // load. Lower = more tolerant. This fixes two issues with a plain daily-delta approach: gating
+  // session. For every day, over the trailing 30-day window ending on it, sum only the *positive*
+  // rises (a drop or hold contributes nothing — recoveries can't cancel out flare-ups) and divide
+  // by that window's total patellar load. Lower = more tolerant. Only days with a full 30-day
+  // window behind them are plotted. This fixes two issues with a plain daily-delta approach: gating
   // on "did today have a session" silently drops the KPS change across rest days, and letting
   // negative deltas net against positive ones hides real flare-ups behind unrelated relief.
+  const WINDOW_DAYS = 30;
   const allDates = denseDayRange(earliestMs(Object.keys(dayMap)), Date.now());
   const peakKps = d => {
     const m = dayMap[d]?.morningKps, p = dayMap[d]?.postKps;
@@ -354,45 +357,40 @@ function renderKpsSensitivityChart() {
     return Math.max(m, p);
   };
 
-  const monthAgg = {};
-  allDates.forEach(d => {
-    const key = d.slice(0, 7); // 'YYYY-MM'
-    if (!monthAgg[key]) monthAgg[key] = { sumRise: 0, sumLoad: 0 };
-    monthAgg[key].sumLoad += dayMap[d]?.loading || 0;
-  });
+  // Rise attributed to the day it lands on; prefix sums make each window O(1).
+  const riseCum = [0], loadCum = [0];
   allDates.forEach((d, i) => {
-    const next = allDates[i + 1];
-    if (!next) return;
-    const before = peakKps(d), after = peakKps(next);
-    if (before == null || after == null) return;
-    const rise = after - before;
-    if (rise > 0) monthAgg[next.slice(0, 7)].sumRise += rise;
+    const before = i > 0 ? peakKps(allDates[i - 1]) : null, after = peakKps(d);
+    const rise = before != null && after != null ? Math.max(0, after - before) : 0;
+    riseCum.push(riseCum[i] + rise);
+    loadCum.push(loadCum[i] + (dayMap[d]?.loading || 0));
   });
 
-  const monthKeys = Object.keys(monthAgg).sort();
-  const monthLabels = monthKeys.map(k => {
-    const [y, m] = k.split('-').map(Number);
-    return new Date(y, m - 1, 1).toLocaleDateString(undefined, { month: 'short', year: 'numeric' });
+  const rollDates = allDates.slice(WINDOW_DAYS - 1);
+  const rollSensitivity = rollDates.map((_, j) => {
+    const end = j + WINDOW_DAYS, start = j;
+    const load = loadCum[end] - loadCum[start];
+    return load > 0 ? (riseCum[end] - riseCum[start]) / load : null;
   });
-  const monthSensitivity = monthKeys.map(k => monthAgg[k].sumLoad > 0 ? monthAgg[k].sumRise / monthAgg[k].sumLoad : null);
 
-  const validMonthVals = monthSensitivity.filter(v => v != null);
-  let monthDeltaPct = null;
-  if (validMonthVals.length >= 2 && validMonthVals[0] !== 0) {
-    monthDeltaPct = ((validMonthVals[validMonthVals.length - 1] - validMonthVals[0]) / Math.abs(validMonthVals[0])) * 100;
+  const validRollVals = rollSensitivity.filter(v => v != null);
+  let rollDeltaPct = null;
+  if (validRollVals.length >= 2 && validRollVals[0] !== 0) {
+    rollDeltaPct = ((validRollVals[validRollVals.length - 1] - validRollVals[0]) / Math.abs(validRollVals[0])) * 100;
   }
-  renderDeltaBadge(tolDeltaEl, monthDeltaPct, '#4fd1c5', { decimals: 0, unit: '%' });
+  renderDeltaBadge(tolDeltaEl, rollDeltaPct, '#4fd1c5', { decimals: 0, unit: '%' });
 
   kpsToleranceChart = new Chart(document.getElementById('kps-tolerance-chart'), {
     type: 'line',
     data: {
-      labels: monthLabels,
+      labels: rollDates,
       datasets: [{
-        label: 'Load sensitivity (KPS rises ÷ load, per month)',
-        data: monthSensitivity.map(v => v !== null ? +v.toFixed(4) : null),
+        label: `Load sensitivity (KPS rises ÷ load, trailing ${WINDOW_DAYS} days)`,
+        data: rollSensitivity.map(v => v !== null ? +v.toFixed(4) : null),
         borderColor: '#4fd1c5',
         backgroundColor: 'rgba(79,209,197,0.12)',
-        pointBackgroundColor: '#4fd1c5',
+        pointRadius: 0,
+        pointHitRadius: 6,
         tension: 0.25,
         fill: true,
         spanGaps: true,
