@@ -1,5 +1,51 @@
 [
   {
+    "id": 1791199384899,
+    "user": "Cas",
+    "date": "2026-10-05",
+    "type": "Pull",
+    "exercises": [
+      {
+        "name": "dumbbell rows",
+        "loading": "3x12@50kg",
+        "rpe": "RPE8"
+      },
+      {
+        "name": "bicep curls",
+        "loading": "3x15@16kg",
+        "rpe": "RPE8.5"
+      },
+      {
+        "name": "spanish squat",
+        "loading": "4x45s",
+        "rpe": "RPE7"
+      },
+      {
+        "name": "lat cable pull downs",
+        "loading": "3x10@40kg",
+        "rpe": "RPE8.5"
+      },
+      {
+        "name": "terminal leg extensions",
+        "loading": "3x20@27kg",
+        "rpe": ""
+      },
+      {
+        "name": "seated calve raises",
+        "loading": "3x10@60kg",
+        "rpe": "RPE6"
+      }
+    ],
+    "energy": "below-average",
+    "sleep": "poor",
+    "recovery": "poor",
+    "kps": {
+      "morning": "4",
+      "post": "4"
+    },
+    "notes": ""
+  },
+  {
     "id": 1790951458940,
     "user": "Cas",
     "date": "2026-10-02",
