@@ -89,7 +89,7 @@ All Chart.js rendering. Each function destroys its previous chart instance befor
 
 - `renderProgressionChart()` — line chart of e1RM or RPE-adjusted volume for the selected exercise, last 12 weeks. Metric toggled by `setProgressionMetric()`. For bodyweight-loaded exercises (`isBodyweightLoadedExercise()`), `parseLoading()` is given the nearest-dated bodyweight so effort is extrapolated off total load, but the charted e1RM has that bodyweight subtracted back out before display — the number shown is the added-weight equivalent (e.g. "+15kg pull-up e1RM"), not total load.
 - `renderBodyweightChart()` — line chart of bodyweight entries, last 12 weeks.
-- `renderKpsSensitivityChart()` — two stacked charts: patellar loading per day (bars) and morning/post KPS over time (lines). Cas only.
+- `renderKpsSensitivityChart()` — patellar loading per day (bars), morning/post KPS over time (lines), and two trailing-30-day sensitivity charts per tonne of load: plain (sum of positive peak-KPS rises) and elevated (each rise × its starting KPS). Cas only.
 
 ---
 

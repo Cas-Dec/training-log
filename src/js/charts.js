@@ -231,13 +231,16 @@ function renderBodyweightChart() {
 let kpsLoadingChart = null;
 let kpsKpsChart = null;
 let kpsToleranceChart = null;
+let kpsElevatedChart = null;
 
 function renderKpsSensitivityChart() {
   const wrapLoad = document.getElementById('kps-loading-chart-wrap');
   const wrapKps  = document.getElementById('kps-kps-chart-wrap');
   const wrapTol  = document.getElementById('kps-tolerance-chart-wrap');
   const empty    = document.getElementById('kps-sensitivity-empty');
+  const wrapElev = document.getElementById('kps-elevated-chart-wrap');
   const tolDeltaEl = document.getElementById('tolerance-delta');
+  const elevDeltaEl = document.getElementById('elevated-delta');
 
   const cutoff = Date.now() - TWELVE_WEEKS_MS;
 
@@ -258,19 +261,23 @@ function renderKpsSensitivityChart() {
   if (kpsLoadingChart)   { kpsLoadingChart.destroy();   kpsLoadingChart = null; }
   if (kpsKpsChart)       { kpsKpsChart.destroy();       kpsKpsChart = null; }
   if (kpsToleranceChart) { kpsToleranceChart.destroy(); kpsToleranceChart = null; }
+  if (kpsElevatedChart)  { kpsElevatedChart.destroy();  kpsElevatedChart = null; }
 
   if (!recentDates.length) {
     wrapLoad.style.display = 'none';
     wrapKps.style.display  = 'none';
     wrapTol.style.display  = 'none';
+    wrapElev.style.display = 'none';
     empty.style.display    = '';
     empty.textContent = 'No sessions in the last 12 weeks.';
     tolDeltaEl.textContent = '';
+    elevDeltaEl.textContent = '';
     return;
   }
   wrapLoad.style.display = '';
   wrapKps.style.display  = '';
   wrapTol.style.display  = '';
+  wrapElev.style.display = '';
   empty.style.display    = 'none';
 
   const dates = denseDayRange(earliestMs(recentDates), Date.now());
@@ -344,7 +351,7 @@ function renderKpsSensitivityChart() {
   // consecutive calendar day across full history regardless of whether either day had a
   // session. For every day, over the trailing 30-day window ending on it, sum only the *positive*
   // rises (a drop or hold contributes nothing — recoveries can't cancel out flare-ups) and divide
-  // by that window's total patellar load. Lower = more tolerant. Only days with a full 30-day
+  // by that window's total patellar load (in tonnes). Lower = more tolerant. Only days with a full 30-day
   // window behind them are plotted. This fixes two issues with a plain daily-delta approach: gating
   // on "did today have a session" silently drops the KPS change across rest days, and letting
   // negative deltas net against positive ones hides real flare-ups behind unrelated relief.
@@ -358,48 +365,59 @@ function renderKpsSensitivityChart() {
   };
 
   // Rise attributed to the day it lands on; prefix sums make each window O(1).
-  const riseCum = [0], loadCum = [0];
+  // The elevated variant weights each rise by the peak KPS it started from, so a 3 → 3.5 rise
+  // counts three times as much as 1 → 1.5 — penalising flares that start from an already-irritated tendon.
+  const riseCum = [0], elevCum = [0], loadCum = [0];
   allDates.forEach((d, i) => {
     const before = i > 0 ? peakKps(allDates[i - 1]) : null, after = peakKps(d);
     const rise = before != null && after != null ? Math.max(0, after - before) : 0;
     riseCum.push(riseCum[i] + rise);
+    elevCum.push(elevCum[i] + Math.max(0, rise * (before ?? 0)));
     loadCum.push(loadCum[i] + (dayMap[d]?.loading || 0));
   });
 
+  // Sensitivity per tonne of load over each trailing window.
   const rollDates = allDates.slice(WINDOW_DAYS - 1);
-  const rollSensitivity = rollDates.map((_, j) => {
+  const rolling = cum => rollDates.map((_, j) => {
     const end = j + WINDOW_DAYS, start = j;
     const load = loadCum[end] - loadCum[start];
-    return load > 0 ? (riseCum[end] - riseCum[start]) / load : null;
+    return load > 0 ? (cum[end] - cum[start]) / load * 1000 : null;
   });
 
-  const validRollVals = rollSensitivity.filter(v => v != null);
-  let rollDeltaPct = null;
-  if (validRollVals.length >= 2 && validRollVals[0] !== 0) {
-    rollDeltaPct = ((validRollVals[validRollVals.length - 1] - validRollVals[0]) / Math.abs(validRollVals[0])) * 100;
-  }
-  renderDeltaBadge(tolDeltaEl, rollDeltaPct, '#4fd1c5', { decimals: 0, unit: '%' });
-
-  kpsToleranceChart = new Chart(document.getElementById('kps-tolerance-chart'), {
-    type: 'line',
-    data: {
-      labels: rollDates,
-      datasets: [{
-        label: `Load sensitivity (KPS rises ÷ load, trailing ${WINDOW_DAYS} days)`,
-        data: rollSensitivity.map(v => v !== null ? +v.toFixed(4) : null),
-        borderColor: '#4fd1c5',
-        backgroundColor: 'rgba(79,209,197,0.12)',
-        pointRadius: 0,
-        pointHitRadius: 6,
-        tension: 0.25,
-        fill: true,
-        spanGaps: true,
-      }]
-    },
-    options: {
-      responsive: true, maintainAspectRatio: false,
-      plugins: { legend: { display: false } },
-      scales: { x: xAxis, y: yAxis },
+  const renderRollChart = (canvasId, deltaEl, values, color, fillRgba, label) => {
+    const valid = values.filter(v => v != null);
+    let deltaPct = null;
+    if (valid.length >= 2 && valid[0] !== 0) {
+      deltaPct = ((valid[valid.length - 1] - valid[0]) / Math.abs(valid[0])) * 100;
     }
-  });
+    renderDeltaBadge(deltaEl, deltaPct, color, { decimals: 0, unit: '%' });
+
+    return new Chart(document.getElementById(canvasId), {
+      type: 'line',
+      data: {
+        labels: rollDates,
+        datasets: [{
+          label,
+          data: values.map(v => v !== null ? +v.toFixed(3) : null),
+          borderColor: color,
+          backgroundColor: fillRgba,
+          pointRadius: 0,
+          pointHitRadius: 6,
+          tension: 0.25,
+          fill: true,
+          spanGaps: true,
+        }]
+      },
+      options: {
+        responsive: true, maintainAspectRatio: false,
+        plugins: { legend: { display: false } },
+        scales: { x: xAxis, y: yAxis },
+      }
+    });
+  };
+
+  kpsToleranceChart = renderRollChart('kps-tolerance-chart', tolDeltaEl, rolling(riseCum),
+    '#4fd1c5', 'rgba(79,209,197,0.12)', `Load sensitivity (KPS rises per tonne, trailing ${WINDOW_DAYS} days)`);
+  kpsElevatedChart = renderRollChart('kps-elevated-chart', elevDeltaEl, rolling(elevCum),
+    '#ffb347', 'rgba(255,179,71,0.12)', `Elevated load sensitivity (start-KPS × rise per tonne, trailing ${WINDOW_DAYS} days)`);
 }
