@@ -249,6 +249,11 @@
       "strain_factor": 0,
       "bodyweight": false,
       "e1rm_bodyweight": false
+    },
+    "lat pull downs": {
+      "strain_factor": 0,
+      "bodyweight": false,
+      "e1rm_bodyweight": false
     }
   },
   "cardio": {
