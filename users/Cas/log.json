@@ -1,5 +1,51 @@
 [
   {
+    "id": 1791810489685,
+    "user": "Cas",
+    "date": "2026-10-12",
+    "type": "Pull",
+    "exercises": [
+      {
+        "name": "seated machine rows",
+        "loading": "3x10@45kg",
+        "rpe": "RPE8"
+      },
+      {
+        "name": "bicep curls",
+        "loading": "3x8@20kg",
+        "rpe": "RPE8.5"
+      },
+      {
+        "name": "spanish squat",
+        "loading": "4x45s",
+        "rpe": "RPE7"
+      },
+      {
+        "name": "rear delt machine fly",
+        "loading": "3x12@100kg",
+        "rpe": "RPE8"
+      },
+      {
+        "name": "barbell side bends",
+        "loading": "2x10@73.5kg, 1x10@83.5kg",
+        "rpe": "RPE8"
+      },
+      {
+        "name": "terminal leg extensions",
+        "loading": "3x20@27kg",
+        "rpe": ""
+      }
+    ],
+    "energy": "above-average",
+    "sleep": "average",
+    "recovery": "normal",
+    "kps": {
+      "morning": "3",
+      "post": "3"
+    },
+    "notes": ""
+  },
+  {
     "id": 1791810311795,
     "user": "Cas",
     "date": "2026-10-11",
