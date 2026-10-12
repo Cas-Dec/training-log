@@ -259,6 +259,11 @@
       "strain_factor": 0,
       "bodyweight": false,
       "e1rm_bodyweight": false
+    },
+    "seated machine rows": {
+      "strain_factor": 0,
+      "bodyweight": false,
+      "e1rm_bodyweight": false
     }
   },
   "cardio": {
