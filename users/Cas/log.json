@@ -1,5 +1,56 @@
 [
   {
+    "id": 1792071107904,
+    "user": "Cas",
+    "date": "2026-10-15",
+    "type": "Pull",
+    "exercises": [
+      {
+        "name": "seated machine rows",
+        "loading": "3x10@50kg",
+        "rpe": "RPE8.5"
+      },
+      {
+        "name": "preacher curls",
+        "loading": "3x10@32.5kg",
+        "rpe": "RPE8.5"
+      },
+      {
+        "name": "spanish squat",
+        "loading": "4x45s",
+        "rpe": "RPE7"
+      },
+      {
+        "name": "spanish squat",
+        "loading": "4x45s",
+        "rpe": "RPE7"
+      },
+      {
+        "name": "nordic holds",
+        "loading": "3x30s@0kg",
+        "rpe": "RPE7"
+      },
+      {
+        "name": "lat cable pull downs",
+        "loading": "3x10@36kg",
+        "rpe": "RPE7"
+      },
+      {
+        "name": "lat pull downs",
+        "loading": "3x10@100kg",
+        "rpe": "RPE8.5"
+      }
+    ],
+    "energy": "",
+    "sleep": "",
+    "recovery": "normal",
+    "kps": {
+      "morning": "2",
+      "post": "2"
+    },
+    "notes": ""
+  },
+  {
     "id": 1792007171245,
     "user": "Cas",
     "date": "2026-10-13",
