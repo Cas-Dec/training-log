@@ -33,6 +33,7 @@ When changing `worker.js`, redeploy to Cloudflare manually after pushing.
 | `src/js/history.js` | `parseLoading()`, `sessionPatellarVolume()`, `renderHistory()` |
 | `src/js/charts.js` | Progression chart and KPS sensitivity chart |
 | `src/js/coach.js` | `buildContext()`, `askCoach()`, `editUserContext()`, `tuneLoadings()` |
+| `src/js/program.js` | Program tab: 12-week program setup, planning/adjust chat with the coach, week/session outline with planned-vs-actual deviations, Log-tab banner (`selectProgramSlot()`) |
 | `src/js/calibrate.js` | Exercise wizard (new exercises on save, or Settings backfill): e1RM bodyweight? tendon? knee bodyweight? impact level → sets `e1rm_bodyweight`, `bodyweight`, back-solves `strain_factor` |
 | `src/js/main.js` | Navigation, export, `initApp()`, `loadAll()` (entry point) |
 
@@ -49,6 +50,7 @@ A Cloudflare Worker (`worker.js`) handles login, token issuance (HMAC-signed JWT
 - `localStorage['tl_sessions']` — local mirror of sessions; used as the working copy in the browser.
 - `localStorage['tl_cfg']` — user config: `{ instructions }`.
 - `localStorage['tl_lookup']` — local mirror of loading_lookup; seeded on load, updated via Worker.
+- `users/{User}/program.json` — active 12-week program (or `null`); synced via Worker `/program`, mirrored to `localStorage['tl_program_{User}']`. Stores the plan and skipped flags only — a slot is *done* when a logged session carries `program: { id, slot }` matching it. An in-progress planning chat is kept in `localStorage['tl_program_draft_{User}']`.
 
 ### Sync logic (`syncToGitHub`, `pullFromGitHub`)
 GitHub is the source of truth. `saveSession()` records the new session's id in `localStorage['tl_pending']`; on every save, the app:
@@ -66,8 +68,13 @@ GitHub is the source of truth. `saveSession()` records the new session's id in `
 - `askCoach()` assembles the system prompt as: `[coreInstructions || SYSTEM_PROMPT_FALLBACK, userContextMd, buildContext()]`, joined by `\n\n---\n\n`.
 - Model: `claude-sonnet-4-6`, max 2048 tokens. API calls are proxied via Worker `POST /chat`.
 
+### Program (`program.js`)
+- Setup form suggests the 10 most frequent resistance exercises (`frequentExercises()`), plus a categorised `EXERCISE_LIBRARY` checklist and a search box (library + exercises.json + logged names, or a custom name); each selected one gets a goal and a "current best" set, defaulting to the logged set with the highest e1RM (`bestSet()`, same formula as the History chart, last 12 weeks first). Plus sessions/week and notes. It starts a coach chat whose system prompt is `[coreInstructions, PROGRAM_INSTRUCTIONS, user dir]`. The user dir comes from Worker `GET /userfiles` (every .md/.json in `users/{User}/` except program.json), with log/lookup/bodyweight/context swapped for their live in-memory state.
+- The coach emits ` ```program ` (full 12-week JSON) or ` ```program-update ` (replacement sessions by slot id; only planned slots are changed). Replies render a collapsible preview plus a Save/Apply button.
+- Planned `loading`/`rpe` use the log's string format, so the Log tab pre-fills them via `addExercise()`; deviations compare normalized loading strings (`exerciseDeviations()`).
+
 ### Tabs
-Three pages (`log`, `history`, `coach`) are toggled by adding/removing the `active` CSS class. `renderHistory()` is called lazily only when switching to the History tab.
+Four pages (`log`, `program`, `history`, `coach`) are toggled by adding/removing the `active` CSS class. `renderHistory()` and `renderProgram()` are called lazily when switching to their tabs.
 
 ## Key files
 
@@ -77,6 +84,7 @@ Three pages (`log`, `history`, `coach`) are toggled by adding/removing the `acti
 | `build.py` | Assembles `index.html` from `src/` sources |
 | `worker.js` | Cloudflare Worker: auth, log sync, lookup sync, Anthropic proxy |
 | `core-instructions.md` | AI coaching persona & weekly training architecture (loaded at runtime into every coach prompt) |
+| `users/{User}/program.json` | Active 12-week program (created from the Program tab) |
 | `users/Cas/log.json` | Cas's training sessions |
 | `users/Cas/user-context.md` | Cas-specific coaching context: patellar tendonitis protocol, KPS rules, loading model |
 | `users/Cas/loading_lookup.json` | Patellar loading factors for Cas's exercises |
@@ -98,7 +106,8 @@ Three pages (`log`, `history`, `coach`) are toggled by adding/removing the `acti
   "energy": "average",      // above-average | average | below-average
   "sleep": "good",          // good | average | poor
   "kps": { "morning": "4", "post": "4" },  // Knee Pain Score, 0–10 (Cas only)
-  "notes": ""               // May contain $IMPACT=<level> to override patellar load calc
+  "notes": "",              // May contain $IMPACT=<level> to override patellar load calc
+  "program": { "id": 1761000000000, "slot": "w1s1" }  // optional: program slot this session fulfils
 }
 ```
 

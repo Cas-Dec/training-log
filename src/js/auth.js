@@ -117,6 +117,8 @@ const syncWikiToGitHub = makeWorkerSync('/wiki', 'Exercise list',
   () => ({ exercises: wikiExercises, message: 'Update exercise wiki' }));
 const syncBodyweightToGitHub = makeWorkerSync('/bodyweight', 'Bodyweight',
   () => ({ entries: bodyweightLog, message: 'Update bodyweight log' }));
+const syncProgramToGitHub = makeWorkerSync('/program', 'Program',
+  () => ({ program, message: 'Update program' }));
 
 // Error toasts stay until tapped; tapping runs onTap (e.g. a retry) if given.
 function showToast(msg, type = 'ok', onTap = null) {
@@ -239,6 +241,30 @@ async function syncBodyweightFromWorker() {
     bodyweightLog = JSON.parse(cached);
     if (bodyweightLog.length) BODYWEIGHT_KG = bodyweightLog[0].weight;
   } catch(e) {}
+}
+
+// tl_program is keyed by user: unlike sessions, a program has no `user` field
+// to filter on, and the device may be shared.
+async function syncProgramFromWorker() {
+  const key = `tl_program_${currentUser}`;
+  try {
+    const res = await authFetch(`${WORKER}/program`);
+    if (res.ok) {
+      ({ program } = await res.json());
+      localStorage.setItem(key, JSON.stringify(program));
+      return;
+    }
+  } catch(e) {}
+  try { program = JSON.parse(localStorage.getItem(key) || 'null'); } catch(e) { program = null; }
+}
+
+async function loadUserFiles() {
+  if (userFiles) return userFiles;
+  try {
+    const res = await authFetch(`${WORKER}/userfiles`);
+    if (res.ok) userFiles = (await res.json()).files || {};
+  } catch(e) {}
+  return userFiles || {};
 }
 
 async function loadContextFiles() {

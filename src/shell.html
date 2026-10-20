@@ -38,6 +38,7 @@
   <div class="nav-row">
     <div class="nav-tabs">
       <button class="nav-tab active" onclick="showPage('log')">Log</button>
+      <button class="nav-tab" onclick="showPage('program')">Program</button>
       <button class="nav-tab" onclick="showPage('history')">History</button>
       <button class="nav-tab" onclick="showPage('coach')">Coach</button>
     </div>
@@ -49,6 +50,15 @@
   <h2>Log session</h2>
   <p class="page-subtitle">Today's training</p>
 
+  <div id="program-banner" class="field program-banner" style="display:none">
+    <label>Program session</label>
+    <div class="program-banner-row">
+      <select id="program-slot" onchange="onProgramSlotChange()"></select>
+      <button class="btn btn-ghost" id="program-skip-btn" onclick="skipSelectedSlot()">Skip</button>
+    </div>
+    <div id="program-slot-notes" class="program-slot-notes"></div>
+  </div>
+
   <div class="grid2">
     <div class="field">
       <label>Date</label>
@@ -56,7 +66,7 @@
     </div>
     <div class="field">
       <label>Session type</label>
-      <select id="session-type" onchange="onTypeChange()">
+      <select id="session-type" onchange="onSessionTypeSelect()">
         <option>Pull</option><option>Push</option><option>Legs</option>
         <option>Upper body</option><option>Full body</option><option>Accessory</option>
         <option>Rugby</option><option>Badminton</option><option>Swimming</option><option>Running</option><option>Cycling</option>
@@ -176,6 +186,59 @@
       <button class="btn btn-secondary" onclick="saveBodyweight()">Log</button>
     </div>
     <div id="bw-recent" class="bw-recent"></div>
+  </div>
+</div>
+
+<!-- ── PROGRAM ── -->
+<div id="page-program" class="page">
+  <h2>Program</h2>
+  <p class="page-subtitle" id="program-subtitle"></p>
+
+  <div id="program-setup">
+    <div class="field">
+      <label>Target exercises</label>
+      <p class="prog-hint">Tick the ones to work on and pick a goal. Tap the current best to correct it.</p>
+      <div class="prog-search">
+        <input type="text" id="program-ex-search" placeholder="Search exercises…" autocomplete="off"
+          oninput="onProgramSearch()" onkeydown="onProgramSearchKey(event)" onblur="setTimeout(()=>{document.getElementById('program-search-results').innerHTML=''},150)">
+        <div id="program-search-results"></div>
+      </div>
+      <details id="program-library" class="prog-library">
+        <summary>Exercise library</summary>
+        <div id="program-library-body"></div>
+      </details>
+      <p id="program-no-history" class="prog-hint" style="display:none">No logged exercises yet. Pick from the library or search above.</p>
+      <div id="program-targets"></div>
+    </div>
+    <div class="grid2">
+      <div class="field">
+        <label>Resistance sessions per week</label>
+        <input type="number" id="program-spw" min="1" max="7" value="4">
+      </div>
+    </div>
+    <div class="field">
+      <label>Additional notes</label>
+      <textarea id="program-notes" placeholder="Schedule, equipment, injuries, anything the coach should know…"></textarea>
+    </div>
+    <button class="btn btn-primary btn-full" onclick="startProgramPlanning()">Plan with coach</button>
+    <div id="program-setup-status" class="status-err"></div>
+  </div>
+
+  <div id="program-chat" style="display:none">
+    <div id="program-thread" class="coach-thread"></div>
+    <div class="coach-input-row" style="margin-top:12px">
+      <input type="text" id="program-q" placeholder="Reply to the coach…" onkeydown="if(event.key==='Enter')askProgramCoach()">
+      <button class="btn btn-primary" id="program-btn" onclick="askProgramCoach()">Send</button>
+    </div>
+    <button class="btn btn-ghost" onclick="closeProgramChat()">Close chat</button>
+  </div>
+
+  <div id="program-outline" style="display:none">
+    <div id="program-weeks"></div>
+    <div style="display:flex;gap:10px;margin-top:16px;flex-wrap:wrap">
+      <button class="btn btn-secondary" onclick="startProgramAdjust()">Adjust program</button>
+      <button class="btn btn-ghost btn-danger" onclick="deleteProgram()">Delete program</button>
+    </div>
   </div>
 </div>
 

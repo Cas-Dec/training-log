@@ -26,6 +26,9 @@
  *   GET  /lookup  → { lookup, sha }                          (auth required)
  *   PUT  /lookup  { lookup, message } → { ok }               (auth required)
  *   PUT  /context { content, message } → { ok }              (auth required)
+ *   GET  /program → { program, sha }  (program null if none) (auth required)
+ *   PUT  /program { program, message } → { ok }              (auth required)
+ *   GET  /userfiles → { files: { filename: text } }          (auth required)
  *   POST /chat    Anthropic messages body → Anthropic response (auth required)
  */
 
@@ -195,6 +198,52 @@ export default {
         body: JSON.stringify({ message: message || 'Update loading lookup', content, ...(sha ? { sha } : {}) }),
       });
       return jsonResponse({ ok: res.ok }, res.ok ? 200 : res.status);
+    }
+
+    // ── GET /program ──────────────────────────────────────────────────
+    if (url.pathname === '/program' && request.method === 'GET') {
+      const programUrl = `${GITHUB_API}/repos/${env.GITHUB_USER}/${env.GITHUB_REPO}/contents/users/${session.user}/program.json`;
+      const res = await fetch(programUrl, { headers: githubHeaders(env.GITHUB_TOKEN) });
+      if (res.status === 404) return jsonResponse({ program: null, sha: null });
+      if (!res.ok) return jsonResponse({ error: 'GitHub error' }, res.status);
+      const data = await res.json();
+      const program = JSON.parse(fromBase64(data.content));
+      return jsonResponse({ program, sha: data.sha });
+    }
+
+    // ── PUT /program ──────────────────────────────────────────────────
+    if (url.pathname === '/program' && request.method === 'PUT') {
+      const { program, message } = await request.json();
+      const programUrl = `${GITHUB_API}/repos/${env.GITHUB_USER}/${env.GITHUB_REPO}/contents/users/${session.user}/program.json`;
+
+      let sha = null;
+      const existing = await fetch(programUrl, { headers: githubHeaders(env.GITHUB_TOKEN) });
+      if (existing.ok) sha = (await existing.json()).sha;
+
+      const content = toBase64(JSON.stringify(program, null, 2));
+      const res = await fetch(programUrl, {
+        method: 'PUT',
+        headers: githubHeaders(env.GITHUB_TOKEN),
+        body: JSON.stringify({ message: message || 'Update program', content, ...(sha ? { sha } : {}) }),
+      });
+      return jsonResponse({ ok: res.ok }, res.ok ? 200 : res.status);
+    }
+
+    // ── GET /userfiles ────────────────────────────────────────────────
+    // Every .md/.json file in users/{user}/ (except program.json), used as
+    // coaching context when building a program.
+    if (url.pathname === '/userfiles' && request.method === 'GET') {
+      const dirUrl = `${GITHUB_API}/repos/${env.GITHUB_USER}/${env.GITHUB_REPO}/contents/users/${session.user}`;
+      const res = await fetch(dirUrl, { headers: githubHeaders(env.GITHUB_TOKEN) });
+      if (!res.ok) return jsonResponse({ files: {} });
+      const entries = (await res.json()).filter(e =>
+        e.type === 'file' && /\.(md|json)$/i.test(e.name) && e.name !== 'program.json');
+      const files = {};
+      await Promise.all(entries.map(async e => {
+        const fileRes = await fetch(e.url, { headers: githubHeaders(env.GITHUB_TOKEN) });
+        if (fileRes.ok) files[e.name] = fromBase64((await fileRes.json()).content);
+      }));
+      return jsonResponse({ files });
     }
 
     // ── PUT /context ──────────────────────────────────────────────────

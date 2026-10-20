@@ -104,6 +104,31 @@ function clearConversation() {
   document.getElementById('clear-chat-btn').style.display = 'none';
 }
 
+// Sends one Messages API request via the Worker and returns the reply text
+// (or the raw response JSON as text if it carried no content, e.g. an error).
+async function callCoach({ system, messages, maxTokens = 8192 }) {
+  const res = await authFetch(`${WORKER}/chat`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ model: 'claude-sonnet-4-6', max_tokens: maxTokens, system, messages }),
+  });
+  const data = await res.json();
+  return data.content?.map(c => c.text || '').join('') || JSON.stringify(data);
+}
+
+// Appends a chat bubble to `thread`. An assistant bubble without text starts
+// in the "Thinking…" state and is scrolled into view.
+function appendChatBubble(thread, role, text) {
+  const div = document.createElement('div');
+  div.className = role === 'user' ? 'chat-msg-user' : 'chat-msg-assistant';
+  if (role === 'user') div.textContent = text;
+  else if (text == null) div.textContent = 'Thinking…';
+  else div.innerHTML = marked.parse(text);
+  thread.appendChild(div);
+  if (role !== 'user' && text == null) div.scrollIntoView({ behavior: 'smooth', block: 'end' });
+  return div;
+}
+
 async function askCoach(q) {
   q = q || document.getElementById('coach-q').value.trim();
   if (!q) return;
@@ -114,19 +139,8 @@ async function askCoach(q) {
   document.getElementById('clear-chat-btn').style.display = '';
 
   const thread = document.getElementById('coach-thread');
-
-  // User bubble
-  const userDiv = document.createElement('div');
-  userDiv.className = 'chat-msg-user';
-  userDiv.textContent = q;
-  thread.appendChild(userDiv);
-
-  // Assistant bubble (thinking state)
-  const assistantDiv = document.createElement('div');
-  assistantDiv.className = 'chat-msg-assistant';
-  assistantDiv.textContent = 'Thinking…';
-  thread.appendChild(assistantDiv);
-  assistantDiv.scrollIntoView({ behavior: 'smooth', block: 'end' });
+  appendChatBubble(thread, 'user', q);
+  const assistantDiv = appendChatBubble(thread, 'assistant');
 
   conversationHistory.push({ role: 'user', content: q });
 
@@ -138,17 +152,7 @@ async function askCoach(q) {
   ].filter(b => b.text && b.text.trim());
 
   try {
-    const res = await authFetch(`${WORKER}/chat`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        model: 'claude-sonnet-4-6', max_tokens: 8192,
-        system,
-        messages: conversationHistory,
-      })
-    });
-    const data = await res.json();
-    const text = data.content?.map(c => c.text || '').join('') || JSON.stringify(data);
+    const text = await callCoach({ system, messages: conversationHistory });
 
     conversationHistory.push({ role: 'assistant', content: text });
     assistantDiv.innerHTML = marked.parse(text);

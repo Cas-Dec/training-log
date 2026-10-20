@@ -3,7 +3,8 @@ function showPage(p) {
   document.querySelectorAll('.page').forEach(el => el.classList.remove('active'));
   document.querySelectorAll('.nav-tab').forEach(el => el.classList.remove('active'));
   document.getElementById('page-'+p).classList.add('active');
-  document.querySelectorAll('.nav-tab')[['log','history','coach'].indexOf(p)].classList.add('active');
+  document.querySelectorAll('.nav-tab')[['log','program','history','coach'].indexOf(p)].classList.add('active');
+  if (p==='program') renderProgram();
   if (p==='history') renderHistory();
 }
 
@@ -52,12 +53,18 @@ function initApp() {
   const today = new Date().toISOString().split('T')[0];
   document.getElementById('date').value    = today;
   document.getElementById('bw-date').value = today;
-  onTypeChange();
+  // Seed the program from cache so the log form shows the planned session immediately
+  try { program = JSON.parse(localStorage.getItem(`tl_program_${currentUser}`) || 'null'); } catch(e) { program = null; }
+  selectProgramSlot(nextSlot()?.slot || '');
   loadContextFiles();
   // Render history only after BOTH lookup and sessions are ready, so patellar loads are correct
-  Promise.all([syncLookupFromWorker(), pullFromGitHub(), syncBodyweightFromWorker()]).then(() => {
+  Promise.all([syncLookupFromWorker(), pullFromGitHub(), syncBodyweightFromWorker(), syncProgramFromWorker()]).then(() => {
     renderBwRecent();
+    // The remote program or sessions logged on another device may move the next slot
+    const next = nextSlot()?.slot || '';
+    if (document.getElementById('program-slot').value !== next) selectProgramSlot(next);
     if (document.getElementById('page-history').classList.contains('active')) renderHistory();
+    if (document.getElementById('page-program').classList.contains('active')) renderProgram();
   });
 }
 

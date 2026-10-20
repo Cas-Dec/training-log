@@ -105,6 +105,8 @@ async function saveSession() {
     } : {}),
     notes: document.getElementById('notes').value.trim(),
   };
+  const slot = document.getElementById('program-slot').value;
+  if (slot && program && !isCardio) session.program = { id: program.id, slot };
 
   // Detect never-logged exercises before this session joins `sessions`.
   const toCalibrate = newPatellarCandidates(session.exercises);
@@ -153,5 +155,6 @@ function resetForm() {
   document.getElementById('cardio-hr-max').value = '';
   document.getElementById('cardio-speed-avg').value = '';
   document.getElementById('cardio-speed-max').value = '';
-  onTypeChange(); // resets exercise section and pre-fills from last session of this type
+  // Pre-fills the next program session, or (no program) the last session of this type
+  selectProgramSlot(nextSlot()?.slot || '');
 }

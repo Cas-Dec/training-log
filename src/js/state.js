@@ -45,3 +45,5 @@ function nearestBodyweightKg(dateStr) {
 let coreInstructions = '';
 let userContextMd = '';
 let wikiExercises = [];
+let program = null;     // active 12-week program (users/{User}/program.json), or null
+let userFiles = null;   // { filename: text } of users/{User}/, fetched lazily for program chats
