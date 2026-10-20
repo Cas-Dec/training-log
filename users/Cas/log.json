@@ -1,5 +1,26 @@
 [
   {
+    "id": 1792498465110,
+    "user": "Cas",
+    "date": "2026-10-19",
+    "type": "Badminton",
+    "duration": "120",
+    "intensity": "medium",
+    "hr": {
+      "avg": null,
+      "max": null
+    },
+    "exercises": [],
+    "energy": "below-average",
+    "sleep": "good",
+    "recovery": "good",
+    "kps": {
+      "morning": "1.5",
+      "post": "2"
+    },
+    "notes": ""
+  },
+  {
     "id": 1792071107904,
     "user": "Cas",
     "date": "2026-10-15",
