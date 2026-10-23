@@ -1,0 +1,2839 @@
+{
+  "id": 1792769196387,
+  "created": "2026-10-23",
+  "setup": null,
+  "weeks": [
+    {
+      "week": 1,
+      "focus": "Accumulation",
+      "sessions": [
+        {
+          "slot": "w1s1",
+          "label": "Push A",
+          "type": "Push",
+          "exercises": [
+            {
+              "name": "spanish squat",
+              "loading": "3x45s@0kg",
+              "rpe": "RPE7",
+              "note": "preamble, daily isometric"
+            },
+            {
+              "name": "tibialis raises",
+              "loading": "3x25@0kg",
+              "rpe": "RPE5",
+              "note": "preamble"
+            },
+            {
+              "name": "incline dumbbell press",
+              "loading": "3x10@34kg",
+              "rpe": "RPE7",
+              "note": ""
+            },
+            {
+              "name": "dips",
+              "loading": "3x10@20kg",
+              "rpe": "RPE7",
+              "note": ""
+            },
+            {
+              "name": "chest fly",
+              "loading": "3x12@100kg",
+              "rpe": "RPE7",
+              "note": ""
+            },
+            {
+              "name": "cable tricep extensions",
+              "loading": "3x12@34kg",
+              "rpe": "RPE7",
+              "note": ""
+            },
+            {
+              "name": "standing calf raises",
+              "loading": "3x12@100kg",
+              "rpe": "RPE7",
+              "note": ""
+            }
+          ],
+          "skipped": false
+        },
+        {
+          "slot": "w1s2",
+          "label": "Pull+Legs A",
+          "type": "Pull",
+          "exercises": [
+            {
+              "name": "spanish squat",
+              "loading": "3x45s@0kg",
+              "rpe": "RPE7",
+              "note": "preamble"
+            },
+            {
+              "name": "tibialis raises",
+              "loading": "3x25@0kg",
+              "rpe": "RPE5",
+              "note": "preamble"
+            },
+            {
+              "name": "dumbbell rows",
+              "loading": "3x12@46kg",
+              "rpe": "RPE7",
+              "note": ""
+            },
+            {
+              "name": "pull-ups",
+              "loading": "3x8@0kg",
+              "rpe": "RPE7",
+              "note": ""
+            },
+            {
+              "name": "rear delt machine fly",
+              "loading": "3x12@86kg",
+              "rpe": "RPE7",
+              "note": ""
+            },
+            {
+              "name": "bicep curls",
+              "loading": "3x10@16kg",
+              "rpe": "RPE7",
+              "note": ""
+            },
+            {
+              "name": "romanian deadlifts",
+              "loading": "3x10@100kg",
+              "rpe": "RPE7",
+              "note": "slow negative"
+            },
+            {
+              "name": "goblet squats",
+              "loading": "3x10@0kg",
+              "rpe": "RPE6",
+              "note": "BW only, slow tempo"
+            },
+            {
+              "name": "nordic hamstring falls",
+              "loading": "3x6@0kg",
+              "rpe": "RPE7",
+              "note": ""
+            },
+            {
+              "name": "seated calve raises",
+              "loading": "3x12@50kg",
+              "rpe": "RPE7",
+              "note": ""
+            }
+          ],
+          "skipped": false
+        },
+        {
+          "slot": "w1s3",
+          "label": "Push B",
+          "type": "Push",
+          "exercises": [
+            {
+              "name": "spanish squat",
+              "loading": "3x45s@0kg",
+              "rpe": "RPE7",
+              "note": "preamble"
+            },
+            {
+              "name": "tibialis raises",
+              "loading": "3x25@0kg",
+              "rpe": "RPE5",
+              "note": "preamble"
+            },
+            {
+              "name": "strict press",
+              "loading": "3x8@50kg",
+              "rpe": "RPE7",
+              "note": ""
+            },
+            {
+              "name": "lateral raise",
+              "loading": "3x12@14kg",
+              "rpe": "RPE7",
+              "note": ""
+            },
+            {
+              "name": "rear delt machine fly",
+              "loading": "3x12@86kg",
+              "rpe": "RPE7",
+              "note": ""
+            },
+            {
+              "name": "good mornings",
+              "loading": "3x10@80kg",
+              "rpe": "RPE7",
+              "note": ""
+            },
+            {
+              "name": "barbell side bends",
+              "loading": "3x12@53kg",
+              "rpe": "RPE7",
+              "note": ""
+            }
+          ],
+          "skipped": false
+        },
+        {
+          "slot": "w1s4",
+          "label": "Pull+Legs B",
+          "type": "Pull",
+          "exercises": [
+            {
+              "name": "spanish squat",
+              "loading": "3x45s@0kg",
+              "rpe": "RPE7",
+              "note": "preamble"
+            },
+            {
+              "name": "tibialis raises",
+              "loading": "3x25@0kg",
+              "rpe": "RPE5",
+              "note": "preamble"
+            },
+            {
+              "name": "dumbbell rows",
+              "loading": "3x12@46kg",
+              "rpe": "RPE7",
+              "note": ""
+            },
+            {
+              "name": "lat pull downs",
+              "loading": "3x10@90kg",
+              "rpe": "RPE7",
+              "note": ""
+            },
+            {
+              "name": "bicep curls",
+              "loading": "3x10@16kg",
+              "rpe": "RPE7",
+              "note": ""
+            },
+            {
+              "name": "back extensions",
+              "loading": "3x10@50kg",
+              "rpe": "RPE7",
+              "note": ""
+            },
+            {
+              "name": "nordic hamstring falls",
+              "loading": "3x6@0kg",
+              "rpe": "RPE7",
+              "note": ""
+            },
+            {
+              "name": "terminal knee extensions",
+              "loading": "3x25@5kg",
+              "rpe": "RPE6",
+              "note": ""
+            },
+            {
+              "name": "single leg calf raises",
+              "loading": "3x12@20kg",
+              "rpe": "RPE7",
+              "note": ""
+            }
+          ],
+          "skipped": false
+        }
+      ]
+    },
+    {
+      "week": 2,
+      "focus": "Accumulation",
+      "sessions": [
+        {
+          "slot": "w2s1",
+          "label": "Push A",
+          "type": "Push",
+          "exercises": [
+            {
+              "name": "spanish squat",
+              "loading": "3x45s@0kg",
+              "rpe": "RPE7",
+              "note": "preamble"
+            },
+            {
+              "name": "tibialis raises",
+              "loading": "3x25@0kg",
+              "rpe": "RPE5",
+              "note": "preamble"
+            },
+            {
+              "name": "incline dumbbell press",
+              "loading": "3x10@36kg",
+              "rpe": "RPE7",
+              "note": ""
+            },
+            {
+              "name": "dips",
+              "loading": "3x10@22.5kg",
+              "rpe": "RPE7",
+              "note": ""
+            },
+            {
+              "name": "chest fly",
+              "loading": "3x12@107kg",
+              "rpe": "RPE7",
+              "note": ""
+            },
+            {
+              "name": "cable tricep extensions",
+              "loading": "3x12@36kg",
+              "rpe": "RPE7",
+              "note": ""
+            },
+            {
+              "name": "standing calf raises",
+              "loading": "3x12@105kg",
+              "rpe": "RPE7",
+              "note": ""
+            }
+          ],
+          "skipped": false
+        },
+        {
+          "slot": "w2s2",
+          "label": "Pull+Legs A",
+          "type": "Pull",
+          "exercises": [
+            {
+              "name": "spanish squat",
+              "loading": "3x45s@0kg",
+              "rpe": "RPE7",
+              "note": "preamble"
+            },
+            {
+              "name": "tibialis raises",
+              "loading": "3x25@0kg",
+              "rpe": "RPE5",
+              "note": "preamble"
+            },
+            {
+              "name": "dumbbell rows",
+              "loading": "3x12@48kg",
+              "rpe": "RPE7",
+              "note": ""
+            },
+            {
+              "name": "pull-ups",
+              "loading": "3x8@0kg",
+              "rpe": "RPE7",
+              "note": ""
+            },
+            {
+              "name": "rear delt machine fly",
+              "loading": "3x12@90kg",
+              "rpe": "RPE7",
+              "note": ""
+            },
+            {
+              "name": "bicep curls",
+              "loading": "3x10@16kg",
+              "rpe": "RPE7",
+              "note": ""
+            },
+            {
+              "name": "romanian deadlifts",
+              "loading": "3x10@105kg",
+              "rpe": "RPE7",
+              "note": "slow negative"
+            },
+            {
+              "name": "goblet squats",
+              "loading": "3x10@0kg",
+              "rpe": "RPE6",
+              "note": "BW only, slow tempo"
+            },
+            {
+              "name": "nordic hamstring falls",
+              "loading": "3x7@0kg",
+              "rpe": "RPE7",
+              "note": ""
+            },
+            {
+              "name": "seated calve raises",
+              "loading": "3x12@55kg",
+              "rpe": "RPE7",
+              "note": ""
+            }
+          ],
+          "skipped": false
+        },
+        {
+          "slot": "w2s3",
+          "label": "Push B",
+          "type": "Push",
+          "exercises": [
+            {
+              "name": "spanish squat",
+              "loading": "3x45s@0kg",
+              "rpe": "RPE7",
+              "note": "preamble"
+            },
+            {
+              "name": "tibialis raises",
+              "loading": "3x25@0kg",
+              "rpe": "RPE5",
+              "note": "preamble"
+            },
+            {
+              "name": "strict press",
+              "loading": "3x8@52.5kg",
+              "rpe": "RPE7",
+              "note": ""
+            },
+            {
+              "name": "lateral raise",
+              "loading": "3x12@14kg",
+              "rpe": "RPE7",
+              "note": ""
+            },
+            {
+              "name": "rear delt machine fly",
+              "loading": "3x12@90kg",
+              "rpe": "RPE7",
+              "note": ""
+            },
+            {
+              "name": "good mornings",
+              "loading": "3x10@85kg",
+              "rpe": "RPE7",
+              "note": ""
+            },
+            {
+              "name": "barbell side bends",
+              "loading": "3x12@55kg",
+              "rpe": "RPE7",
+              "note": ""
+            }
+          ],
+          "skipped": false
+        },
+        {
+          "slot": "w2s4",
+          "label": "Pull+Legs B",
+          "type": "Pull",
+          "exercises": [
+            {
+              "name": "spanish squat",
+              "loading": "3x45s@0kg",
+              "rpe": "RPE7",
+              "note": "preamble"
+            },
+            {
+              "name": "tibialis raises",
+              "loading": "3x25@0kg",
+              "rpe": "RPE5",
+              "note": "preamble"
+            },
+            {
+              "name": "dumbbell rows",
+              "loading": "3x12@48kg",
+              "rpe": "RPE7",
+              "note": ""
+            },
+            {
+              "name": "lat pull downs",
+              "loading": "3x10@92.5kg",
+              "rpe": "RPE7",
+              "note": ""
+            },
+            {
+              "name": "bicep curls",
+              "loading": "3x10@16kg",
+              "rpe": "RPE7",
+              "note": ""
+            },
+            {
+              "name": "back extensions",
+              "loading": "3x10@53kg",
+              "rpe": "RPE7",
+              "note": ""
+            },
+            {
+              "name": "nordic hamstring falls",
+              "loading": "3x7@0kg",
+              "rpe": "RPE7",
+              "note": ""
+            },
+            {
+              "name": "terminal knee extensions",
+              "loading": "3x25@5kg",
+              "rpe": "RPE6",
+              "note": ""
+            },
+            {
+              "name": "single leg calf raises",
+              "loading": "3x12@22.5kg",
+              "rpe": "RPE7",
+              "note": ""
+            }
+          ],
+          "skipped": false
+        }
+      ]
+    },
+    {
+      "week": 3,
+      "focus": "Accumulation",
+      "sessions": [
+        {
+          "slot": "w3s1",
+          "label": "Push A",
+          "type": "Push",
+          "exercises": [
+            {
+              "name": "spanish squat",
+              "loading": "4x45s@0kg",
+              "rpe": "RPE7",
+              "note": "preamble"
+            },
+            {
+              "name": "tibialis raises",
+              "loading": "3x25@0kg",
+              "rpe": "RPE5",
+              "note": "preamble"
+            },
+            {
+              "name": "incline dumbbell press",
+              "loading": "3x10@38kg",
+              "rpe": "RPE7",
+              "note": ""
+            },
+            {
+              "name": "dips",
+              "loading": "3x10@25kg",
+              "rpe": "RPE7",
+              "note": ""
+            },
+            {
+              "name": "chest fly",
+              "loading": "3x12@113kg",
+              "rpe": "RPE7",
+              "note": ""
+            },
+            {
+              "name": "cable tricep extensions",
+              "loading": "3x12@38kg",
+              "rpe": "RPE8",
+              "note": ""
+            },
+            {
+              "name": "standing calf raises",
+              "loading": "3x12@110kg",
+              "rpe": "RPE7",
+              "note": ""
+            }
+          ],
+          "skipped": false
+        },
+        {
+          "slot": "w3s2",
+          "label": "Pull+Legs A",
+          "type": "Pull",
+          "exercises": [
+            {
+              "name": "spanish squat",
+              "loading": "4x45s@0kg",
+              "rpe": "RPE7",
+              "note": "preamble"
+            },
+            {
+              "name": "tibialis raises",
+              "loading": "3x25@0kg",
+              "rpe": "RPE5",
+              "note": "preamble"
+            },
+            {
+              "name": "dumbbell rows",
+              "loading": "3x12@50kg",
+              "rpe": "RPE7",
+              "note": ""
+            },
+            {
+              "name": "pull-ups",
+              "loading": "3x8@5kg",
+              "rpe": "RPE7",
+              "note": ""
+            },
+            {
+              "name": "rear delt machine fly",
+              "loading": "3x12@93kg",
+              "rpe": "RPE7",
+              "note": ""
+            },
+            {
+              "name": "bicep curls",
+              "loading": "3x10@18kg",
+              "rpe": "RPE7",
+              "note": ""
+            },
+            {
+              "name": "romanian deadlifts",
+              "loading": "3x10@110kg",
+              "rpe": "RPE7",
+              "note": "slow negative"
+            },
+            {
+              "name": "goblet squats",
+              "loading": "3x10@10kg",
+              "rpe": "RPE6",
+              "note": "slow tempo"
+            },
+            {
+              "name": "nordic hamstring falls",
+              "loading": "3x8@0kg",
+              "rpe": "RPE7",
+              "note": ""
+            },
+            {
+              "name": "seated calve raises",
+              "loading": "3x12@60kg",
+              "rpe": "RPE7",
+              "note": ""
+            }
+          ],
+          "skipped": false
+        },
+        {
+          "slot": "w3s3",
+          "label": "Push B",
+          "type": "Push",
+          "exercises": [
+            {
+              "name": "spanish squat",
+              "loading": "4x45s@0kg",
+              "rpe": "RPE7",
+              "note": "preamble"
+            },
+            {
+              "name": "tibialis raises",
+              "loading": "3x25@0kg",
+              "rpe": "RPE5",
+              "note": "preamble"
+            },
+            {
+              "name": "strict press",
+              "loading": "3x8@55kg",
+              "rpe": "RPE7",
+              "note": ""
+            },
+            {
+              "name": "lateral raise",
+              "loading": "3x12@16kg",
+              "rpe": "RPE7",
+              "note": ""
+            },
+            {
+              "name": "rear delt machine fly",
+              "loading": "3x12@93kg",
+              "rpe": "RPE7",
+              "note": ""
+            },
+            {
+              "name": "good mornings",
+              "loading": "3x10@90kg",
+              "rpe": "RPE7",
+              "note": ""
+            },
+            {
+              "name": "barbell side bends",
+              "loading": "3x12@57.5kg",
+              "rpe": "RPE7",
+              "note": ""
+            }
+          ],
+          "skipped": false
+        },
+        {
+          "slot": "w3s4",
+          "label": "Pull+Legs B",
+          "type": "Pull",
+          "exercises": [
+            {
+              "name": "spanish squat",
+              "loading": "4x45s@0kg",
+              "rpe": "RPE7",
+              "note": "preamble"
+            },
+            {
+              "name": "tibialis raises",
+              "loading": "3x25@0kg",
+              "rpe": "RPE5",
+              "note": "preamble"
+            },
+            {
+              "name": "dumbbell rows",
+              "loading": "3x12@50kg",
+              "rpe": "RPE7",
+              "note": ""
+            },
+            {
+              "name": "lat pull downs",
+              "loading": "3x10@95kg",
+              "rpe": "RPE7",
+              "note": ""
+            },
+            {
+              "name": "bicep curls",
+              "loading": "3x10@18kg",
+              "rpe": "RPE7",
+              "note": ""
+            },
+            {
+              "name": "back extensions",
+              "loading": "3x10@56kg",
+              "rpe": "RPE7",
+              "note": ""
+            },
+            {
+              "name": "nordic hamstring falls",
+              "loading": "3x8@0kg",
+              "rpe": "RPE7",
+              "note": ""
+            },
+            {
+              "name": "terminal knee extensions",
+              "loading": "3x25@7.5kg",
+              "rpe": "RPE6",
+              "note": ""
+            },
+            {
+              "name": "single leg calf raises",
+              "loading": "3x12@25kg",
+              "rpe": "RPE7",
+              "note": ""
+            }
+          ],
+          "skipped": false
+        }
+      ]
+    },
+    {
+      "week": 4,
+      "focus": "Accumulation",
+      "sessions": [
+        {
+          "slot": "w4s1",
+          "label": "Push A",
+          "type": "Push",
+          "exercises": [
+            {
+              "name": "spanish squat",
+              "loading": "4x45s@0kg",
+              "rpe": "RPE7",
+              "note": "preamble"
+            },
+            {
+              "name": "tibialis raises",
+              "loading": "3x25@0kg",
+              "rpe": "RPE5",
+              "note": "preamble"
+            },
+            {
+              "name": "incline dumbbell press",
+              "loading": "4x8@38kg",
+              "rpe": "RPE8",
+              "note": ""
+            },
+            {
+              "name": "dips",
+              "loading": "4x8@25kg",
+              "rpe": "RPE8",
+              "note": ""
+            },
+            {
+              "name": "chest fly",
+              "loading": "3x12@113kg",
+              "rpe": "RPE8",
+              "note": ""
+            },
+            {
+              "name": "cable tricep extensions",
+              "loading": "3x12@38kg",
+              "rpe": "RPE8",
+              "note": ""
+            },
+            {
+              "name": "standing calf raises",
+              "loading": "3x12@110kg",
+              "rpe": "RPE7",
+              "note": ""
+            }
+          ],
+          "skipped": false
+        },
+        {
+          "slot": "w4s2",
+          "label": "Pull+Legs A",
+          "type": "Pull",
+          "exercises": [
+            {
+              "name": "spanish squat",
+              "loading": "4x45s@0kg",
+              "rpe": "RPE7",
+              "note": "preamble"
+            },
+            {
+              "name": "tibialis raises",
+              "loading": "3x25@0kg",
+              "rpe": "RPE5",
+              "note": "preamble"
+            },
+            {
+              "name": "dumbbell rows",
+              "loading": "4x10@50kg",
+              "rpe": "RPE8",
+              "note": ""
+            },
+            {
+              "name": "pull-ups",
+              "loading": "4x6@10kg",
+              "rpe": "RPE8",
+              "note": ""
+            },
+            {
+              "name": "rear delt machine fly",
+              "loading": "3x12@93kg",
+              "rpe": "RPE8",
+              "note": ""
+            },
+            {
+              "name": "bicep curls",
+              "loading": "3x10@18kg",
+              "rpe": "RPE8",
+              "note": ""
+            },
+            {
+              "name": "romanian deadlifts",
+              "loading": "3x10@115kg",
+              "rpe": "RPE8",
+              "note": "slow negative"
+            },
+            {
+              "name": "goblet squats",
+              "loading": "3x10@15kg",
+              "rpe": "RPE7",
+              "note": "slow tempo"
+            },
+            {
+              "name": "nordic hamstring falls",
+              "loading": "3x8@0kg",
+              "rpe": "RPE8",
+              "note": ""
+            },
+            {
+              "name": "seated calve raises",
+              "loading": "3x12@65kg",
+              "rpe": "RPE7",
+              "note": ""
+            }
+          ],
+          "skipped": false
+        },
+        {
+          "slot": "w4s3",
+          "label": "Push B",
+          "type": "Push",
+          "exercises": [
+            {
+              "name": "spanish squat",
+              "loading": "4x45s@0kg",
+              "rpe": "RPE7",
+              "note": "preamble"
+            },
+            {
+              "name": "tibialis raises",
+              "loading": "3x25@0kg",
+              "rpe": "RPE5",
+              "note": "preamble"
+            },
+            {
+              "name": "strict press",
+              "loading": "3x8@57.5kg",
+              "rpe": "RPE8",
+              "note": ""
+            },
+            {
+              "name": "lateral raise",
+              "loading": "3x12@16kg",
+              "rpe": "RPE8",
+              "note": ""
+            },
+            {
+              "name": "rear delt machine fly",
+              "loading": "3x12@93kg",
+              "rpe": "RPE8",
+              "note": ""
+            },
+            {
+              "name": "good mornings",
+              "loading": "3x10@95kg",
+              "rpe": "RPE8",
+              "note": ""
+            },
+            {
+              "name": "barbell side bends",
+              "loading": "3x12@60kg",
+              "rpe": "RPE8",
+              "note": ""
+            }
+          ],
+          "skipped": false
+        },
+        {
+          "slot": "w4s4",
+          "label": "Pull+Legs B",
+          "type": "Pull",
+          "exercises": [
+            {
+              "name": "spanish squat",
+              "loading": "4x45s@0kg",
+              "rpe": "RPE7",
+              "note": "preamble"
+            },
+            {
+              "name": "tibialis raises",
+              "loading": "3x25@0kg",
+              "rpe": "RPE5",
+              "note": "preamble"
+            },
+            {
+              "name": "dumbbell rows",
+              "loading": "4x10@50kg",
+              "rpe": "RPE8",
+              "note": ""
+            },
+            {
+              "name": "lat pull downs",
+              "loading": "3x10@97.5kg",
+              "rpe": "RPE8",
+              "note": ""
+            },
+            {
+              "name": "bicep curls",
+              "loading": "3x10@18kg",
+              "rpe": "RPE8",
+              "note": ""
+            },
+            {
+              "name": "back extensions",
+              "loading": "3x10@60kg",
+              "rpe": "RPE8",
+              "note": ""
+            },
+            {
+              "name": "nordic hamstring falls",
+              "loading": "3x8@0kg",
+              "rpe": "RPE8",
+              "note": ""
+            },
+            {
+              "name": "terminal knee extensions",
+              "loading": "3x25@7.5kg",
+              "rpe": "RPE6",
+              "note": ""
+            },
+            {
+              "name": "single leg calf raises",
+              "loading": "3x12@27.5kg",
+              "rpe": "RPE7",
+              "note": ""
+            }
+          ],
+          "skipped": false
+        }
+      ]
+    },
+    {
+      "week": 5,
+      "focus": "Intensification",
+      "sessions": [
+        {
+          "slot": "w5s1",
+          "label": "Push A",
+          "type": "Push",
+          "exercises": [
+            {
+              "name": "spanish squat",
+              "loading": "4x45s@0kg",
+              "rpe": "RPE7",
+              "note": "preamble"
+            },
+            {
+              "name": "tibialis raises",
+              "loading": "3x25@0kg",
+              "rpe": "RPE5",
+              "note": "preamble"
+            },
+            {
+              "name": "incline dumbbell press",
+              "loading": "4x8@40kg",
+              "rpe": "RPE8",
+              "note": ""
+            },
+            {
+              "name": "dips",
+              "loading": "4x8@27.5kg",
+              "rpe": "RPE8",
+              "note": ""
+            },
+            {
+              "name": "chest fly",
+              "loading": "3x10@113kg",
+              "rpe": "RPE8",
+              "note": ""
+            },
+            {
+              "name": "cable tricep extensions",
+              "loading": "3x10@38kg",
+              "rpe": "RPE8",
+              "note": ""
+            },
+            {
+              "name": "standing calf raises",
+              "loading": "3x10@115kg",
+              "rpe": "RPE8",
+              "note": ""
+            }
+          ],
+          "skipped": false
+        },
+        {
+          "slot": "w5s2",
+          "label": "Pull+Legs A",
+          "type": "Pull",
+          "exercises": [
+            {
+              "name": "spanish squat",
+              "loading": "4x45s@0kg",
+              "rpe": "RPE7",
+              "note": "preamble"
+            },
+            {
+              "name": "tibialis raises",
+              "loading": "3x25@0kg",
+              "rpe": "RPE5",
+              "note": "preamble"
+            },
+            {
+              "name": "dumbbell rows",
+              "loading": "4x10@50kg",
+              "rpe": "RPE8",
+              "note": ""
+            },
+            {
+              "name": "pull-ups",
+              "loading": "4x6@12.5kg",
+              "rpe": "RPE8",
+              "note": ""
+            },
+            {
+              "name": "rear delt machine fly",
+              "loading": "3x10@93kg",
+              "rpe": "RPE8",
+              "note": ""
+            },
+            {
+              "name": "bicep curls",
+              "loading": "3x8@20kg",
+              "rpe": "RPE8",
+              "note": ""
+            },
+            {
+              "name": "romanian deadlifts",
+              "loading": "3x8@120kg",
+              "rpe": "RPE8",
+              "note": ""
+            },
+            {
+              "name": "goblet squats",
+              "loading": "3x10@20kg",
+              "rpe": "RPE7",
+              "note": "slow tempo"
+            },
+            {
+              "name": "nordic hamstring falls",
+              "loading": "3x8@0kg",
+              "rpe": "RPE8",
+              "note": ""
+            },
+            {
+              "name": "seated calve raises",
+              "loading": "3x10@70kg",
+              "rpe": "RPE8",
+              "note": ""
+            }
+          ],
+          "skipped": false
+        },
+        {
+          "slot": "w5s3",
+          "label": "Push B",
+          "type": "Push",
+          "exercises": [
+            {
+              "name": "spanish squat",
+              "loading": "4x45s@0kg",
+              "rpe": "RPE7",
+              "note": "preamble"
+            },
+            {
+              "name": "tibialis raises",
+              "loading": "3x25@0kg",
+              "rpe": "RPE5",
+              "note": "preamble"
+            },
+            {
+              "name": "strict press",
+              "loading": "3x6@57.5kg",
+              "rpe": "RPE8",
+              "note": ""
+            },
+            {
+              "name": "lateral raise",
+              "loading": "3x12@16kg",
+              "rpe": "RPE8",
+              "note": ""
+            },
+            {
+              "name": "rear delt machine fly",
+              "loading": "3x10@93kg",
+              "rpe": "RPE8",
+              "note": ""
+            },
+            {
+              "name": "good mornings",
+              "loading": "3x8@95kg",
+              "rpe": "RPE8",
+              "note": ""
+            },
+            {
+              "name": "barbell side bends",
+              "loading": "3x10@60kg",
+              "rpe": "RPE8",
+              "note": ""
+            }
+          ],
+          "skipped": false
+        },
+        {
+          "slot": "w5s4",
+          "label": "Pull+Legs B",
+          "type": "Pull",
+          "exercises": [
+            {
+              "name": "spanish squat",
+              "loading": "4x45s@0kg",
+              "rpe": "RPE7",
+              "note": "preamble"
+            },
+            {
+              "name": "tibialis raises",
+              "loading": "3x25@0kg",
+              "rpe": "RPE5",
+              "note": "preamble"
+            },
+            {
+              "name": "dumbbell rows",
+              "loading": "4x10@50kg",
+              "rpe": "RPE8",
+              "note": ""
+            },
+            {
+              "name": "lat pull downs",
+              "loading": "3x8@100kg",
+              "rpe": "RPE8",
+              "note": ""
+            },
+            {
+              "name": "bicep curls",
+              "loading": "3x8@20kg",
+              "rpe": "RPE8",
+              "note": ""
+            },
+            {
+              "name": "back extensions",
+              "loading": "3x10@63kg",
+              "rpe": "RPE8",
+              "note": ""
+            },
+            {
+              "name": "nordic hamstring falls",
+              "loading": "3x8@0kg",
+              "rpe": "RPE8",
+              "note": ""
+            },
+            {
+              "name": "terminal knee extensions",
+              "loading": "3x25@10kg",
+              "rpe": "RPE7",
+              "note": ""
+            },
+            {
+              "name": "single leg calf raises",
+              "loading": "3x10@30kg",
+              "rpe": "RPE8",
+              "note": ""
+            }
+          ],
+          "skipped": false
+        }
+      ]
+    },
+    {
+      "week": 6,
+      "focus": "Intensification",
+      "sessions": [
+        {
+          "slot": "w6s1",
+          "label": "Push A",
+          "type": "Push",
+          "exercises": [
+            {
+              "name": "spanish squat",
+              "loading": "4x45s@0kg",
+              "rpe": "RPE7",
+              "note": "preamble"
+            },
+            {
+              "name": "tibialis raises",
+              "loading": "3x25@0kg",
+              "rpe": "RPE5",
+              "note": "preamble"
+            },
+            {
+              "name": "incline dumbbell press",
+              "loading": "4x8@40kg",
+              "rpe": "RPE8",
+              "note": ""
+            },
+            {
+              "name": "dips",
+              "loading": "4x8@30kg",
+              "rpe": "RPE8",
+              "note": ""
+            },
+            {
+              "name": "chest fly",
+              "loading": "3x10@120kg",
+              "rpe": "RPE8",
+              "note": ""
+            },
+            {
+              "name": "cable tricep extensions",
+              "loading": "3x10@40kg",
+              "rpe": "RPE8",
+              "note": ""
+            },
+            {
+              "name": "standing calf raises",
+              "loading": "3x10@120kg",
+              "rpe": "RPE8",
+              "note": ""
+            }
+          ],
+          "skipped": false
+        },
+        {
+          "slot": "w6s2",
+          "label": "Pull+Legs A",
+          "type": "Pull",
+          "exercises": [
+            {
+              "name": "spanish squat",
+              "loading": "4x45s@0kg",
+              "rpe": "RPE7",
+              "note": "preamble"
+            },
+            {
+              "name": "tibialis raises",
+              "loading": "3x25@0kg",
+              "rpe": "RPE5",
+              "note": "preamble"
+            },
+            {
+              "name": "dumbbell rows",
+              "loading": "4x10@52kg",
+              "rpe": "RPE8",
+              "note": ""
+            },
+            {
+              "name": "pull-ups",
+              "loading": "4x6@15kg",
+              "rpe": "RPE8",
+              "note": ""
+            },
+            {
+              "name": "rear delt machine fly",
+              "loading": "3x10@100kg",
+              "rpe": "RPE8",
+              "note": ""
+            },
+            {
+              "name": "bicep curls",
+              "loading": "3x8@20kg",
+              "rpe": "RPE8",
+              "note": ""
+            },
+            {
+              "name": "romanian deadlifts",
+              "loading": "3x8@125kg",
+              "rpe": "RPE8",
+              "note": ""
+            },
+            {
+              "name": "goblet squats",
+              "loading": "3x10@25kg",
+              "rpe": "RPE7",
+              "note": "slow tempo"
+            },
+            {
+              "name": "nordic hamstring falls",
+              "loading": "3x8@0kg",
+              "rpe": "RPE8",
+              "note": ""
+            },
+            {
+              "name": "seated calve raises",
+              "loading": "3x10@70kg",
+              "rpe": "RPE8",
+              "note": ""
+            }
+          ],
+          "skipped": false
+        },
+        {
+          "slot": "w6s3",
+          "label": "Push B",
+          "type": "Push",
+          "exercises": [
+            {
+              "name": "spanish squat",
+              "loading": "4x45s@0kg",
+              "rpe": "RPE7",
+              "note": "preamble"
+            },
+            {
+              "name": "tibialis raises",
+              "loading": "3x25@0kg",
+              "rpe": "RPE5",
+              "note": "preamble"
+            },
+            {
+              "name": "strict press",
+              "loading": "3x6@60kg",
+              "rpe": "RPE8",
+              "note": ""
+            },
+            {
+              "name": "lateral raise",
+              "loading": "3x12@16kg",
+              "rpe": "RPE8",
+              "note": ""
+            },
+            {
+              "name": "rear delt machine fly",
+              "loading": "3x10@100kg",
+              "rpe": "RPE8",
+              "note": ""
+            },
+            {
+              "name": "good mornings",
+              "loading": "3x8@100kg",
+              "rpe": "RPE8",
+              "note": ""
+            },
+            {
+              "name": "barbell side bends",
+              "loading": "3x10@63kg",
+              "rpe": "RPE8",
+              "note": ""
+            }
+          ],
+          "skipped": false
+        },
+        {
+          "slot": "w6s4",
+          "label": "Pull+Legs B",
+          "type": "Pull",
+          "exercises": [
+            {
+              "name": "spanish squat",
+              "loading": "4x45s@0kg",
+              "rpe": "RPE7",
+              "note": "preamble"
+            },
+            {
+              "name": "tibialis raises",
+              "loading": "3x25@0kg",
+              "rpe": "RPE5",
+              "note": "preamble"
+            },
+            {
+              "name": "dumbbell rows",
+              "loading": "4x10@52kg",
+              "rpe": "RPE8",
+              "note": ""
+            },
+            {
+              "name": "lat pull downs",
+              "loading": "3x8@100kg",
+              "rpe": "RPE8",
+              "note": ""
+            },
+            {
+              "name": "bicep curls",
+              "loading": "3x8@20kg",
+              "rpe": "RPE8",
+              "note": ""
+            },
+            {
+              "name": "back extensions",
+              "loading": "3x10@66kg",
+              "rpe": "RPE8",
+              "note": ""
+            },
+            {
+              "name": "nordic hamstring falls",
+              "loading": "3x8@0kg",
+              "rpe": "RPE8",
+              "note": ""
+            },
+            {
+              "name": "terminal knee extensions",
+              "loading": "3x25@10kg",
+              "rpe": "RPE7",
+              "note": ""
+            },
+            {
+              "name": "single leg calf raises",
+              "loading": "3x10@32.5kg",
+              "rpe": "RPE8",
+              "note": ""
+            }
+          ],
+          "skipped": false
+        }
+      ]
+    },
+    {
+      "week": 7,
+      "focus": "Intensification",
+      "sessions": [
+        {
+          "slot": "w7s1",
+          "label": "Push A",
+          "type": "Push",
+          "exercises": [
+            {
+              "name": "spanish squat",
+              "loading": "4x45s@0kg",
+              "rpe": "RPE7",
+              "note": "preamble"
+            },
+            {
+              "name": "tibialis raises",
+              "loading": "3x25@0kg",
+              "rpe": "RPE5",
+              "note": "preamble"
+            },
+            {
+              "name": "incline dumbbell press",
+              "loading": "4x6@42kg",
+              "rpe": "RPE8",
+              "note": ""
+            },
+            {
+              "name": "dips",
+              "loading": "4x6@32.5kg",
+              "rpe": "RPE8",
+              "note": ""
+            },
+            {
+              "name": "chest fly",
+              "loading": "3x10@120kg",
+              "rpe": "RPE8",
+              "note": ""
+            },
+            {
+              "name": "cable tricep extensions",
+              "loading": "3x10@40.8kg",
+              "rpe": "RPE8",
+              "note": ""
+            },
+            {
+              "name": "standing calf raises",
+              "loading": "3x10@120kg",
+              "rpe": "RPE8",
+              "note": ""
+            }
+          ],
+          "skipped": false
+        },
+        {
+          "slot": "w7s2",
+          "label": "Pull+Legs A",
+          "type": "Pull",
+          "exercises": [
+            {
+              "name": "spanish squat",
+              "loading": "4x45s@0kg",
+              "rpe": "RPE7",
+              "note": "preamble"
+            },
+            {
+              "name": "tibialis raises",
+              "loading": "3x25@0kg",
+              "rpe": "RPE5",
+              "note": "preamble"
+            },
+            {
+              "name": "dumbbell rows",
+              "loading": "4x8@52kg",
+              "rpe": "RPE8",
+              "note": ""
+            },
+            {
+              "name": "pull-ups",
+              "loading": "4x5@17.5kg",
+              "rpe": "RPE8",
+              "note": ""
+            },
+            {
+              "name": "rear delt machine fly",
+              "loading": "3x10@100kg",
+              "rpe": "RPE8",
+              "note": ""
+            },
+            {
+              "name": "bicep curls",
+              "loading": "3x8@20kg",
+              "rpe": "RPE8.5",
+              "note": ""
+            },
+            {
+              "name": "romanian deadlifts",
+              "loading": "3x8@130kg",
+              "rpe": "RPE8",
+              "note": ""
+            },
+            {
+              "name": "goblet squats",
+              "loading": "3x8@30kg",
+              "rpe": "RPE7",
+              "note": "slow tempo"
+            },
+            {
+              "name": "nordic hamstring falls",
+              "loading": "3x8@0kg",
+              "rpe": "RPE8",
+              "note": ""
+            },
+            {
+              "name": "seated calve raises",
+              "loading": "3x10@75kg",
+              "rpe": "RPE8",
+              "note": ""
+            }
+          ],
+          "skipped": false
+        },
+        {
+          "slot": "w7s3",
+          "label": "Push B",
+          "type": "Push",
+          "exercises": [
+            {
+              "name": "spanish squat",
+              "loading": "4x45s@0kg",
+              "rpe": "RPE7",
+              "note": "preamble"
+            },
+            {
+              "name": "tibialis raises",
+              "loading": "3x25@0kg",
+              "rpe": "RPE5",
+              "note": "preamble"
+            },
+            {
+              "name": "strict press",
+              "loading": "3x6@60kg",
+              "rpe": "RPE8",
+              "note": ""
+            },
+            {
+              "name": "lateral raise",
+              "loading": "3x12@18kg",
+              "rpe": "RPE8",
+              "note": ""
+            },
+            {
+              "name": "rear delt machine fly",
+              "loading": "3x10@100kg",
+              "rpe": "RPE8",
+              "note": ""
+            },
+            {
+              "name": "good mornings",
+              "loading": "3x8@100kg",
+              "rpe": "RPE8",
+              "note": ""
+            },
+            {
+              "name": "barbell side bends",
+              "loading": "3x10@65kg",
+              "rpe": "RPE8",
+              "note": ""
+            }
+          ],
+          "skipped": false
+        },
+        {
+          "slot": "w7s4",
+          "label": "Pull+Legs B",
+          "type": "Pull",
+          "exercises": [
+            {
+              "name": "spanish squat",
+              "loading": "4x45s@0kg",
+              "rpe": "RPE7",
+              "note": "preamble"
+            },
+            {
+              "name": "tibialis raises",
+              "loading": "3x25@0kg",
+              "rpe": "RPE5",
+              "note": "preamble"
+            },
+            {
+              "name": "dumbbell rows",
+              "loading": "4x8@52kg",
+              "rpe": "RPE8",
+              "note": ""
+            },
+            {
+              "name": "lat pull downs",
+              "loading": "3x8@102.5kg",
+              "rpe": "RPE8",
+              "note": ""
+            },
+            {
+              "name": "bicep curls",
+              "loading": "3x8@20kg",
+              "rpe": "RPE8.5",
+              "note": ""
+            },
+            {
+              "name": "back extensions",
+              "loading": "3x10@70kg",
+              "rpe": "RPE8",
+              "note": ""
+            },
+            {
+              "name": "nordic hamstring falls",
+              "loading": "3x8@0kg",
+              "rpe": "RPE8",
+              "note": ""
+            },
+            {
+              "name": "terminal knee extensions",
+              "loading": "3x25@12.5kg",
+              "rpe": "RPE7",
+              "note": ""
+            },
+            {
+              "name": "single leg calf raises",
+              "loading": "3x10@35kg",
+              "rpe": "RPE8",
+              "note": ""
+            }
+          ],
+          "skipped": false
+        }
+      ]
+    },
+    {
+      "week": 8,
+      "focus": "Intensification",
+      "sessions": [
+        {
+          "slot": "w8s1",
+          "label": "Push A",
+          "type": "Push",
+          "exercises": [
+            {
+              "name": "spanish squat",
+              "loading": "4x45s@0kg",
+              "rpe": "RPE7",
+              "note": "preamble"
+            },
+            {
+              "name": "tibialis raises",
+              "loading": "3x25@0kg",
+              "rpe": "RPE5",
+              "note": "preamble"
+            },
+            {
+              "name": "incline dumbbell press",
+              "loading": "4x6@42kg",
+              "rpe": "RPE8.5",
+              "note": ""
+            },
+            {
+              "name": "dips",
+              "loading": "4x6@35kg",
+              "rpe": "RPE8.5",
+              "note": ""
+            },
+            {
+              "name": "chest fly",
+              "loading": "3x10@120kg",
+              "rpe": "RPE8.5",
+              "note": ""
+            },
+            {
+              "name": "cable tricep extensions",
+              "loading": "3x10@40.8kg",
+              "rpe": "RPE8.5",
+              "note": ""
+            },
+            {
+              "name": "standing calf raises",
+              "loading": "3x10@120kg",
+              "rpe": "RPE8",
+              "note": ""
+            }
+          ],
+          "skipped": false
+        },
+        {
+          "slot": "w8s2",
+          "label": "Pull+Legs A",
+          "type": "Pull",
+          "exercises": [
+            {
+              "name": "spanish squat",
+              "loading": "4x45s@0kg",
+              "rpe": "RPE7",
+              "note": "preamble"
+            },
+            {
+              "name": "tibialis raises",
+              "loading": "3x25@0kg",
+              "rpe": "RPE5",
+              "note": "preamble"
+            },
+            {
+              "name": "dumbbell rows",
+              "loading": "4x8@54kg",
+              "rpe": "RPE8.5",
+              "note": ""
+            },
+            {
+              "name": "pull-ups",
+              "loading": "4x5@20kg",
+              "rpe": "RPE8.5",
+              "note": ""
+            },
+            {
+              "name": "rear delt machine fly",
+              "loading": "3x10@100kg",
+              "rpe": "RPE8.5",
+              "note": ""
+            },
+            {
+              "name": "bicep curls",
+              "loading": "3x8@20kg",
+              "rpe": "RPE8.5",
+              "note": ""
+            },
+            {
+              "name": "romanian deadlifts",
+              "loading": "3x8@135kg",
+              "rpe": "RPE8.5",
+              "note": ""
+            },
+            {
+              "name": "goblet squats",
+              "loading": "3x8@35kg",
+              "rpe": "RPE8",
+              "note": "slow tempo"
+            },
+            {
+              "name": "nordic hamstring falls",
+              "loading": "3x8@0kg",
+              "rpe": "RPE8",
+              "note": ""
+            },
+            {
+              "name": "seated calve raises",
+              "loading": "3x10@80kg",
+              "rpe": "RPE8",
+              "note": ""
+            }
+          ],
+          "skipped": false
+        },
+        {
+          "slot": "w8s3",
+          "label": "Push B",
+          "type": "Push",
+          "exercises": [
+            {
+              "name": "spanish squat",
+              "loading": "4x45s@0kg",
+              "rpe": "RPE7",
+              "note": "preamble"
+            },
+            {
+              "name": "tibialis raises",
+              "loading": "3x25@0kg",
+              "rpe": "RPE5",
+              "note": "preamble"
+            },
+            {
+              "name": "strict press",
+              "loading": "3x5@62.5kg",
+              "rpe": "RPE8.5",
+              "note": ""
+            },
+            {
+              "name": "lateral raise",
+              "loading": "3x12@18kg",
+              "rpe": "RPE8",
+              "note": ""
+            },
+            {
+              "name": "rear delt machine fly",
+              "loading": "3x10@100kg",
+              "rpe": "RPE8.5",
+              "note": ""
+            },
+            {
+              "name": "good mornings",
+              "loading": "3x8@100kg",
+              "rpe": "RPE8.5",
+              "note": ""
+            },
+            {
+              "name": "barbell side bends",
+              "loading": "3x10@67.5kg",
+              "rpe": "RPE8",
+              "note": ""
+            }
+          ],
+          "skipped": false
+        },
+        {
+          "slot": "w8s4",
+          "label": "Pull+Legs B",
+          "type": "Pull",
+          "exercises": [
+            {
+              "name": "spanish squat",
+              "loading": "4x45s@0kg",
+              "rpe": "RPE7",
+              "note": "preamble"
+            },
+            {
+              "name": "tibialis raises",
+              "loading": "3x25@0kg",
+              "rpe": "RPE5",
+              "note": "preamble"
+            },
+            {
+              "name": "dumbbell rows",
+              "loading": "4x8@54kg",
+              "rpe": "RPE8.5",
+              "note": ""
+            },
+            {
+              "name": "lat pull downs",
+              "loading": "3x8@105kg",
+              "rpe": "RPE8.5",
+              "note": ""
+            },
+            {
+              "name": "bicep curls",
+              "loading": "3x8@20kg",
+              "rpe": "RPE8.5",
+              "note": ""
+            },
+            {
+              "name": "back extensions",
+              "loading": "3x10@73kg",
+              "rpe": "RPE8",
+              "note": ""
+            },
+            {
+              "name": "nordic hamstring falls",
+              "loading": "3x8@0kg",
+              "rpe": "RPE8",
+              "note": ""
+            },
+            {
+              "name": "terminal knee extensions",
+              "loading": "3x25@12.5kg",
+              "rpe": "RPE7",
+              "note": ""
+            },
+            {
+              "name": "single leg calf raises",
+              "loading": "3x10@37.5kg",
+              "rpe": "RPE8",
+              "note": ""
+            }
+          ],
+          "skipped": false
+        }
+      ]
+    },
+    {
+      "week": 9,
+      "focus": "Peak",
+      "sessions": [
+        {
+          "slot": "w9s1",
+          "label": "Push A",
+          "type": "Push",
+          "exercises": [
+            {
+              "name": "spanish squat",
+              "loading": "4x45s@0kg",
+              "rpe": "RPE7",
+              "note": "preamble"
+            },
+            {
+              "name": "tibialis raises",
+              "loading": "3x25@0kg",
+              "rpe": "RPE5",
+              "note": "preamble"
+            },
+            {
+              "name": "incline dumbbell press",
+              "loading": "4x5@44kg",
+              "rpe": "RPE8.5",
+              "note": ""
+            },
+            {
+              "name": "dips",
+              "loading": "4x5@37.5kg",
+              "rpe": "RPE8.5",
+              "note": ""
+            },
+            {
+              "name": "chest fly",
+              "loading": "3x8@120kg",
+              "rpe": "RPE8.5",
+              "note": ""
+            },
+            {
+              "name": "cable tricep extensions",
+              "loading": "3x8@40.8kg",
+              "rpe": "RPE8.5",
+              "note": ""
+            },
+            {
+              "name": "standing calf raises",
+              "loading": "3x8@120kg",
+              "rpe": "RPE8",
+              "note": ""
+            }
+          ],
+          "skipped": false
+        },
+        {
+          "slot": "w9s2",
+          "label": "Pull+Legs A",
+          "type": "Pull",
+          "exercises": [
+            {
+              "name": "spanish squat",
+              "loading": "4x45s@0kg",
+              "rpe": "RPE7",
+              "note": "preamble"
+            },
+            {
+              "name": "tibialis raises",
+              "loading": "3x25@0kg",
+              "rpe": "RPE5",
+              "note": "preamble"
+            },
+            {
+              "name": "dumbbell rows",
+              "loading": "4x8@54kg",
+              "rpe": "RPE8.5",
+              "note": ""
+            },
+            {
+              "name": "pull-ups",
+              "loading": "4x5@20kg",
+              "rpe": "RPE8.5",
+              "note": ""
+            },
+            {
+              "name": "rear delt machine fly",
+              "loading": "3x8@100kg",
+              "rpe": "RPE8.5",
+              "note": ""
+            },
+            {
+              "name": "bicep curls",
+              "loading": "3x6@20kg",
+              "rpe": "RPE8.5",
+              "note": ""
+            },
+            {
+              "name": "romanian deadlifts",
+              "loading": "3x6@135kg",
+              "rpe": "RPE8.5",
+              "note": ""
+            },
+            {
+              "name": "squats",
+              "loading": "3x8@60kg",
+              "rpe": "RPE7",
+              "note": "slow tempo, tendon introduction"
+            },
+            {
+              "name": "nordic hamstring falls",
+              "loading": "3x8@0kg",
+              "rpe": "RPE8",
+              "note": ""
+            },
+            {
+              "name": "seated calve raises",
+              "loading": "3x8@80kg",
+              "rpe": "RPE8",
+              "note": ""
+            }
+          ],
+          "skipped": false
+        },
+        {
+          "slot": "w9s3",
+          "label": "Push B",
+          "type": "Push",
+          "exercises": [
+            {
+              "name": "spanish squat",
+              "loading": "4x45s@0kg",
+              "rpe": "RPE7",
+              "note": "preamble"
+            },
+            {
+              "name": "tibialis raises",
+              "loading": "3x25@0kg",
+              "rpe": "RPE5",
+              "note": "preamble"
+            },
+            {
+              "name": "strict press",
+              "loading": "3x5@62.5kg",
+              "rpe": "RPE8.5",
+              "note": ""
+            },
+            {
+              "name": "lateral raise",
+              "loading": "3x10@18kg",
+              "rpe": "RPE8.5",
+              "note": ""
+            },
+            {
+              "name": "rear delt machine fly",
+              "loading": "3x8@100kg",
+              "rpe": "RPE8.5",
+              "note": ""
+            },
+            {
+              "name": "good mornings",
+              "loading": "3x6@100kg",
+              "rpe": "RPE8.5",
+              "note": ""
+            },
+            {
+              "name": "barbell side bends",
+              "loading": "3x8@67.5kg",
+              "rpe": "RPE8",
+              "note": ""
+            }
+          ],
+          "skipped": false
+        },
+        {
+          "slot": "w9s4",
+          "label": "Pull+Legs B",
+          "type": "Pull",
+          "exercises": [
+            {
+              "name": "spanish squat",
+              "loading": "4x45s@0kg",
+              "rpe": "RPE7",
+              "note": "preamble"
+            },
+            {
+              "name": "tibialis raises",
+              "loading": "3x25@0kg",
+              "rpe": "RPE5",
+              "note": "preamble"
+            },
+            {
+              "name": "dumbbell rows",
+              "loading": "4x8@54kg",
+              "rpe": "RPE8.5",
+              "note": ""
+            },
+            {
+              "name": "lat pull downs",
+              "loading": "3x6@105kg",
+              "rpe": "RPE8.5",
+              "note": ""
+            },
+            {
+              "name": "bicep curls",
+              "loading": "3x6@20kg",
+              "rpe": "RPE8.5",
+              "note": ""
+            },
+            {
+              "name": "back extensions",
+              "loading": "3x8@73kg",
+              "rpe": "RPE8.5",
+              "note": ""
+            },
+            {
+              "name": "nordic hamstring falls",
+              "loading": "3x8@0kg",
+              "rpe": "RPE8",
+              "note": ""
+            },
+            {
+              "name": "terminal knee extensions",
+              "loading": "3x25@15kg",
+              "rpe": "RPE7",
+              "note": ""
+            },
+            {
+              "name": "single leg calf raises",
+              "loading": "3x8@40kg",
+              "rpe": "RPE8.5",
+              "note": ""
+            }
+          ],
+          "skipped": false
+        }
+      ]
+    },
+    {
+      "week": 10,
+      "focus": "Peak",
+      "sessions": [
+        {
+          "slot": "w10s1",
+          "label": "Push A",
+          "type": "Push",
+          "exercises": [
+            {
+              "name": "spanish squat",
+              "loading": "4x45s@0kg",
+              "rpe": "RPE7",
+              "note": "preamble"
+            },
+            {
+              "name": "tibialis raises",
+              "loading": "3x25@0kg",
+              "rpe": "RPE5",
+              "note": "preamble"
+            },
+            {
+              "name": "incline dumbbell press",
+              "loading": "4x5@44kg",
+              "rpe": "RPE8.5",
+              "note": ""
+            },
+            {
+              "name": "dips",
+              "loading": "4x5@40kg",
+              "rpe": "RPE8.5",
+              "note": ""
+            },
+            {
+              "name": "chest fly",
+              "loading": "3x8@120kg",
+              "rpe": "RPE8.5",
+              "note": ""
+            },
+            {
+              "name": "cable tricep extensions",
+              "loading": "3x8@40.8kg",
+              "rpe": "RPE8.5",
+              "note": ""
+            },
+            {
+              "name": "standing calf raises",
+              "loading": "3x8@120kg",
+              "rpe": "RPE8",
+              "note": ""
+            }
+          ],
+          "skipped": false
+        },
+        {
+          "slot": "w10s2",
+          "label": "Pull+Legs A",
+          "type": "Pull",
+          "exercises": [
+            {
+              "name": "spanish squat",
+              "loading": "4x45s@0kg",
+              "rpe": "RPE7",
+              "note": "preamble"
+            },
+            {
+              "name": "tibialis raises",
+              "loading": "3x25@0kg",
+              "rpe": "RPE5",
+              "note": "preamble"
+            },
+            {
+              "name": "dumbbell rows",
+              "loading": "4x8@56kg",
+              "rpe": "RPE8.5",
+              "note": ""
+            },
+            {
+              "name": "pull-ups",
+              "loading": "4x5@22.5kg",
+              "rpe": "RPE8.5",
+              "note": ""
+            },
+            {
+              "name": "rear delt machine fly",
+              "loading": "3x8@100kg",
+              "rpe": "RPE8.5",
+              "note": ""
+            },
+            {
+              "name": "bicep curls",
+              "loading": "3x6@20kg",
+              "rpe": "RPE8.5",
+              "note": ""
+            },
+            {
+              "name": "romanian deadlifts",
+              "loading": "3x6@140kg",
+              "rpe": "RPE8.5",
+              "note": ""
+            },
+            {
+              "name": "squats",
+              "loading": "3x8@65kg",
+              "rpe": "RPE7",
+              "note": "slow tempo"
+            },
+            {
+              "name": "nordic hamstring falls",
+              "loading": "3x8@0kg",
+              "rpe": "RPE8",
+              "note": ""
+            },
+            {
+              "name": "seated calve raises",
+              "loading": "3x8@80kg",
+              "rpe": "RPE8",
+              "note": ""
+            }
+          ],
+          "skipped": false
+        },
+        {
+          "slot": "w10s3",
+          "label": "Push B",
+          "type": "Push",
+          "exercises": [
+            {
+              "name": "spanish squat",
+              "loading": "4x45s@0kg",
+              "rpe": "RPE7",
+              "note": "preamble"
+            },
+            {
+              "name": "tibialis raises",
+              "loading": "3x25@0kg",
+              "rpe": "RPE5",
+              "note": "preamble"
+            },
+            {
+              "name": "strict press",
+              "loading": "3x5@65kg",
+              "rpe": "RPE8.5",
+              "note": ""
+            },
+            {
+              "name": "lateral raise",
+              "loading": "3x10@18kg",
+              "rpe": "RPE8.5",
+              "note": ""
+            },
+            {
+              "name": "rear delt machine fly",
+              "loading": "3x8@100kg",
+              "rpe": "RPE8.5",
+              "note": ""
+            },
+            {
+              "name": "good mornings",
+              "loading": "3x6@100kg",
+              "rpe": "RPE8.5",
+              "note": ""
+            },
+            {
+              "name": "barbell side bends",
+              "loading": "3x8@70kg",
+              "rpe": "RPE8",
+              "note": ""
+            }
+          ],
+          "skipped": false
+        },
+        {
+          "slot": "w10s4",
+          "label": "Pull+Legs B",
+          "type": "Pull",
+          "exercises": [
+            {
+              "name": "spanish squat",
+              "loading": "4x45s@0kg",
+              "rpe": "RPE7",
+              "note": "preamble"
+            },
+            {
+              "name": "tibialis raises",
+              "loading": "3x25@0kg",
+              "rpe": "RPE5",
+              "note": "preamble"
+            },
+            {
+              "name": "dumbbell rows",
+              "loading": "4x8@56kg",
+              "rpe": "RPE8.5",
+              "note": ""
+            },
+            {
+              "name": "lat pull downs",
+              "loading": "3x6@107.5kg",
+              "rpe": "RPE8.5",
+              "note": ""
+            },
+            {
+              "name": "bicep curls",
+              "loading": "3x6@20kg",
+              "rpe": "RPE8.5",
+              "note": ""
+            },
+            {
+              "name": "back extensions",
+              "loading": "3x8@76kg",
+              "rpe": "RPE8.5",
+              "note": ""
+            },
+            {
+              "name": "nordic hamstring falls",
+              "loading": "3x8@0kg",
+              "rpe": "RPE8",
+              "note": ""
+            },
+            {
+              "name": "terminal knee extensions",
+              "loading": "3x25@15kg",
+              "rpe": "RPE7",
+              "note": ""
+            },
+            {
+              "name": "single leg calf raises",
+              "loading": "3x8@42.5kg",
+              "rpe": "RPE8.5",
+              "note": ""
+            }
+          ],
+          "skipped": false
+        }
+      ]
+    },
+    {
+      "week": 11,
+      "focus": "Peak",
+      "sessions": [
+        {
+          "slot": "w11s1",
+          "label": "Push A",
+          "type": "Push",
+          "exercises": [
+            {
+              "name": "spanish squat",
+              "loading": "4x45s@0kg",
+              "rpe": "RPE7",
+              "note": "preamble"
+            },
+            {
+              "name": "tibialis raises",
+              "loading": "3x25@0kg",
+              "rpe": "RPE5",
+              "note": "preamble"
+            },
+            {
+              "name": "incline dumbbell press",
+              "loading": "4x4@46kg",
+              "rpe": "RPE9",
+              "note": ""
+            },
+            {
+              "name": "dips",
+              "loading": "4x4@42.5kg",
+              "rpe": "RPE9",
+              "note": ""
+            },
+            {
+              "name": "chest fly",
+              "loading": "3x8@120kg",
+              "rpe": "RPE9",
+              "note": ""
+            },
+            {
+              "name": "cable tricep extensions",
+              "loading": "3x8@40.8kg",
+              "rpe": "RPE9",
+              "note": ""
+            },
+            {
+              "name": "standing calf raises",
+              "loading": "3x8@120kg",
+              "rpe": "RPE8",
+              "note": ""
+            }
+          ],
+          "skipped": false
+        },
+        {
+          "slot": "w11s2",
+          "label": "Pull+Legs A",
+          "type": "Pull",
+          "exercises": [
+            {
+              "name": "spanish squat",
+              "loading": "4x45s@0kg",
+              "rpe": "RPE7",
+              "note": "preamble"
+            },
+            {
+              "name": "tibialis raises",
+              "loading": "3x25@0kg",
+              "rpe": "RPE5",
+              "note": "preamble"
+            },
+            {
+              "name": "dumbbell rows",
+              "loading": "4x6@56kg",
+              "rpe": "RPE9",
+              "note": ""
+            },
+            {
+              "name": "pull-ups",
+              "loading": "4x4@25kg",
+              "rpe": "RPE9",
+              "note": ""
+            },
+            {
+              "name": "rear delt machine fly",
+              "loading": "3x8@100kg",
+              "rpe": "RPE9",
+              "note": ""
+            },
+            {
+              "name": "bicep curls",
+              "loading": "3x6@22kg",
+              "rpe": "RPE9",
+              "note": ""
+            },
+            {
+              "name": "romanian deadlifts",
+              "loading": "3x5@140kg",
+              "rpe": "RPE9",
+              "note": ""
+            },
+            {
+              "name": "squats",
+              "loading": "3x6@70kg",
+              "rpe": "RPE7",
+              "note": "slow tempo"
+            },
+            {
+              "name": "nordic hamstring falls",
+              "loading": "3x8@0kg",
+              "rpe": "RPE8",
+              "note": ""
+            },
+            {
+              "name": "seated calve raises",
+              "loading": "3x8@85kg",
+              "rpe": "RPE8",
+              "note": ""
+            }
+          ],
+          "skipped": false
+        },
+        {
+          "slot": "w11s3",
+          "label": "Push B",
+          "type": "Push",
+          "exercises": [
+            {
+              "name": "spanish squat",
+              "loading": "4x45s@0kg",
+              "rpe": "RPE7",
+              "note": "preamble"
+            },
+            {
+              "name": "tibialis raises",
+              "loading": "3x25@0kg",
+              "rpe": "RPE5",
+              "note": "preamble"
+            },
+            {
+              "name": "strict press",
+              "loading": "3x4@65kg",
+              "rpe": "RPE9",
+              "note": ""
+            },
+            {
+              "name": "lateral raise",
+              "loading": "3x10@18kg",
+              "rpe": "RPE8.5",
+              "note": ""
+            },
+            {
+              "name": "rear delt machine fly",
+              "loading": "3x8@100kg",
+              "rpe": "RPE9",
+              "note": ""
+            },
+            {
+              "name": "good mornings",
+              "loading": "3x6@100kg",
+              "rpe": "RPE9",
+              "note": ""
+            },
+            {
+              "name": "barbell side bends",
+              "loading": "3x8@72.5kg",
+              "rpe": "RPE8",
+              "note": ""
+            }
+          ],
+          "skipped": false
+        },
+        {
+          "slot": "w11s4",
+          "label": "Pull+Legs B",
+          "type": "Pull",
+          "exercises": [
+            {
+              "name": "spanish squat",
+              "loading": "4x45s@0kg",
+              "rpe": "RPE7",
+              "note": "preamble"
+            },
+            {
+              "name": "tibialis raises",
+              "loading": "3x25@0kg",
+              "rpe": "RPE5",
+              "note": "preamble"
+            },
+            {
+              "name": "dumbbell rows",
+              "loading": "4x6@56kg",
+              "rpe": "RPE9",
+              "note": ""
+            },
+            {
+              "name": "lat pull downs",
+              "loading": "3x5@110kg",
+              "rpe": "RPE9",
+              "note": ""
+            },
+            {
+              "name": "bicep curls",
+              "loading": "3x6@22kg",
+              "rpe": "RPE9",
+              "note": ""
+            },
+            {
+              "name": "back extensions",
+              "loading": "3x8@80kg",
+              "rpe": "RPE9",
+              "note": ""
+            },
+            {
+              "name": "nordic hamstring falls",
+              "loading": "3x8@0kg",
+              "rpe": "RPE8",
+              "note": ""
+            },
+            {
+              "name": "terminal knee extensions",
+              "loading": "3x25@15kg",
+              "rpe": "RPE7",
+              "note": ""
+            },
+            {
+              "name": "single leg calf raises",
+              "loading": "3x8@45kg",
+              "rpe": "RPE9",
+              "note": ""
+            }
+          ],
+          "skipped": false
+        }
+      ]
+    },
+    {
+      "week": 12,
+      "focus": "Deload",
+      "sessions": [
+        {
+          "slot": "w12s1",
+          "label": "Push A",
+          "type": "Push",
+          "exercises": [
+            {
+              "name": "spanish squat",
+              "loading": "3x45s@0kg",
+              "rpe": "RPE6",
+              "note": "preamble"
+            },
+            {
+              "name": "tibialis raises",
+              "loading": "3x25@0kg",
+              "rpe": "RPE5",
+              "note": "preamble"
+            },
+            {
+              "name": "incline dumbbell press",
+              "loading": "2x8@36kg",
+              "rpe": "RPE6",
+              "note": ""
+            },
+            {
+              "name": "dips",
+              "loading": "2x8@25kg",
+              "rpe": "RPE6",
+              "note": ""
+            },
+            {
+              "name": "chest fly",
+              "loading": "2x10@100kg",
+              "rpe": "RPE6",
+              "note": ""
+            },
+            {
+              "name": "cable tricep extensions",
+              "loading": "2x10@34kg",
+              "rpe": "RPE6",
+              "note": ""
+            },
+            {
+              "name": "standing calf raises",
+              "loading": "2x10@100kg",
+              "rpe": "RPE6",
+              "note": ""
+            }
+          ],
+          "skipped": false
+        },
+        {
+          "slot": "w12s2",
+          "label": "Pull+Legs A",
+          "type": "Pull",
+          "exercises": [
+            {
+              "name": "spanish squat",
+              "loading": "3x45s@0kg",
+              "rpe": "RPE6",
+              "note": "preamble"
+            },
+            {
+              "name": "tibialis raises",
+              "loading": "3x25@0kg",
+              "rpe": "RPE5",
+              "note": "preamble"
+            },
+            {
+              "name": "dumbbell rows",
+              "loading": "2x10@46kg",
+              "rpe": "RPE6",
+              "note": ""
+            },
+            {
+              "name": "pull-ups",
+              "loading": "2x6@0kg",
+              "rpe": "RPE6",
+              "note": ""
+            },
+            {
+              "name": "rear delt machine fly",
+              "loading": "2x10@86kg",
+              "rpe": "RPE6",
+              "note": ""
+            },
+            {
+              "name": "bicep curls",
+              "loading": "2x8@16kg",
+              "rpe": "RPE6",
+              "note": ""
+            },
+            {
+              "name": "romanian deadlifts",
+              "loading": "2x8@100kg",
+              "rpe": "RPE6",
+              "note": ""
+            },
+            {
+              "name": "squats",
+              "loading": "2x8@60kg",
+              "rpe": "RPE6",
+              "note": "slow tempo"
+            },
+            {
+              "name": "nordic hamstring falls",
+              "loading": "2x6@0kg",
+              "rpe": "RPE6",
+              "note": ""
+            },
+            {
+              "name": "seated calve raises",
+              "loading": "2x10@60kg",
+              "rpe": "RPE6",
+              "note": ""
+            }
+          ],
+          "skipped": false
+        },
+        {
+          "slot": "w12s3",
+          "label": "Push B",
+          "type": "Push",
+          "exercises": [
+            {
+              "name": "spanish squat",
+              "loading": "3x45s@0kg",
+              "rpe": "RPE6",
+              "note": "preamble"
+            },
+            {
+              "name": "tibialis raises",
+              "loading": "3x25@0kg",
+              "rpe": "RPE5",
+              "note": "preamble"
+            },
+            {
+              "name": "strict press",
+              "loading": "2x6@52.5kg",
+              "rpe": "RPE6",
+              "note": ""
+            },
+            {
+              "name": "lateral raise",
+              "loading": "2x10@14kg",
+              "rpe": "RPE6",
+              "note": ""
+            },
+            {
+              "name": "rear delt machine fly",
+              "loading": "2x10@86kg",
+              "rpe": "RPE6",
+              "note": ""
+            },
+            {
+              "name": "good mornings",
+              "loading": "2x8@80kg",
+              "rpe": "RPE6",
+              "note": ""
+            },
+            {
+              "name": "barbell side bends",
+              "loading": "2x10@53kg",
+              "rpe": "RPE6",
+              "note": ""
+            }
+          ],
+          "skipped": false
+        },
+        {
+          "slot": "w12s4",
+          "label": "Pull+Legs B",
+          "type": "Pull",
+          "exercises": [
+            {
+              "name": "spanish squat",
+              "loading": "3x45s@0kg",
+              "rpe": "RPE6",
+              "note": "preamble"
+            },
+            {
+              "name": "tibialis raises",
+              "loading": "3x25@0kg",
+              "rpe": "RPE5",
+              "note": "preamble"
+            },
+            {
+              "name": "dumbbell rows",
+              "loading": "2x10@46kg",
+              "rpe": "RPE6",
+              "note": ""
+            },
+            {
+              "name": "lat pull downs",
+              "loading": "2x8@90kg",
+              "rpe": "RPE6",
+              "note": ""
+            },
+            {
+              "name": "bicep curls",
+              "loading": "2x8@16kg",
+              "rpe": "RPE6",
+              "note": ""
+            },
+            {
+              "name": "back extensions",
+              "loading": "2x8@60kg",
+              "rpe": "RPE6",
+              "note": ""
+            },
+            {
+              "name": "nordic hamstring falls",
+              "loading": "2x6@0kg",
+              "rpe": "RPE6",
+              "note": ""
+            },
+            {
+              "name": "terminal knee extensions",
+              "loading": "2x25@10kg",
+              "rpe": "RPE6",
+              "note": ""
+            },
+            {
+              "name": "single leg calf raises",
+              "loading": "2x10@30kg",
+              "rpe": "RPE6",
+              "note": ""
+            }
+          ],
+          "skipped": false
+        }
+      ]
+    }
+  ]
+}
