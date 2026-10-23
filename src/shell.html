@@ -194,7 +194,14 @@
   <h2>Program</h2>
   <p class="page-subtitle" id="program-subtitle"></p>
 
+  <div id="program-welcome" class="prog-welcome" style="display:none">
+    <p id="program-welcome-text"></p>
+    <button class="btn btn-primary btn-full" id="program-auto-btn" onclick="startProgramFromHistory()">Propose a program from my log</button>
+    <button class="btn btn-secondary btn-full" onclick="showProgramSetup(true)">Set up my program</button>
+  </div>
+
   <div id="program-setup">
+    <button class="btn btn-ghost prog-back" onclick="showProgramSetup(false)">← Back</button>
     <div class="field">
       <label>Target exercises</label>
       <p class="prog-hint">Tick the ones to work on and pick a goal. Tap the current best to correct it.</p>

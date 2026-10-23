@@ -22,6 +22,8 @@ const EXERCISE_LIBRARY = {
 // The planning/adjust chat in progress: { mode: 'create'|'adjust', setup?, messages }.
 // Mirrored to localStorage so a reload mid-conversation doesn't lose it.
 let programChat = null;
+// Without a program, the welcome card is shown until the user picks "set up".
+let programSetupChosen = false;
 
 const PROGRAM_FORMAT = `Loading strings use the training log's exact format:
 - "<sets>x<reps>@<weight>kg", several set groups comma-separated: "3x8@60kg, 1x6@65kg"
@@ -159,12 +161,19 @@ function renderProgram() {
     try { programChat = JSON.parse(localStorage.getItem(programDraftKey()) || 'null'); } catch(e) {}
     if (programChat) restoreProgramThread();
   }
-  const view = programChat ? 'chat' : program ? 'outline' : 'setup';
-  ['setup', 'chat', 'outline'].forEach(v =>
+  const view = programChat ? 'chat' : program ? 'outline' : programSetupChosen ? 'setup' : 'welcome';
+  ['welcome', 'setup', 'chat', 'outline'].forEach(v =>
     document.getElementById('program-' + v).style.display = v === view ? '' : 'none');
 
   const subtitle = document.getElementById('program-subtitle');
-  if (view === 'setup') {
+  if (view === 'welcome') {
+    subtitle.textContent = `Plan your next ${PROGRAM_WEEKS} weeks with the coach`;
+    const hasHistory = frequentExercises(1).length > 0;
+    document.getElementById('program-auto-btn').style.display = hasHistory ? '' : 'none';
+    document.getElementById('program-welcome-text').textContent = hasHistory
+      ? `Hi there! Looks like you haven't got a program yet. Since you've already logged training sessions, the coach can propose a ${PROGRAM_WEEKS}-week program based on your history. Or, if you prefer, select exercises and training goals from scratch. What would you like to do?`
+      : `Hey there! Looks like you're new here. Click the button below to set up your ${PROGRAM_WEEKS}-week program together with the coach.`;
+  } else if (view === 'setup') {
     subtitle.textContent = `Plan your next ${PROGRAM_WEEKS} weeks with the coach`;
     if (!document.getElementById('program-library-body').children.length) renderProgramSetup();
   } else if (view === 'chat') {
@@ -427,6 +436,41 @@ function startProgramPlanning() {
   askProgramCoach(q);
 }
 
+function showProgramSetup(chosen) {
+  programSetupChosen = chosen;
+  renderProgram();
+}
+
+// Facts the model would otherwise have to dig out of the raw log, which is
+// also in the system prompt.
+function historySummary() {
+  const mine = sessions.filter(s => (s.user || 'Cas') === currentUser && s.type !== 'Rest');
+  const cutoff = Date.now() - TWELVE_WEEKS_MS;
+  const recent = mine.filter(s => new Date(s.date).getTime() >= cutoff);
+  const types = new Map();
+  recent.forEach(s => types.set(s.type, (types.get(s.type) || 0) + 1));
+  const exercises = frequentExercises(10).map(name => {
+    const best = bestSet(name);
+    const last = mine.filter(s => (s.exercises || []).some(e => (e.name || '').toLowerCase().trim() === name))
+      .reduce((d, s) => s.date > d ? s.date : d, '');
+    return `- ${name} — best ${best ? fmtBest(name, best.reps, best.weight) : 'unknown'}; last done ${last}`;
+  });
+  return [
+    `Last 12 weeks: ${recent.length} sessions (~${(recent.length / 12).toFixed(1)}/week): ${[...types].map(([t, n]) => `${t} ${n}`).join(', ') || 'none'}`,
+    `Most frequent exercises:\n${exercises.join('\n')}`,
+  ].join('\n\n');
+}
+
+function startProgramFromHistory() {
+  const q = [
+    `Let's build my ${PROGRAM_WEEKS}-week program from my training history.`,
+    historySummary(),
+    'Infer my current split, training frequency and priorities from my log. Propose a structure first, and ask me about anything you can\'t infer (e.g. goals per exercise, sessions per week, schedule).',
+  ].join('\n\n');
+  openProgramChat({ mode: 'create', setup: null, messages: [] });
+  askProgramCoach(q);
+}
+
 // ── Chat ──
 
 function openProgramChat(chat, placeholder = '') {
@@ -575,6 +619,7 @@ function saveNewProgram(weeks) {
   };
   saveProgramLocally();
   programChat = null;
+  programSetupChosen = false; // a later delete shows the welcome card again
   localStorage.removeItem(programDraftKey());
   selectProgramSlot(nextSlot()?.slot || '');
   renderProgram();
@@ -690,7 +735,7 @@ function deleteProgram() {
 
 // ── Log tab integration ──
 
-// Options: every open (not done, not skipped) slot, then "Off-program".
+// Options: "Off-program" first so it's easy to find, then every open (not done, not skipped) slot.
 function renderProgramBanner(selected) {
   const banner = document.getElementById('program-banner');
   const select = document.getElementById('program-slot');
@@ -701,8 +746,8 @@ function renderProgramBanner(selected) {
     return;
   }
   banner.style.display = '';
-  select.innerHTML = open.map(s => `<option value="${s.slot}">${esc(slotLabel(s))}</option>`).join('')
-    + '<option value="">Off-program</option>';
+  select.innerHTML = '<option value="">Off-program</option><option disabled>──────────</option>'
+    + open.map(s => `<option value="${s.slot}">${esc(slotLabel(s))}</option>`).join('');
   select.value = open.some(s => s.slot === selected) ? selected : '';
   const s = open.find(x => x.slot === select.value);
   const notes = s ? s.exercises.filter(e => e.note).map(e => `<div><strong>${esc(e.name)}:</strong> ${esc(e.note)}</div>`).join('') : '';
