@@ -1,5 +1,505 @@
 [
   {
+    "id": 1792704396020,
+    "user": "Cas",
+    "date": "2026-10-22",
+    "type": "Badminton",
+    "duration": "210",
+    "intensity": "high",
+    "hr": {
+      "avg": null,
+      "max": null
+    },
+    "exercises": [],
+    "energy": "average",
+    "sleep": "average",
+    "recovery": "normal",
+    "kps": {
+      "morning": "2.5",
+      "post": "3"
+    },
+    "notes": ""
+  },
+  {
+    "id": 1792704359147,
+    "user": "Cas",
+    "date": "2026-10-21",
+    "type": "Pull",
+    "exercises": [
+      {
+        "name": "dumbbell rows",
+        "loading": "3x15@50kg",
+        "rpe": "RPE8"
+      },
+      {
+        "name": "preacher curls",
+        "loading": "3x10@32.5kg",
+        "rpe": "RPE8.5"
+      },
+      {
+        "name": "spanish squat",
+        "loading": "4x45s",
+        "rpe": "RPE7"
+      },
+      {
+        "name": "nordic holds",
+        "loading": "3x30s@0kg",
+        "rpe": "RPE7"
+      },
+      {
+        "name": "lat pull downs",
+        "loading": "3x10@100kg",
+        "rpe": "RPE8.5"
+      },
+      {
+        "name": "rear delt machine fly",
+        "loading": "3x12@86kg",
+        "rpe": "RPE8"
+      },
+      {
+        "name": "squats",
+        "loading": "1x1@140kg",
+        "rpe": "RPE8.5"
+      }
+    ],
+    "energy": "average",
+    "sleep": "average",
+    "recovery": "normal",
+    "kps": {
+      "morning": "2.5",
+      "post": "3"
+    },
+    "notes": ""
+  },
+  {
+    "id": 1792704209103,
+    "user": "Cas",
+    "date": "2026-10-20",
+    "type": "Badminton",
+    "duration": "120",
+    "intensity": "high",
+    "hr": {
+      "avg": null,
+      "max": null
+    },
+    "exercises": [],
+    "energy": "average",
+    "sleep": "average",
+    "recovery": "normal",
+    "kps": {
+      "morning": "2",
+      "post": "2.5"
+    },
+    "notes": ""
+  },
+  {
+    "id": 1792498709638,
+    "user": "Cas",
+    "date": "2026-10-20",
+    "type": "Push",
+    "exercises": [
+      {
+        "name": "incline dumbbell press",
+        "loading": "3x8@42kg",
+        "rpe": "RPE8.5"
+      },
+      {
+        "name": "dips",
+        "loading": "3x6@40kg",
+        "rpe": "RPE9"
+      },
+      {
+        "name": "good mornings",
+        "loading": "3x10@100kg",
+        "rpe": "RPE8.5"
+      },
+      {
+        "name": "standing calf raises",
+        "loading": "3x10@120kg",
+        "rpe": "RPE7"
+      },
+      {
+        "name": "chest fly",
+        "loading": "3x12@120kg",
+        "rpe": "RPE8.5"
+      },
+      {
+        "name": "spanish squat",
+        "loading": "4x45s",
+        "rpe": "RPE7"
+      }
+    ],
+    "energy": "below-average",
+    "sleep": "average",
+    "recovery": "normal",
+    "kps": {
+      "morning": "2",
+      "post": "2"
+    },
+    "notes": ""
+  },
+  {
+    "id": 1792498465110,
+    "user": "Cas",
+    "date": "2026-10-19",
+    "type": "Badminton",
+    "duration": "120",
+    "intensity": "medium",
+    "hr": {
+      "avg": null,
+      "max": null
+    },
+    "exercises": [],
+    "energy": "below-average",
+    "sleep": "good",
+    "recovery": "good",
+    "kps": {
+      "morning": "1.5",
+      "post": "2"
+    },
+    "notes": ""
+  },
+  {
+    "id": 1792071107904,
+    "user": "Cas",
+    "date": "2026-10-15",
+    "type": "Pull",
+    "exercises": [
+      {
+        "name": "seated machine rows",
+        "loading": "3x10@50kg",
+        "rpe": "RPE8.5"
+      },
+      {
+        "name": "preacher curls",
+        "loading": "3x10@32.5kg",
+        "rpe": "RPE8.5"
+      },
+      {
+        "name": "spanish squat",
+        "loading": "4x45s",
+        "rpe": "RPE7"
+      },
+      {
+        "name": "spanish squat",
+        "loading": "4x45s",
+        "rpe": "RPE7"
+      },
+      {
+        "name": "nordic holds",
+        "loading": "3x30s@0kg",
+        "rpe": "RPE7"
+      },
+      {
+        "name": "lat cable pull downs",
+        "loading": "3x10@36kg",
+        "rpe": "RPE7"
+      },
+      {
+        "name": "lat pull downs",
+        "loading": "3x10@100kg",
+        "rpe": "RPE8.5"
+      }
+    ],
+    "energy": "",
+    "sleep": "",
+    "recovery": "normal",
+    "kps": {
+      "morning": "2",
+      "post": "2"
+    },
+    "notes": ""
+  },
+  {
+    "id": 1792007171245,
+    "user": "Cas",
+    "date": "2026-10-13",
+    "type": "Badminton",
+    "duration": "120",
+    "intensity": "high",
+    "hr": {
+      "avg": null,
+      "max": null
+    },
+    "exercises": [],
+    "energy": "average",
+    "sleep": "average",
+    "recovery": "normal",
+    "kps": {
+      "morning": null,
+      "post": null
+    },
+    "notes": ""
+  },
+  {
+    "id": 1792007145792,
+    "user": "Cas",
+    "date": "2026-10-13",
+    "type": "Push",
+    "exercises": [
+      {
+        "name": "incline dumbbell press",
+        "loading": "3x8@40kg",
+        "rpe": "RPE8.5"
+      },
+      {
+        "name": "cable tricep extensions",
+        "loading": "3x12@40.8kg",
+        "rpe": "RPE8.5"
+      },
+      {
+        "name": "dips",
+        "loading": "3x10@20kg",
+        "rpe": "RPE6"
+      },
+      {
+        "name": "good mornings",
+        "loading": "3x10@100kg",
+        "rpe": "RPE8.5"
+      }
+    ],
+    "energy": "average",
+    "sleep": "average",
+    "recovery": "normal",
+    "kps": {
+      "morning": null,
+      "post": null
+    },
+    "notes": ""
+  },
+  {
+    "id": 1791810489685,
+    "user": "Cas",
+    "date": "2026-10-12",
+    "type": "Pull",
+    "exercises": [
+      {
+        "name": "seated machine rows",
+        "loading": "3x10@45kg",
+        "rpe": "RPE8"
+      },
+      {
+        "name": "bicep curls",
+        "loading": "3x8@20kg",
+        "rpe": "RPE8.5"
+      },
+      {
+        "name": "spanish squat",
+        "loading": "4x45s",
+        "rpe": "RPE7"
+      },
+      {
+        "name": "rear delt machine fly",
+        "loading": "3x12@100kg",
+        "rpe": "RPE8"
+      },
+      {
+        "name": "barbell side bends",
+        "loading": "2x10@73.5kg, 1x10@83.5kg",
+        "rpe": "RPE8"
+      },
+      {
+        "name": "terminal leg extensions",
+        "loading": "3x20@27kg",
+        "rpe": ""
+      }
+    ],
+    "energy": "above-average",
+    "sleep": "average",
+    "recovery": "normal",
+    "kps": {
+      "morning": "3",
+      "post": "3"
+    },
+    "notes": ""
+  },
+  {
+    "id": 1791810311795,
+    "user": "Cas",
+    "date": "2026-10-11",
+    "type": "Badminton",
+    "duration": "60",
+    "intensity": "high",
+    "hr": {
+      "avg": null,
+      "max": null
+    },
+    "exercises": [],
+    "energy": "above-average",
+    "sleep": "good",
+    "recovery": "good",
+    "kps": {
+      "morning": "2.5",
+      "post": "3"
+    },
+    "notes": ""
+  },
+  {
+    "id": 1791548347108,
+    "user": "Cas",
+    "date": "2026-10-09",
+    "type": "Push",
+    "exercises": [
+      {
+        "name": "incline dumbbell press",
+        "loading": "3x8@30kg",
+        "rpe": "RPE5"
+      },
+      {
+        "name": "spanish squat",
+        "loading": "4x45s",
+        "rpe": "RPE7"
+      },
+      {
+        "name": "cable tricep extensions",
+        "loading": "3x12@40.8kg",
+        "rpe": "RPE8.5"
+      },
+      {
+        "name": "chest fly",
+        "loading": "3x10@120kg",
+        "rpe": "RPE8.5"
+      },
+      {
+        "name": "tibialis band curls",
+        "loading": "3x12@0kg",
+        "rpe": "RPE8"
+      },
+      {
+        "name": "dips",
+        "loading": "2x10@35kg",
+        "rpe": "RPE9"
+      },
+      {
+        "name": "barbell side bends",
+        "loading": "3x10@73.5kg",
+        "rpe": "RPE8"
+      },
+      {
+        "name": "nordic hamstring falls",
+        "loading": "3x8",
+        "rpe": "RPE7"
+      }
+    ],
+    "energy": "average",
+    "sleep": "average",
+    "recovery": "normal",
+    "kps": {
+      "morning": "3",
+      "post": "3"
+    },
+    "notes": ""
+  },
+  {
+    "id": 1791531176749,
+    "user": "Cas",
+    "date": "2026-10-08",
+    "type": "Badminton",
+    "duration": "180",
+    "intensity": "medium",
+    "hr": {
+      "avg": null,
+      "max": null
+    },
+    "exercises": [],
+    "energy": "below-average",
+    "sleep": "average",
+    "recovery": "normal",
+    "kps": {
+      "morning": "3",
+      "post": "3"
+    },
+    "notes": ""
+  },
+  {
+    "id": 1791463390828,
+    "user": "Cas",
+    "date": "2026-10-08",
+    "type": "Pull",
+    "exercises": [
+      {
+        "name": "dumbbell rows",
+        "loading": "3x15@50kg",
+        "rpe": "RPE8"
+      },
+      {
+        "name": "bicep curls",
+        "loading": "3x15@16kg",
+        "rpe": "RPE8.5"
+      },
+      {
+        "name": "spanish squat",
+        "loading": "4x45s",
+        "rpe": "RPE7"
+      },
+      {
+        "name": "lat pull downs",
+        "loading": "3x8@100kg",
+        "rpe": "RPE8.5"
+      },
+      {
+        "name": "standing calf raises",
+        "loading": "3x10@120kg",
+        "rpe": "RPE7"
+      },
+      {
+        "name": "rear delt machine fly",
+        "loading": "3x10@100kg",
+        "rpe": "RPE8.5"
+      }
+    ],
+    "energy": "below-average",
+    "sleep": "average",
+    "recovery": "normal",
+    "kps": {
+      "morning": "3",
+      "post": "3"
+    },
+    "notes": ""
+  },
+  {
+    "id": 1791463458326,
+    "user": "Cas",
+    "date": "2026-10-07",
+    "type": "Badminton",
+    "duration": "60",
+    "intensity": "high",
+    "hr": {
+      "avg": null,
+      "max": null
+    },
+    "exercises": [],
+    "energy": "below-average",
+    "sleep": "average",
+    "recovery": "normal",
+    "kps": {
+      "morning": null,
+      "post": null
+    },
+    "notes": ""
+  },
+  {
+    "id": 1791361664710,
+    "user": "Cas",
+    "date": "2026-10-06",
+    "type": "Badminton",
+    "duration": "120",
+    "intensity": "medium",
+    "hr": {
+      "avg": null,
+      "max": null
+    },
+    "exercises": [],
+    "energy": "average",
+    "sleep": "average",
+    "recovery": "normal",
+    "kps": {
+      "morning": "3.5",
+      "post": "3.5"
+    },
+    "notes": ""
+  },
+  {
     "id": 1791286455905,
     "user": "Cas",
     "date": "2026-10-06",
