@@ -33,7 +33,7 @@
       "bodyweight": true,
       "e1rm_bodyweight": false
     },
-    "pauze power clean + jerk": {
+    "pause power clean + jerk": {
       "strain_factor": 0.0437,
       "bodyweight": true,
       "e1rm_bodyweight": false
@@ -52,7 +52,7 @@
       "bodyweight": true,
       "e1rm_bodyweight": true
     },
-    "ffr bulgarian split squats": {
+    "front foot raised bulgarian split squats": {
       "strain_factor": 0.0798,
       "bodyweight": true,
       "e1rm_bodyweight": true
@@ -110,7 +110,7 @@
       "bodyweight": false,
       "e1rm_bodyweight": false
     },
-    "cable tricep extensions": {
+    "cable triceps extensions": {
       "strain_factor": 0,
       "bodyweight": false,
       "e1rm_bodyweight": false
@@ -150,7 +150,7 @@
       "bodyweight": false,
       "e1rm_bodyweight": true
     },
-    "seated calve raises": {
+    "seated calf raises": {
       "strain_factor": 0,
       "bodyweight": false,
       "e1rm_bodyweight": false
@@ -180,7 +180,7 @@
       "bodyweight": false,
       "e1rm_bodyweight": false
     },
-    "bosuball crunch": {
+    "bosu ball crunch": {
       "strain_factor": 0,
       "bodyweight": false,
       "e1rm_bodyweight": false
@@ -241,11 +241,6 @@
       "e1rm_bodyweight": true
     },
     "rear delt dumbbell fly": {
-      "strain_factor": 0,
-      "bodyweight": false,
-      "e1rm_bodyweight": false
-    },
-    "rear delt fly": {
       "strain_factor": 0,
       "bodyweight": false,
       "e1rm_bodyweight": false
