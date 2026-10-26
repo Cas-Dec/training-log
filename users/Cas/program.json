@@ -19,7 +19,7 @@
               "note": "preamble, daily isometric"
             },
             {
-              "name": "tibialis raises",
+              "name": "tibialis band curls",
               "loading": "3x25@0kg",
               "rpe": "RPE5",
               "note": "preamble"
@@ -32,19 +32,25 @@
             },
             {
               "name": "dips",
-              "loading": "3x10@20kg",
+              "loading": "3x10@30kg",
               "rpe": "RPE7",
               "note": ""
             },
             {
               "name": "chest fly",
-              "loading": "3x12@100kg",
+              "loading": "3x12@107kg",
               "rpe": "RPE7",
               "note": ""
             },
             {
               "name": "cable triceps extensions",
               "loading": "3x12@34kg",
+              "rpe": "RPE7",
+              "note": ""
+            },
+            {
+              "name": "good mornings",
+              "loading": "3x10@80kg",
               "rpe": "RPE7",
               "note": ""
             },
@@ -69,13 +75,13 @@
               "note": "preamble"
             },
             {
-              "name": "tibialis raises",
+              "name": "tibialis band curls",
               "loading": "3x25@0kg",
               "rpe": "RPE5",
               "note": "preamble"
             },
             {
-              "name": "dumbbell rows",
+              "name": "seated machine rows",
               "loading": "3x12@46kg",
               "rpe": "RPE7",
               "note": ""
@@ -105,22 +111,10 @@
               "note": "slow negative"
             },
             {
-              "name": "goblet squats",
-              "loading": "3x10@0kg",
+              "name": "squats",
+              "loading": "3x10@40kg",
               "rpe": "RPE6",
-              "note": "BW only, slow tempo"
-            },
-            {
-              "name": "nordic hamstring falls",
-              "loading": "3x6@0kg",
-              "rpe": "RPE7",
-              "note": ""
-            },
-            {
-              "name": "seated calf raises",
-              "loading": "3x12@50kg",
-              "rpe": "RPE7",
-              "note": ""
+              "note": "slow tempo, rehab loading"
             }
           ],
           "skipped": false
@@ -137,7 +131,7 @@
               "note": "preamble"
             },
             {
-              "name": "tibialis raises",
+              "name": "tibialis band curls",
               "loading": "3x25@0kg",
               "rpe": "RPE5",
               "note": "preamble"
@@ -161,14 +155,14 @@
               "note": ""
             },
             {
-              "name": "good mornings",
-              "loading": "3x10@80kg",
+              "name": "nordic hamstring falls",
+              "loading": "3x6@0kg",
               "rpe": "RPE7",
               "note": ""
             },
             {
-              "name": "barbell side bends",
-              "loading": "3x12@53kg",
+              "name": "back extensions",
+              "loading": "3x10@50kg",
               "rpe": "RPE7",
               "note": ""
             }
@@ -187,13 +181,13 @@
               "note": "preamble"
             },
             {
-              "name": "tibialis raises",
+              "name": "tibialis band curls",
               "loading": "3x25@0kg",
               "rpe": "RPE5",
               "note": "preamble"
             },
             {
-              "name": "dumbbell rows",
+              "name": "seated machine rows",
               "loading": "3x12@46kg",
               "rpe": "RPE7",
               "note": ""
@@ -207,18 +201,6 @@
             {
               "name": "bicep curls",
               "loading": "3x10@16kg",
-              "rpe": "RPE7",
-              "note": ""
-            },
-            {
-              "name": "back extensions",
-              "loading": "3x10@50kg",
-              "rpe": "RPE7",
-              "note": ""
-            },
-            {
-              "name": "nordic hamstring falls",
-              "loading": "3x6@0kg",
               "rpe": "RPE7",
               "note": ""
             },
@@ -255,7 +237,7 @@
               "note": "preamble"
             },
             {
-              "name": "tibialis raises",
+              "name": "tibialis band curls",
               "loading": "3x25@0kg",
               "rpe": "RPE5",
               "note": "preamble"
@@ -268,19 +250,25 @@
             },
             {
               "name": "dips",
-              "loading": "3x10@22.5kg",
+              "loading": "3x10@32.5kg",
               "rpe": "RPE7",
               "note": ""
             },
             {
               "name": "chest fly",
-              "loading": "3x12@107kg",
+              "loading": "3x12@110kg",
               "rpe": "RPE7",
               "note": ""
             },
             {
               "name": "cable triceps extensions",
               "loading": "3x12@36kg",
+              "rpe": "RPE7",
+              "note": ""
+            },
+            {
+              "name": "good mornings",
+              "loading": "3x10@85kg",
               "rpe": "RPE7",
               "note": ""
             },
@@ -305,13 +293,13 @@
               "note": "preamble"
             },
             {
-              "name": "tibialis raises",
+              "name": "tibialis band curls",
               "loading": "3x25@0kg",
               "rpe": "RPE5",
               "note": "preamble"
             },
             {
-              "name": "dumbbell rows",
+              "name": "seated machine rows",
               "loading": "3x12@48kg",
               "rpe": "RPE7",
               "note": ""
@@ -341,22 +329,10 @@
               "note": "slow negative"
             },
             {
-              "name": "goblet squats",
-              "loading": "3x10@0kg",
+              "name": "squats",
+              "loading": "3x10@45kg",
               "rpe": "RPE6",
-              "note": "BW only, slow tempo"
-            },
-            {
-              "name": "nordic hamstring falls",
-              "loading": "3x7@0kg",
-              "rpe": "RPE7",
-              "note": ""
-            },
-            {
-              "name": "seated calf raises",
-              "loading": "3x12@55kg",
-              "rpe": "RPE7",
-              "note": ""
+              "note": "slow tempo, rehab loading"
             }
           ],
           "skipped": false
@@ -373,7 +349,7 @@
               "note": "preamble"
             },
             {
-              "name": "tibialis raises",
+              "name": "tibialis band curls",
               "loading": "3x25@0kg",
               "rpe": "RPE5",
               "note": "preamble"
@@ -397,14 +373,14 @@
               "note": ""
             },
             {
-              "name": "good mornings",
-              "loading": "3x10@85kg",
+              "name": "nordic hamstring falls",
+              "loading": "3x6@0kg",
               "rpe": "RPE7",
               "note": ""
             },
             {
-              "name": "barbell side bends",
-              "loading": "3x12@55kg",
+              "name": "back extensions",
+              "loading": "3x10@53kg",
               "rpe": "RPE7",
               "note": ""
             }
@@ -423,13 +399,13 @@
               "note": "preamble"
             },
             {
-              "name": "tibialis raises",
+              "name": "tibialis band curls",
               "loading": "3x25@0kg",
               "rpe": "RPE5",
               "note": "preamble"
             },
             {
-              "name": "dumbbell rows",
+              "name": "seated machine rows",
               "loading": "3x12@48kg",
               "rpe": "RPE7",
               "note": ""
@@ -443,18 +419,6 @@
             {
               "name": "bicep curls",
               "loading": "3x10@16kg",
-              "rpe": "RPE7",
-              "note": ""
-            },
-            {
-              "name": "back extensions",
-              "loading": "3x10@53kg",
-              "rpe": "RPE7",
-              "note": ""
-            },
-            {
-              "name": "nordic hamstring falls",
-              "loading": "3x7@0kg",
               "rpe": "RPE7",
               "note": ""
             },
@@ -491,7 +455,7 @@
               "note": "preamble"
             },
             {
-              "name": "tibialis raises",
+              "name": "tibialis band curls",
               "loading": "3x25@0kg",
               "rpe": "RPE5",
               "note": "preamble"
@@ -504,7 +468,7 @@
             },
             {
               "name": "dips",
-              "loading": "3x10@25kg",
+              "loading": "3x10@35kg",
               "rpe": "RPE7",
               "note": ""
             },
@@ -518,6 +482,12 @@
               "name": "cable triceps extensions",
               "loading": "3x12@38kg",
               "rpe": "RPE8",
+              "note": ""
+            },
+            {
+              "name": "good mornings",
+              "loading": "3x10@90kg",
+              "rpe": "RPE7",
               "note": ""
             },
             {
@@ -541,13 +511,13 @@
               "note": "preamble"
             },
             {
-              "name": "tibialis raises",
+              "name": "tibialis band curls",
               "loading": "3x25@0kg",
               "rpe": "RPE5",
               "note": "preamble"
             },
             {
-              "name": "dumbbell rows",
+              "name": "seated machine rows",
               "loading": "3x12@50kg",
               "rpe": "RPE7",
               "note": ""
@@ -577,22 +547,10 @@
               "note": "slow negative"
             },
             {
-              "name": "goblet squats",
-              "loading": "3x10@10kg",
+              "name": "squats",
+              "loading": "3x10@50kg",
               "rpe": "RPE6",
-              "note": "slow tempo"
-            },
-            {
-              "name": "nordic hamstring falls",
-              "loading": "3x8@0kg",
-              "rpe": "RPE7",
-              "note": ""
-            },
-            {
-              "name": "seated calf raises",
-              "loading": "3x12@60kg",
-              "rpe": "RPE7",
-              "note": ""
+              "note": "slow tempo, rehab loading"
             }
           ],
           "skipped": false
@@ -609,7 +567,7 @@
               "note": "preamble"
             },
             {
-              "name": "tibialis raises",
+              "name": "tibialis band curls",
               "loading": "3x25@0kg",
               "rpe": "RPE5",
               "note": "preamble"
@@ -633,14 +591,14 @@
               "note": ""
             },
             {
-              "name": "good mornings",
-              "loading": "3x10@90kg",
+              "name": "nordic hamstring falls",
+              "loading": "3x8@0kg",
               "rpe": "RPE7",
               "note": ""
             },
             {
-              "name": "barbell side bends",
-              "loading": "3x12@57.5kg",
+              "name": "back extensions",
+              "loading": "3x10@56kg",
               "rpe": "RPE7",
               "note": ""
             }
@@ -659,13 +617,13 @@
               "note": "preamble"
             },
             {
-              "name": "tibialis raises",
+              "name": "tibialis band curls",
               "loading": "3x25@0kg",
               "rpe": "RPE5",
               "note": "preamble"
             },
             {
-              "name": "dumbbell rows",
+              "name": "seated machine rows",
               "loading": "3x12@50kg",
               "rpe": "RPE7",
               "note": ""
@@ -679,18 +637,6 @@
             {
               "name": "bicep curls",
               "loading": "3x10@18kg",
-              "rpe": "RPE7",
-              "note": ""
-            },
-            {
-              "name": "back extensions",
-              "loading": "3x10@56kg",
-              "rpe": "RPE7",
-              "note": ""
-            },
-            {
-              "name": "nordic hamstring falls",
-              "loading": "3x8@0kg",
               "rpe": "RPE7",
               "note": ""
             },
@@ -727,7 +673,7 @@
               "note": "preamble"
             },
             {
-              "name": "tibialis raises",
+              "name": "tibialis band curls",
               "loading": "3x25@0kg",
               "rpe": "RPE5",
               "note": "preamble"
@@ -740,19 +686,25 @@
             },
             {
               "name": "dips",
-              "loading": "4x8@25kg",
+              "loading": "4x8@35kg",
               "rpe": "RPE8",
               "note": ""
             },
             {
               "name": "chest fly",
-              "loading": "3x12@113kg",
+              "loading": "3x12@117kg",
               "rpe": "RPE8",
               "note": ""
             },
             {
               "name": "cable triceps extensions",
               "loading": "3x12@38kg",
+              "rpe": "RPE8",
+              "note": ""
+            },
+            {
+              "name": "good mornings",
+              "loading": "3x10@95kg",
               "rpe": "RPE8",
               "note": ""
             },
@@ -777,13 +729,13 @@
               "note": "preamble"
             },
             {
-              "name": "tibialis raises",
+              "name": "tibialis band curls",
               "loading": "3x25@0kg",
               "rpe": "RPE5",
               "note": "preamble"
             },
             {
-              "name": "dumbbell rows",
+              "name": "seated machine rows",
               "loading": "4x10@50kg",
               "rpe": "RPE8",
               "note": ""
@@ -796,7 +748,7 @@
             },
             {
               "name": "rear delt machine fly",
-              "loading": "3x12@93kg",
+              "loading": "3x12@97kg",
               "rpe": "RPE8",
               "note": ""
             },
@@ -813,22 +765,10 @@
               "note": "slow negative"
             },
             {
-              "name": "goblet squats",
-              "loading": "3x10@15kg",
+              "name": "squats",
+              "loading": "3x10@55kg",
               "rpe": "RPE7",
-              "note": "slow tempo"
-            },
-            {
-              "name": "nordic hamstring falls",
-              "loading": "3x8@0kg",
-              "rpe": "RPE8",
-              "note": ""
-            },
-            {
-              "name": "seated calf raises",
-              "loading": "3x12@65kg",
-              "rpe": "RPE7",
-              "note": ""
+              "note": "slow tempo, rehab loading"
             }
           ],
           "skipped": false
@@ -845,7 +785,7 @@
               "note": "preamble"
             },
             {
-              "name": "tibialis raises",
+              "name": "tibialis band curls",
               "loading": "3x25@0kg",
               "rpe": "RPE5",
               "note": "preamble"
@@ -864,19 +804,19 @@
             },
             {
               "name": "rear delt machine fly",
-              "loading": "3x12@93kg",
+              "loading": "3x12@97kg",
               "rpe": "RPE8",
               "note": ""
             },
             {
-              "name": "good mornings",
-              "loading": "3x10@95kg",
+              "name": "nordic hamstring falls",
+              "loading": "3x8@0kg",
               "rpe": "RPE8",
               "note": ""
             },
             {
-              "name": "barbell side bends",
-              "loading": "3x12@60kg",
+              "name": "back extensions",
+              "loading": "3x10@60kg",
               "rpe": "RPE8",
               "note": ""
             }
@@ -895,13 +835,13 @@
               "note": "preamble"
             },
             {
-              "name": "tibialis raises",
+              "name": "tibialis band curls",
               "loading": "3x25@0kg",
               "rpe": "RPE5",
               "note": "preamble"
             },
             {
-              "name": "dumbbell rows",
+              "name": "seated machine rows",
               "loading": "4x10@50kg",
               "rpe": "RPE8",
               "note": ""
@@ -915,18 +855,6 @@
             {
               "name": "bicep curls",
               "loading": "3x10@18kg",
-              "rpe": "RPE8",
-              "note": ""
-            },
-            {
-              "name": "back extensions",
-              "loading": "3x10@60kg",
-              "rpe": "RPE8",
-              "note": ""
-            },
-            {
-              "name": "nordic hamstring falls",
-              "loading": "3x8@0kg",
               "rpe": "RPE8",
               "note": ""
             },
@@ -963,7 +891,7 @@
               "note": "preamble"
             },
             {
-              "name": "tibialis raises",
+              "name": "tibialis band curls",
               "loading": "3x25@0kg",
               "rpe": "RPE5",
               "note": "preamble"
@@ -976,19 +904,25 @@
             },
             {
               "name": "dips",
-              "loading": "4x8@27.5kg",
+              "loading": "4x8@37.5kg",
               "rpe": "RPE8",
               "note": ""
             },
             {
               "name": "chest fly",
-              "loading": "3x10@113kg",
+              "loading": "3x10@120kg",
               "rpe": "RPE8",
               "note": ""
             },
             {
               "name": "cable triceps extensions",
               "loading": "3x10@38kg",
+              "rpe": "RPE8",
+              "note": ""
+            },
+            {
+              "name": "good mornings",
+              "loading": "3x8@100kg",
               "rpe": "RPE8",
               "note": ""
             },
@@ -1013,13 +947,13 @@
               "note": "preamble"
             },
             {
-              "name": "tibialis raises",
+              "name": "tibialis band curls",
               "loading": "3x25@0kg",
               "rpe": "RPE5",
               "note": "preamble"
             },
             {
-              "name": "dumbbell rows",
+              "name": "seated machine rows",
               "loading": "4x10@50kg",
               "rpe": "RPE8",
               "note": ""
@@ -1032,7 +966,7 @@
             },
             {
               "name": "rear delt machine fly",
-              "loading": "3x10@93kg",
+              "loading": "3x10@100kg",
               "rpe": "RPE8",
               "note": ""
             },
@@ -1049,22 +983,10 @@
               "note": ""
             },
             {
-              "name": "goblet squats",
-              "loading": "3x10@20kg",
+              "name": "squats",
+              "loading": "3x10@60kg",
               "rpe": "RPE7",
-              "note": "slow tempo"
-            },
-            {
-              "name": "nordic hamstring falls",
-              "loading": "3x8@0kg",
-              "rpe": "RPE8",
-              "note": ""
-            },
-            {
-              "name": "seated calf raises",
-              "loading": "3x10@70kg",
-              "rpe": "RPE8",
-              "note": ""
+              "note": "slow tempo, rehab loading"
             }
           ],
           "skipped": false
@@ -1081,7 +1003,7 @@
               "note": "preamble"
             },
             {
-              "name": "tibialis raises",
+              "name": "tibialis band curls",
               "loading": "3x25@0kg",
               "rpe": "RPE5",
               "note": "preamble"
@@ -1100,19 +1022,19 @@
             },
             {
               "name": "rear delt machine fly",
-              "loading": "3x10@93kg",
+              "loading": "3x10@100kg",
               "rpe": "RPE8",
               "note": ""
             },
             {
-              "name": "good mornings",
-              "loading": "3x8@95kg",
+              "name": "nordic hamstring falls",
+              "loading": "3x8@0kg",
               "rpe": "RPE8",
               "note": ""
             },
             {
-              "name": "barbell side bends",
-              "loading": "3x10@60kg",
+              "name": "back extensions",
+              "loading": "3x10@63kg",
               "rpe": "RPE8",
               "note": ""
             }
@@ -1131,13 +1053,13 @@
               "note": "preamble"
             },
             {
-              "name": "tibialis raises",
+              "name": "tibialis band curls",
               "loading": "3x25@0kg",
               "rpe": "RPE5",
               "note": "preamble"
             },
             {
-              "name": "dumbbell rows",
+              "name": "seated machine rows",
               "loading": "4x10@50kg",
               "rpe": "RPE8",
               "note": ""
@@ -1151,18 +1073,6 @@
             {
               "name": "bicep curls",
               "loading": "3x8@20kg",
-              "rpe": "RPE8",
-              "note": ""
-            },
-            {
-              "name": "back extensions",
-              "loading": "3x10@63kg",
-              "rpe": "RPE8",
-              "note": ""
-            },
-            {
-              "name": "nordic hamstring falls",
-              "loading": "3x8@0kg",
               "rpe": "RPE8",
               "note": ""
             },
@@ -1199,7 +1109,7 @@
               "note": "preamble"
             },
             {
-              "name": "tibialis raises",
+              "name": "tibialis band curls",
               "loading": "3x25@0kg",
               "rpe": "RPE5",
               "note": "preamble"
@@ -1212,19 +1122,25 @@
             },
             {
               "name": "dips",
-              "loading": "4x8@30kg",
+              "loading": "4x8@40kg",
               "rpe": "RPE8",
               "note": ""
             },
             {
               "name": "chest fly",
-              "loading": "3x10@120kg",
+              "loading": "3x10@123kg",
               "rpe": "RPE8",
               "note": ""
             },
             {
               "name": "cable triceps extensions",
               "loading": "3x10@40kg",
+              "rpe": "RPE8",
+              "note": ""
+            },
+            {
+              "name": "good mornings",
+              "loading": "3x8@103kg",
               "rpe": "RPE8",
               "note": ""
             },
@@ -1249,13 +1165,13 @@
               "note": "preamble"
             },
             {
-              "name": "tibialis raises",
+              "name": "tibialis band curls",
               "loading": "3x25@0kg",
               "rpe": "RPE5",
               "note": "preamble"
             },
             {
-              "name": "dumbbell rows",
+              "name": "seated machine rows",
               "loading": "4x10@52kg",
               "rpe": "RPE8",
               "note": ""
@@ -1285,22 +1201,10 @@
               "note": ""
             },
             {
-              "name": "goblet squats",
-              "loading": "3x10@25kg",
+              "name": "squats",
+              "loading": "3x10@65kg",
               "rpe": "RPE7",
-              "note": "slow tempo"
-            },
-            {
-              "name": "nordic hamstring falls",
-              "loading": "3x8@0kg",
-              "rpe": "RPE8",
-              "note": ""
-            },
-            {
-              "name": "seated calf raises",
-              "loading": "3x10@70kg",
-              "rpe": "RPE8",
-              "note": ""
+              "note": "slow tempo, rehab loading"
             }
           ],
           "skipped": false
@@ -1317,7 +1221,7 @@
               "note": "preamble"
             },
             {
-              "name": "tibialis raises",
+              "name": "tibialis band curls",
               "loading": "3x25@0kg",
               "rpe": "RPE5",
               "note": "preamble"
@@ -1341,14 +1245,14 @@
               "note": ""
             },
             {
-              "name": "good mornings",
-              "loading": "3x8@100kg",
+              "name": "nordic hamstring falls",
+              "loading": "3x8@0kg",
               "rpe": "RPE8",
               "note": ""
             },
             {
-              "name": "barbell side bends",
-              "loading": "3x10@63kg",
+              "name": "back extensions",
+              "loading": "3x10@66kg",
               "rpe": "RPE8",
               "note": ""
             }
@@ -1367,13 +1271,13 @@
               "note": "preamble"
             },
             {
-              "name": "tibialis raises",
+              "name": "tibialis band curls",
               "loading": "3x25@0kg",
               "rpe": "RPE5",
               "note": "preamble"
             },
             {
-              "name": "dumbbell rows",
+              "name": "seated machine rows",
               "loading": "4x10@52kg",
               "rpe": "RPE8",
               "note": ""
@@ -1387,18 +1291,6 @@
             {
               "name": "bicep curls",
               "loading": "3x8@20kg",
-              "rpe": "RPE8",
-              "note": ""
-            },
-            {
-              "name": "back extensions",
-              "loading": "3x10@66kg",
-              "rpe": "RPE8",
-              "note": ""
-            },
-            {
-              "name": "nordic hamstring falls",
-              "loading": "3x8@0kg",
               "rpe": "RPE8",
               "note": ""
             },
@@ -1435,7 +1327,7 @@
               "note": "preamble"
             },
             {
-              "name": "tibialis raises",
+              "name": "tibialis band curls",
               "loading": "3x25@0kg",
               "rpe": "RPE5",
               "note": "preamble"
@@ -1448,19 +1340,25 @@
             },
             {
               "name": "dips",
-              "loading": "4x6@32.5kg",
+              "loading": "4x6@42.5kg",
               "rpe": "RPE8",
               "note": ""
             },
             {
               "name": "chest fly",
-              "loading": "3x10@120kg",
+              "loading": "3x10@127kg",
               "rpe": "RPE8",
               "note": ""
             },
             {
               "name": "cable triceps extensions",
               "loading": "3x10@40.8kg",
+              "rpe": "RPE8",
+              "note": ""
+            },
+            {
+              "name": "good mornings",
+              "loading": "3x8@107kg",
               "rpe": "RPE8",
               "note": ""
             },
@@ -1485,13 +1383,13 @@
               "note": "preamble"
             },
             {
-              "name": "tibialis raises",
+              "name": "tibialis band curls",
               "loading": "3x25@0kg",
               "rpe": "RPE5",
               "note": "preamble"
             },
             {
-              "name": "dumbbell rows",
+              "name": "seated machine rows",
               "loading": "4x8@52kg",
               "rpe": "RPE8",
               "note": ""
@@ -1504,7 +1402,7 @@
             },
             {
               "name": "rear delt machine fly",
-              "loading": "3x10@100kg",
+              "loading": "3x10@103kg",
               "rpe": "RPE8",
               "note": ""
             },
@@ -1521,22 +1419,10 @@
               "note": ""
             },
             {
-              "name": "goblet squats",
-              "loading": "3x8@30kg",
+              "name": "squats",
+              "loading": "3x8@70kg",
               "rpe": "RPE7",
-              "note": "slow tempo"
-            },
-            {
-              "name": "nordic hamstring falls",
-              "loading": "3x8@0kg",
-              "rpe": "RPE8",
-              "note": ""
-            },
-            {
-              "name": "seated calf raises",
-              "loading": "3x10@75kg",
-              "rpe": "RPE8",
-              "note": ""
+              "note": "slow tempo, rehab loading"
             }
           ],
           "skipped": false
@@ -1553,7 +1439,7 @@
               "note": "preamble"
             },
             {
-              "name": "tibialis raises",
+              "name": "tibialis band curls",
               "loading": "3x25@0kg",
               "rpe": "RPE5",
               "note": "preamble"
@@ -1572,19 +1458,19 @@
             },
             {
               "name": "rear delt machine fly",
-              "loading": "3x10@100kg",
+              "loading": "3x10@103kg",
               "rpe": "RPE8",
               "note": ""
             },
             {
-              "name": "good mornings",
-              "loading": "3x8@100kg",
+              "name": "nordic hamstring falls",
+              "loading": "3x8@0kg",
               "rpe": "RPE8",
               "note": ""
             },
             {
-              "name": "barbell side bends",
-              "loading": "3x10@65kg",
+              "name": "back extensions",
+              "loading": "3x10@70kg",
               "rpe": "RPE8",
               "note": ""
             }
@@ -1603,13 +1489,13 @@
               "note": "preamble"
             },
             {
-              "name": "tibialis raises",
+              "name": "tibialis band curls",
               "loading": "3x25@0kg",
               "rpe": "RPE5",
               "note": "preamble"
             },
             {
-              "name": "dumbbell rows",
+              "name": "seated machine rows",
               "loading": "4x8@52kg",
               "rpe": "RPE8",
               "note": ""
@@ -1624,18 +1510,6 @@
               "name": "bicep curls",
               "loading": "3x8@20kg",
               "rpe": "RPE8.5",
-              "note": ""
-            },
-            {
-              "name": "back extensions",
-              "loading": "3x10@70kg",
-              "rpe": "RPE8",
-              "note": ""
-            },
-            {
-              "name": "nordic hamstring falls",
-              "loading": "3x8@0kg",
-              "rpe": "RPE8",
               "note": ""
             },
             {
@@ -1671,7 +1545,7 @@
               "note": "preamble"
             },
             {
-              "name": "tibialis raises",
+              "name": "tibialis band curls",
               "loading": "3x25@0kg",
               "rpe": "RPE5",
               "note": "preamble"
@@ -1684,19 +1558,25 @@
             },
             {
               "name": "dips",
-              "loading": "4x6@35kg",
+              "loading": "4x6@45kg",
               "rpe": "RPE8.5",
               "note": ""
             },
             {
               "name": "chest fly",
-              "loading": "3x10@120kg",
+              "loading": "3x10@130kg",
               "rpe": "RPE8.5",
               "note": ""
             },
             {
               "name": "cable triceps extensions",
               "loading": "3x10@40.8kg",
+              "rpe": "RPE8.5",
+              "note": ""
+            },
+            {
+              "name": "good mornings",
+              "loading": "3x8@110kg",
               "rpe": "RPE8.5",
               "note": ""
             },
@@ -1721,13 +1601,13 @@
               "note": "preamble"
             },
             {
-              "name": "tibialis raises",
+              "name": "tibialis band curls",
               "loading": "3x25@0kg",
               "rpe": "RPE5",
               "note": "preamble"
             },
             {
-              "name": "dumbbell rows",
+              "name": "seated machine rows",
               "loading": "4x8@54kg",
               "rpe": "RPE8.5",
               "note": ""
@@ -1740,7 +1620,7 @@
             },
             {
               "name": "rear delt machine fly",
-              "loading": "3x10@100kg",
+              "loading": "3x10@105kg",
               "rpe": "RPE8.5",
               "note": ""
             },
@@ -1757,22 +1637,10 @@
               "note": ""
             },
             {
-              "name": "goblet squats",
-              "loading": "3x8@35kg",
-              "rpe": "RPE8",
-              "note": "slow tempo"
-            },
-            {
-              "name": "nordic hamstring falls",
-              "loading": "3x8@0kg",
-              "rpe": "RPE8",
-              "note": ""
-            },
-            {
-              "name": "seated calf raises",
-              "loading": "3x10@80kg",
-              "rpe": "RPE8",
-              "note": ""
+              "name": "squats",
+              "loading": "3x8@75kg",
+              "rpe": "RPE7",
+              "note": "slow tempo, rehab loading"
             }
           ],
           "skipped": false
@@ -1789,7 +1657,7 @@
               "note": "preamble"
             },
             {
-              "name": "tibialis raises",
+              "name": "tibialis band curls",
               "loading": "3x25@0kg",
               "rpe": "RPE5",
               "note": "preamble"
@@ -1808,19 +1676,19 @@
             },
             {
               "name": "rear delt machine fly",
-              "loading": "3x10@100kg",
+              "loading": "3x10@105kg",
               "rpe": "RPE8.5",
               "note": ""
             },
             {
-              "name": "good mornings",
-              "loading": "3x8@100kg",
-              "rpe": "RPE8.5",
+              "name": "nordic hamstring falls",
+              "loading": "3x8@0kg",
+              "rpe": "RPE8",
               "note": ""
             },
             {
-              "name": "barbell side bends",
-              "loading": "3x10@67.5kg",
+              "name": "back extensions",
+              "loading": "3x10@73kg",
               "rpe": "RPE8",
               "note": ""
             }
@@ -1839,13 +1707,13 @@
               "note": "preamble"
             },
             {
-              "name": "tibialis raises",
+              "name": "tibialis band curls",
               "loading": "3x25@0kg",
               "rpe": "RPE5",
               "note": "preamble"
             },
             {
-              "name": "dumbbell rows",
+              "name": "seated machine rows",
               "loading": "4x8@54kg",
               "rpe": "RPE8.5",
               "note": ""
@@ -1860,18 +1728,6 @@
               "name": "bicep curls",
               "loading": "3x8@20kg",
               "rpe": "RPE8.5",
-              "note": ""
-            },
-            {
-              "name": "back extensions",
-              "loading": "3x10@73kg",
-              "rpe": "RPE8",
-              "note": ""
-            },
-            {
-              "name": "nordic hamstring falls",
-              "loading": "3x8@0kg",
-              "rpe": "RPE8",
               "note": ""
             },
             {
@@ -1907,7 +1763,7 @@
               "note": "preamble"
             },
             {
-              "name": "tibialis raises",
+              "name": "tibialis band curls",
               "loading": "3x25@0kg",
               "rpe": "RPE5",
               "note": "preamble"
@@ -1920,19 +1776,25 @@
             },
             {
               "name": "dips",
-              "loading": "4x5@37.5kg",
+              "loading": "4x5@47.5kg",
               "rpe": "RPE8.5",
               "note": ""
             },
             {
               "name": "chest fly",
-              "loading": "3x8@120kg",
+              "loading": "4x8@130kg",
               "rpe": "RPE8.5",
               "note": ""
             },
             {
               "name": "cable triceps extensions",
               "loading": "3x8@40.8kg",
+              "rpe": "RPE8.5",
+              "note": ""
+            },
+            {
+              "name": "good mornings",
+              "loading": "3x6@113kg",
               "rpe": "RPE8.5",
               "note": ""
             },
@@ -1957,13 +1819,13 @@
               "note": "preamble"
             },
             {
-              "name": "tibialis raises",
+              "name": "tibialis band curls",
               "loading": "3x25@0kg",
               "rpe": "RPE5",
               "note": "preamble"
             },
             {
-              "name": "dumbbell rows",
+              "name": "seated machine rows",
               "loading": "4x8@54kg",
               "rpe": "RPE8.5",
               "note": ""
@@ -1976,7 +1838,7 @@
             },
             {
               "name": "rear delt machine fly",
-              "loading": "3x8@100kg",
+              "loading": "3x8@107kg",
               "rpe": "RPE8.5",
               "note": ""
             },
@@ -1994,21 +1856,9 @@
             },
             {
               "name": "squats",
-              "loading": "3x8@60kg",
-              "rpe": "RPE7",
-              "note": "slow tempo, tendon introduction"
-            },
-            {
-              "name": "nordic hamstring falls",
-              "loading": "3x8@0kg",
-              "rpe": "RPE8",
-              "note": ""
-            },
-            {
-              "name": "seated calf raises",
               "loading": "3x8@80kg",
-              "rpe": "RPE8",
-              "note": ""
+              "rpe": "RPE7",
+              "note": "slow tempo, rehab loading"
             }
           ],
           "skipped": false
@@ -2025,7 +1875,7 @@
               "note": "preamble"
             },
             {
-              "name": "tibialis raises",
+              "name": "tibialis band curls",
               "loading": "3x25@0kg",
               "rpe": "RPE5",
               "note": "preamble"
@@ -2044,20 +1894,20 @@
             },
             {
               "name": "rear delt machine fly",
-              "loading": "3x8@100kg",
+              "loading": "3x8@107kg",
               "rpe": "RPE8.5",
               "note": ""
             },
             {
-              "name": "good mornings",
-              "loading": "3x6@100kg",
-              "rpe": "RPE8.5",
-              "note": ""
-            },
-            {
-              "name": "barbell side bends",
-              "loading": "3x8@67.5kg",
+              "name": "nordic hamstring falls",
+              "loading": "3x8@0kg",
               "rpe": "RPE8",
+              "note": ""
+            },
+            {
+              "name": "back extensions",
+              "loading": "3x8@73kg",
+              "rpe": "RPE8.5",
               "note": ""
             }
           ],
@@ -2075,13 +1925,13 @@
               "note": "preamble"
             },
             {
-              "name": "tibialis raises",
+              "name": "tibialis band curls",
               "loading": "3x25@0kg",
               "rpe": "RPE5",
               "note": "preamble"
             },
             {
-              "name": "dumbbell rows",
+              "name": "seated machine rows",
               "loading": "4x8@54kg",
               "rpe": "RPE8.5",
               "note": ""
@@ -2096,18 +1946,6 @@
               "name": "bicep curls",
               "loading": "3x6@20kg",
               "rpe": "RPE8.5",
-              "note": ""
-            },
-            {
-              "name": "back extensions",
-              "loading": "3x8@73kg",
-              "rpe": "RPE8.5",
-              "note": ""
-            },
-            {
-              "name": "nordic hamstring falls",
-              "loading": "3x8@0kg",
-              "rpe": "RPE8",
               "note": ""
             },
             {
@@ -2143,7 +1981,7 @@
               "note": "preamble"
             },
             {
-              "name": "tibialis raises",
+              "name": "tibialis band curls",
               "loading": "3x25@0kg",
               "rpe": "RPE5",
               "note": "preamble"
@@ -2156,19 +1994,25 @@
             },
             {
               "name": "dips",
-              "loading": "4x5@40kg",
+              "loading": "4x5@50kg",
               "rpe": "RPE8.5",
               "note": ""
             },
             {
               "name": "chest fly",
-              "loading": "3x8@120kg",
+              "loading": "4x8@130kg",
               "rpe": "RPE8.5",
               "note": ""
             },
             {
               "name": "cable triceps extensions",
               "loading": "3x8@40.8kg",
+              "rpe": "RPE8.5",
+              "note": ""
+            },
+            {
+              "name": "good mornings",
+              "loading": "3x6@115kg",
               "rpe": "RPE8.5",
               "note": ""
             },
@@ -2193,13 +2037,13 @@
               "note": "preamble"
             },
             {
-              "name": "tibialis raises",
+              "name": "tibialis band curls",
               "loading": "3x25@0kg",
               "rpe": "RPE5",
               "note": "preamble"
             },
             {
-              "name": "dumbbell rows",
+              "name": "seated machine rows",
               "loading": "4x8@56kg",
               "rpe": "RPE8.5",
               "note": ""
@@ -2212,7 +2056,7 @@
             },
             {
               "name": "rear delt machine fly",
-              "loading": "3x8@100kg",
+              "loading": "3x8@107kg",
               "rpe": "RPE8.5",
               "note": ""
             },
@@ -2230,21 +2074,9 @@
             },
             {
               "name": "squats",
-              "loading": "3x8@65kg",
+              "loading": "3x8@85kg",
               "rpe": "RPE7",
-              "note": "slow tempo"
-            },
-            {
-              "name": "nordic hamstring falls",
-              "loading": "3x8@0kg",
-              "rpe": "RPE8",
-              "note": ""
-            },
-            {
-              "name": "seated calf raises",
-              "loading": "3x8@80kg",
-              "rpe": "RPE8",
-              "note": ""
+              "note": "slow tempo, rehab loading"
             }
           ],
           "skipped": false
@@ -2261,7 +2093,7 @@
               "note": "preamble"
             },
             {
-              "name": "tibialis raises",
+              "name": "tibialis band curls",
               "loading": "3x25@0kg",
               "rpe": "RPE5",
               "note": "preamble"
@@ -2280,20 +2112,20 @@
             },
             {
               "name": "rear delt machine fly",
-              "loading": "3x8@100kg",
+              "loading": "3x8@107kg",
               "rpe": "RPE8.5",
               "note": ""
             },
             {
-              "name": "good mornings",
-              "loading": "3x6@100kg",
-              "rpe": "RPE8.5",
-              "note": ""
-            },
-            {
-              "name": "barbell side bends",
-              "loading": "3x8@70kg",
+              "name": "nordic hamstring falls",
+              "loading": "3x8@0kg",
               "rpe": "RPE8",
+              "note": ""
+            },
+            {
+              "name": "back extensions",
+              "loading": "3x8@76kg",
+              "rpe": "RPE8.5",
               "note": ""
             }
           ],
@@ -2311,13 +2143,13 @@
               "note": "preamble"
             },
             {
-              "name": "tibialis raises",
+              "name": "tibialis band curls",
               "loading": "3x25@0kg",
               "rpe": "RPE5",
               "note": "preamble"
             },
             {
-              "name": "dumbbell rows",
+              "name": "seated machine rows",
               "loading": "4x8@56kg",
               "rpe": "RPE8.5",
               "note": ""
@@ -2332,18 +2164,6 @@
               "name": "bicep curls",
               "loading": "3x6@20kg",
               "rpe": "RPE8.5",
-              "note": ""
-            },
-            {
-              "name": "back extensions",
-              "loading": "3x8@76kg",
-              "rpe": "RPE8.5",
-              "note": ""
-            },
-            {
-              "name": "nordic hamstring falls",
-              "loading": "3x8@0kg",
-              "rpe": "RPE8",
               "note": ""
             },
             {
@@ -2379,7 +2199,7 @@
               "note": "preamble"
             },
             {
-              "name": "tibialis raises",
+              "name": "tibialis band curls",
               "loading": "3x25@0kg",
               "rpe": "RPE5",
               "note": "preamble"
@@ -2392,19 +2212,25 @@
             },
             {
               "name": "dips",
-              "loading": "4x4@42.5kg",
+              "loading": "4x5@50kg",
               "rpe": "RPE9",
               "note": ""
             },
             {
               "name": "chest fly",
-              "loading": "3x8@120kg",
+              "loading": "4x8@130kg",
               "rpe": "RPE9",
               "note": ""
             },
             {
               "name": "cable triceps extensions",
               "loading": "3x8@40.8kg",
+              "rpe": "RPE9",
+              "note": ""
+            },
+            {
+              "name": "good mornings",
+              "loading": "3x6@115kg",
               "rpe": "RPE9",
               "note": ""
             },
@@ -2429,13 +2255,13 @@
               "note": "preamble"
             },
             {
-              "name": "tibialis raises",
+              "name": "tibialis band curls",
               "loading": "3x25@0kg",
               "rpe": "RPE5",
               "note": "preamble"
             },
             {
-              "name": "dumbbell rows",
+              "name": "seated machine rows",
               "loading": "4x6@56kg",
               "rpe": "RPE9",
               "note": ""
@@ -2448,7 +2274,7 @@
             },
             {
               "name": "rear delt machine fly",
-              "loading": "3x8@100kg",
+              "loading": "3x8@107kg",
               "rpe": "RPE9",
               "note": ""
             },
@@ -2466,21 +2292,9 @@
             },
             {
               "name": "squats",
-              "loading": "3x6@70kg",
+              "loading": "3x6@90kg",
               "rpe": "RPE7",
-              "note": "slow tempo"
-            },
-            {
-              "name": "nordic hamstring falls",
-              "loading": "3x8@0kg",
-              "rpe": "RPE8",
-              "note": ""
-            },
-            {
-              "name": "seated calf raises",
-              "loading": "3x8@85kg",
-              "rpe": "RPE8",
-              "note": ""
+              "note": "slow tempo, rehab loading"
             }
           ],
           "skipped": false
@@ -2497,7 +2311,7 @@
               "note": "preamble"
             },
             {
-              "name": "tibialis raises",
+              "name": "tibialis band curls",
               "loading": "3x25@0kg",
               "rpe": "RPE5",
               "note": "preamble"
@@ -2516,20 +2330,20 @@
             },
             {
               "name": "rear delt machine fly",
-              "loading": "3x8@100kg",
+              "loading": "3x8@107kg",
               "rpe": "RPE9",
               "note": ""
             },
             {
-              "name": "good mornings",
-              "loading": "3x6@100kg",
-              "rpe": "RPE9",
-              "note": ""
-            },
-            {
-              "name": "barbell side bends",
-              "loading": "3x8@72.5kg",
+              "name": "nordic hamstring falls",
+              "loading": "3x8@0kg",
               "rpe": "RPE8",
+              "note": ""
+            },
+            {
+              "name": "back extensions",
+              "loading": "3x8@80kg",
+              "rpe": "RPE9",
               "note": ""
             }
           ],
@@ -2547,13 +2361,13 @@
               "note": "preamble"
             },
             {
-              "name": "tibialis raises",
+              "name": "tibialis band curls",
               "loading": "3x25@0kg",
               "rpe": "RPE5",
               "note": "preamble"
             },
             {
-              "name": "dumbbell rows",
+              "name": "seated machine rows",
               "loading": "4x6@56kg",
               "rpe": "RPE9",
               "note": ""
@@ -2568,18 +2382,6 @@
               "name": "bicep curls",
               "loading": "3x6@22kg",
               "rpe": "RPE9",
-              "note": ""
-            },
-            {
-              "name": "back extensions",
-              "loading": "3x8@80kg",
-              "rpe": "RPE9",
-              "note": ""
-            },
-            {
-              "name": "nordic hamstring falls",
-              "loading": "3x8@0kg",
-              "rpe": "RPE8",
               "note": ""
             },
             {
@@ -2615,7 +2417,7 @@
               "note": "preamble"
             },
             {
-              "name": "tibialis raises",
+              "name": "tibialis band curls",
               "loading": "3x25@0kg",
               "rpe": "RPE5",
               "note": "preamble"
@@ -2628,19 +2430,25 @@
             },
             {
               "name": "dips",
-              "loading": "2x8@25kg",
+              "loading": "2x8@30kg",
               "rpe": "RPE6",
               "note": ""
             },
             {
               "name": "chest fly",
-              "loading": "2x10@100kg",
+              "loading": "2x10@107kg",
               "rpe": "RPE6",
               "note": ""
             },
             {
               "name": "cable triceps extensions",
               "loading": "2x10@34kg",
+              "rpe": "RPE6",
+              "note": ""
+            },
+            {
+              "name": "good mornings",
+              "loading": "2x8@90kg",
               "rpe": "RPE6",
               "note": ""
             },
@@ -2665,13 +2473,13 @@
               "note": "preamble"
             },
             {
-              "name": "tibialis raises",
+              "name": "tibialis band curls",
               "loading": "3x25@0kg",
               "rpe": "RPE5",
               "note": "preamble"
             },
             {
-              "name": "dumbbell rows",
+              "name": "seated machine rows",
               "loading": "2x10@46kg",
               "rpe": "RPE6",
               "note": ""
@@ -2705,18 +2513,6 @@
               "loading": "2x8@60kg",
               "rpe": "RPE6",
               "note": "slow tempo"
-            },
-            {
-              "name": "nordic hamstring falls",
-              "loading": "2x6@0kg",
-              "rpe": "RPE6",
-              "note": ""
-            },
-            {
-              "name": "seated calf raises",
-              "loading": "2x10@60kg",
-              "rpe": "RPE6",
-              "note": ""
             }
           ],
           "skipped": false
@@ -2733,7 +2529,7 @@
               "note": "preamble"
             },
             {
-              "name": "tibialis raises",
+              "name": "tibialis band curls",
               "loading": "3x25@0kg",
               "rpe": "RPE5",
               "note": "preamble"
@@ -2757,14 +2553,14 @@
               "note": ""
             },
             {
-              "name": "good mornings",
-              "loading": "2x8@80kg",
+              "name": "nordic hamstring falls",
+              "loading": "2x6@0kg",
               "rpe": "RPE6",
               "note": ""
             },
             {
-              "name": "barbell side bends",
-              "loading": "2x10@53kg",
+              "name": "back extensions",
+              "loading": "2x8@60kg",
               "rpe": "RPE6",
               "note": ""
             }
@@ -2783,13 +2579,13 @@
               "note": "preamble"
             },
             {
-              "name": "tibialis raises",
+              "name": "tibialis band curls",
               "loading": "3x25@0kg",
               "rpe": "RPE5",
               "note": "preamble"
             },
             {
-              "name": "dumbbell rows",
+              "name": "seated machine rows",
               "loading": "2x10@46kg",
               "rpe": "RPE6",
               "note": ""
@@ -2803,18 +2599,6 @@
             {
               "name": "bicep curls",
               "loading": "2x8@16kg",
-              "rpe": "RPE6",
-              "note": ""
-            },
-            {
-              "name": "back extensions",
-              "loading": "2x8@60kg",
-              "rpe": "RPE6",
-              "note": ""
-            },
-            {
-              "name": "nordic hamstring falls",
-              "loading": "2x6@0kg",
               "rpe": "RPE6",
               "note": ""
             },
