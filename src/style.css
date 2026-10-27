@@ -264,6 +264,21 @@
   .prog-ex.missing .prog-ex-load { color: var(--red); }
   .prog-actions { display: flex; gap: 8px; padding: 0 14px 12px; }
   .prog-actions .btn { font-size: 12px; padding: 5px 12px; }
+  .prog-edit-body { padding: 10px 14px; }
+  .prog-edit-session { border-top: 1px solid var(--border); padding: 10px 0; margin-top: 10px; }
+  .prog-edit-session.locked { display: flex; justify-content: space-between; font-size: 13px; color: var(--muted); }
+  .prog-edit-head { display: flex; align-items: center; gap: 6px; margin-bottom: 8px; }
+  .prog-edit-head .prog-type { margin: 0; white-space: nowrap; }
+  .prog-edit-head .pe-label { flex: 1; min-width: 0; }
+  .prog-edit-head .pe-type { width: auto; }
+  .prog-edit-ex { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 8px; }
+  .pe-name-wrap { position: relative; flex: 2 1 140px; min-width: 0; }
+  .pe-name-wrap input { width: 100%; }
+  .pe-name-wrap .ex-suggestions { right: 0; }
+  .prog-edit-ex .pe-loading { flex: 2 1 110px; min-width: 0; }
+  .prog-edit-ex .pe-rpe { flex: 0 0 64px; }
+  .prog-edit-ex .pe-note { flex: 1 1 100%; }
+  .prog-edit-session .btn-ghost { font-size: 12px; padding: 5px 12px; }
   .prog-preview { margin-top: 12px; }
   .prog-warn { color: var(--red); font-size: 13px; margin-top: 12px; }
 

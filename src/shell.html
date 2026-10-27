@@ -243,8 +243,18 @@
   <div id="program-outline" style="display:none">
     <div id="program-weeks"></div>
     <div style="display:flex;gap:10px;margin-top:16px;flex-wrap:wrap">
-      <button class="btn btn-secondary" onclick="startProgramAdjust()">Adjust program</button>
+      <button class="btn btn-secondary" onclick="setProgramEditing(true)">Adjust program</button>
       <button class="btn btn-ghost btn-danger" onclick="deleteProgram()">Delete program</button>
+    </div>
+  </div>
+
+  <div id="program-edit" style="display:none">
+    <button class="btn btn-secondary btn-full" onclick="startProgramAdjust()">✦ Adjust with coach</button>
+    <p class="prog-hint" style="margin-top:12px">Or edit planned sessions directly. Done and skipped sessions are locked.</p>
+    <div id="program-edit-weeks"></div>
+    <div style="display:flex;gap:10px;margin-top:16px;flex-wrap:wrap">
+      <button class="btn btn-primary" onclick="saveProgramEdits()">Save changes</button>
+      <button class="btn btn-ghost" onclick="setProgramEditing(false)">Cancel</button>
     </div>
   </div>
 </div>

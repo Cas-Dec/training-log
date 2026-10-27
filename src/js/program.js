@@ -24,6 +24,8 @@ const EXERCISE_LIBRARY = {
 let programChat = null;
 // Without a program, the welcome card is shown until the user picks "set up".
 let programSetupChosen = false;
+// "Adjust program" opens the manual editor over the outline.
+let programEditing = false;
 
 const PROGRAM_FORMAT = `Loading strings use the training log's exact format:
 - "<sets>x<reps>@<weight>kg", several set groups comma-separated: "3x8@60kg, 1x6@65kg"
@@ -161,8 +163,8 @@ function renderProgram() {
     try { programChat = JSON.parse(localStorage.getItem(programDraftKey()) || 'null'); } catch(e) {}
     if (programChat) restoreProgramThread();
   }
-  const view = programChat ? 'chat' : program ? 'outline' : programSetupChosen ? 'setup' : 'welcome';
-  ['welcome', 'setup', 'chat', 'outline'].forEach(v =>
+  const view = programChat ? 'chat' : program ? (programEditing ? 'edit' : 'outline') : programSetupChosen ? 'setup' : 'welcome';
+  ['welcome', 'setup', 'chat', 'outline', 'edit'].forEach(v =>
     document.getElementById('program-' + v).style.display = v === view ? '' : 'none');
 
   const subtitle = document.getElementById('program-subtitle');
@@ -178,6 +180,8 @@ function renderProgram() {
     if (!document.getElementById('program-library-body').children.length) renderProgramSetup();
   } else if (view === 'chat') {
     subtitle.textContent = programChat.mode === 'adjust' ? 'Adjusting your program with the coach' : 'Planning with the coach';
+  } else if (view === 'edit') {
+    subtitle.textContent = 'Editing your program';
   } else {
     const slots = programSlots();
     const done = slots.filter(s => slotLog(s.slot)).length;
@@ -481,6 +485,7 @@ function openProgramChat(chat, placeholder = '') {
 }
 
 function startProgramAdjust() {
+  programEditing = false;
   openProgramChat({ mode: 'adjust', messages: [] },
     "Describe what to change, e.g. “my knee flared up — lower squat volume for the next three weeks”. The coach sees your adherence and every deviation from the plan.");
 }
@@ -638,7 +643,7 @@ function applyProgramUpdate(updates, weekUpdates) {
   }
   for (const w of weekUpdates) {
     const wk = program.weeks.find(x => x.week === w.week);
-    if (wk && w.focus) wk.focus = w.focus;
+    if (wk && typeof w.focus === 'string') wk.focus = w.focus;
   }
   saveProgramLocally();
   const selected = document.getElementById('program-slot').value;
@@ -709,6 +714,91 @@ function toggleSkip(slot) {
   if (s.skipped && selected === slot) selectProgramSlot(nextSlot()?.slot || '');
   else renderProgramBanner(selected);
   renderProgram();
+}
+
+// ── Manual edit ──
+
+function setProgramEditing(on) {
+  programEditing = on;
+  if (on) {
+    const openWeek = nextSlot() ? slotWeek(nextSlot().slot) : null;
+    const root = document.getElementById('program-edit-weeks');
+    root.innerHTML = program.weeks.map(w => editWeekHtml(w, w.week === openWeek)).join('');
+    root.querySelectorAll('.pe-name').forEach(wireEditExName);
+  }
+  renderProgram();
+}
+
+function editWeekHtml(w, open) {
+  return `
+    <details class="prog-week" data-week="${w.week}"${open ? ' open' : ''}>
+      <summary><span>Week ${w.week}${w.focus ? ` · ${esc(w.focus)}` : ''}</span></summary>
+      <div class="prog-edit-body">
+        <input type="text" class="pe-focus" placeholder="Week focus" value="${esc(w.focus)}">
+        ${w.sessions.map(editSessionHtml).join('')}
+      </div>
+    </details>`;
+}
+
+// Done and skipped slots are shown but not editable, matching applyProgramUpdate().
+function editSessionHtml(s) {
+  const log = slotLog(s.slot);
+  if (log || s.skipped)
+    return `<div class="prog-edit-session locked"><span>${esc(slotLabel(s))}</span><span class="prog-status">${log ? '✓ ' + log.date : '– skipped'}</span></div>`;
+  return `
+    <div class="prog-edit-session" data-slot="${s.slot}">
+      <div class="prog-edit-head">
+        <span class="prog-type">${esc(slotLabel({ slot: s.slot }))}</span>
+        <input type="text" class="pe-label" placeholder="Label" value="${esc(s.label)}">
+        <select class="pe-type">${PROGRAM_TYPES.map(t => `<option${t === s.type ? ' selected' : ''}>${t}</option>`).join('')}</select>
+      </div>
+      <div class="pe-exercises">${s.exercises.map(editExHtml).join('')}</div>
+      <button type="button" class="btn btn-ghost" onclick="addEditEx(this)">+ Exercise</button>
+    </div>`;
+}
+
+function editExHtml(e = {}) {
+  return `
+    <div class="prog-edit-ex">
+      <div class="pe-name-wrap"><input type="text" class="pe-name" placeholder="Exercise" value="${esc(e.name)}" autocomplete="off"></div>
+      <input type="text" class="pe-loading" placeholder="3x8@60kg" value="${esc(e.loading)}">
+      <input type="text" class="pe-rpe" placeholder="RPE" value="${esc(e.rpe)}">
+      <button type="button" class="rm-btn" onclick="this.parentElement.remove()">×</button>
+      <input type="text" class="pe-note" placeholder="Note (optional)" value="${esc(e.note)}">
+    </div>`;
+}
+
+function addEditEx(btn) {
+  btn.previousElementSibling.insertAdjacentHTML('beforeend', editExHtml());
+  const input = btn.previousElementSibling.lastElementChild.querySelector('.pe-name');
+  wireEditExName(input);
+  input.focus();
+}
+
+// Picking a name fills an empty loading/RPE from the last time it was logged.
+function wireEditExName(input) {
+  wireExerciseAutocomplete(input, () => {
+    const last = findLastExerciseData(input.value);
+    const row = input.closest('.prog-edit-ex');
+    if (!last) return;
+    if (!row.querySelector('.pe-loading').value) row.querySelector('.pe-loading').value = last.loading || '';
+    if (!row.querySelector('.pe-rpe').value) row.querySelector('.pe-rpe').value = last.rpe || '';
+  });
+}
+
+function saveProgramEdits() {
+  const root = document.getElementById('program-edit-weeks');
+  const val = (el, sel) => el.querySelector(sel).value.trim();
+  const updates = [...root.querySelectorAll('.prog-edit-session[data-slot]')].map(el => normalizeProgramSession({
+    label: val(el, '.pe-label'),
+    type: val(el, '.pe-type'),
+    exercises: [...el.querySelectorAll('.prog-edit-ex')].map(r => ({
+      name: val(r, '.pe-name'), loading: val(r, '.pe-loading'), rpe: val(r, '.pe-rpe'), note: val(r, '.pe-note'),
+    })),
+  }, el.dataset.slot));
+  const weekUpdates = [...root.querySelectorAll('.prog-week')].map(w => ({ week: +w.dataset.week, focus: val(w, '.pe-focus') }));
+  showToast(applyProgramUpdate(updates, weekUpdates));
+  setProgramEditing(false);
 }
 
 function logProgramSlot(slot) {

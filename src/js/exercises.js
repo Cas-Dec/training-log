@@ -124,8 +124,9 @@ function applyExerciseAutofill(input) {
   card.querySelector('.ex-rpe').value = data.rpe ? data.rpe.replace('RPE', '') : '';
 }
 
-function wireExerciseAutocomplete(input) {
-  const row = input.closest('.ex-name-row');
+// onPick runs when a suggestion is chosen; the suggestion box is appended to the input's parent.
+function wireExerciseAutocomplete(input, onPick = applyExerciseAutofill) {
+  const row = input.parentElement;
   let activeIdx = -1;
 
   function removeSuggestions() {
@@ -143,7 +144,7 @@ function wireExerciseAutocomplete(input) {
       const item = document.createElement('div');
       item.className = 'ex-suggestion';
       item.textContent = m;
-      item.addEventListener('mousedown', e => { e.preventDefault(); input.value = m; removeSuggestions(); applyExerciseAutofill(input); });
+      item.addEventListener('mousedown', e => { e.preventDefault(); input.value = m; removeSuggestions(); onPick(input); });
       box.appendChild(item);
     });
     row.appendChild(box);
@@ -170,7 +171,7 @@ function wireExerciseAutocomplete(input) {
       e.preventDefault();
       input.value = items[activeIdx].textContent;
       removeSuggestions();
-      applyExerciseAutofill(input);
+      onPick(input);
       return;
     } else if (e.key === 'Escape') {
       removeSuggestions(); return;
@@ -179,7 +180,7 @@ function wireExerciseAutocomplete(input) {
   });
 
   input.addEventListener('blur', () => setTimeout(removeSuggestions, 150));
-  input.addEventListener('change', () => applyExerciseAutofill(input));
+  input.addEventListener('change', () => onPick(input));
 }
 
 function addExercise(d={}) {
