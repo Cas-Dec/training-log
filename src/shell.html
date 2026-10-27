@@ -301,14 +301,14 @@
       <canvas id="kps-kps-chart"></canvas>
     </div>
     <div class="field" style="margin-bottom:10px">
-      <label>Patellar load sensitivity (sum of positive peak-KPS rises per tonne of load over trailing 30 days, full history — lower = more tolerant)</label>
+      <label>Patellar load sensitivity (sum of positive morning-KPS rises (previous logged morning, gaps ignored) per tonne of load over trailing 30 days, full history — lower = more tolerant)</label>
     </div>
     <div class="chart-wrap" id="kps-tolerance-chart-wrap" style="height:360px">
       <div class="chart-delta" id="tolerance-delta"></div>
       <canvas id="kps-tolerance-chart"></canvas>
     </div>
     <div class="field" style="margin:16px 0 10px">
-      <label>Elevated load sensitivity (sum of peak-KPS rises × starting KPS per tonne of load over trailing 30 days — penalises flares from an already-elevated KPS)</label>
+      <label>Elevated load sensitivity (sum of peak-KPS rises (vs nearest peak within 3 days) × starting KPS per tonne of load over trailing 30 days — penalises flares from an already-elevated KPS)</label>
     </div>
     <div class="chart-wrap" id="kps-elevated-chart-wrap" style="height:360px">
       <div class="chart-delta" id="elevated-delta"></div>

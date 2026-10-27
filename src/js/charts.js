@@ -346,15 +346,14 @@ function renderKpsSensitivityChart() {
     }
   });
 
-  // Third: for each calendar day, take its peak KPS (the higher of morning/post, whichever were
-  // logged), then the day-over-day rise = next day's peak − today's peak, walking every
-  // consecutive calendar day across full history regardless of whether either day had a
-  // session. For every day, over the trailing 30-day window ending on it, sum only the *positive*
-  // rises (a drop or hold contributes nothing — recoveries can't cancel out flare-ups) and divide
-  // by that window's total patellar load (in tonnes). Lower = more tolerant. Only days with a full 30-day
-  // window behind them are plotted. This fixes two issues with a plain daily-delta approach: gating
-  // on "did today have a session" silently drops the KPS change across rest days, and letting
-  // negative deltas net against positive ones hides real flare-ups behind unrelated relief.
+  // Third and fourth: KPS rises per tonne of patellar load over a trailing 30-day window. Only
+  // *positive* rises count (a drop or hold contributes nothing — recoveries can't cancel out
+  // flare-ups). Lower = more tolerant. Only days with a full 30-day window behind them are plotted.
+  // - Load sensitivity: walks the path of morning KPS values, ignoring gaps and post KPS — each
+  //   logged morning is compared with the previous logged morning, however long ago.
+  // - Elevated: per calendar day, peak KPS (higher of morning/post), rise = today's peak − the
+  //   nearest logged peak within the previous 3 days (a longer gap breaks the chain), weighted by
+  //   that starting peak.
   const WINDOW_DAYS = 30;
   const allDates = denseDayRange(earliestMs(Object.keys(dayMap)), Date.now());
   const peakKps = d => {
@@ -367,12 +366,19 @@ function renderKpsSensitivityChart() {
   // Rise attributed to the day it lands on; prefix sums make each window O(1).
   // The elevated variant weights each rise by the peak KPS it started from, so a 3 → 3.5 rise
   // counts three times as much as 1 → 1.5 — penalising flares that start from an already-irritated tendon.
+  const LOOKBACK_DAYS = 3;
   const riseCum = [0], elevCum = [0], loadCum = [0];
+  let lastMorning = null;
   allDates.forEach((d, i) => {
-    const before = i > 0 ? peakKps(allDates[i - 1]) : null, after = peakKps(d);
+    const morning = dayMap[d]?.morningKps;
+    riseCum.push(riseCum[i] + (morning != null && lastMorning != null ? Math.max(0, morning - lastMorning) : 0));
+    if (morning != null) lastMorning = morning;
+
+    let before = null;
+    for (let k = 1; k <= LOOKBACK_DAYS && k <= i && before == null; k++) before = peakKps(allDates[i - k]);
+    const after = peakKps(d);
     const rise = before != null && after != null ? Math.max(0, after - before) : 0;
-    riseCum.push(riseCum[i] + rise);
-    elevCum.push(elevCum[i] + Math.max(0, rise * (before ?? 0)));
+    elevCum.push(elevCum[i] + rise * (before ?? 0));
     loadCum.push(loadCum[i] + (dayMap[d]?.loading || 0));
   });
 
@@ -417,7 +423,7 @@ function renderKpsSensitivityChart() {
   };
 
   kpsToleranceChart = renderRollChart('kps-tolerance-chart', tolDeltaEl, rolling(riseCum),
-    '#4fd1c5', 'rgba(79,209,197,0.12)', `Load sensitivity (KPS rises per tonne, trailing ${WINDOW_DAYS} days)`);
+    '#4fd1c5', 'rgba(79,209,197,0.12)', `Load sensitivity (morning KPS rises per tonne, trailing ${WINDOW_DAYS} days)`);
   kpsElevatedChart = renderRollChart('kps-elevated-chart', elevDeltaEl, rolling(elevCum),
     '#ffb347', 'rgba(255,179,71,0.12)', `Elevated load sensitivity (start-KPS × rise per tonne, trailing ${WINDOW_DAYS} days)`);
 }
