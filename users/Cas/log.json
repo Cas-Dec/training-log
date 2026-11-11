@@ -1,5 +1,56 @@
 [
   {
+    "id": 1794403304224,
+    "user": "Cas",
+    "date": "2026-11-09",
+    "type": "Push",
+    "exercises": [
+      {
+        "name": "incline dumbbell press",
+        "loading": "3x10@34kg",
+        "rpe": "RPE7"
+      },
+      {
+        "name": "spanish squat",
+        "loading": "3x45s@0kg",
+        "rpe": "RPE7"
+      },
+      {
+        "name": "good mornings",
+        "loading": "3x10@80kg",
+        "rpe": "RPE7.5"
+      },
+      {
+        "name": "tibialis band curls",
+        "loading": "3x25@0kg",
+        "rpe": "RPE5"
+      },
+      {
+        "name": "chest fly",
+        "loading": "3x12@107kg",
+        "rpe": "RPE7"
+      },
+      {
+        "name": "standing cable triceps extensions",
+        "loading": "3x10@29kg",
+        "rpe": "RPE6.5"
+      },
+      {
+        "name": "standing calf raises",
+        "loading": "3x10@100kg",
+        "rpe": "RPE7.5"
+      }
+    ],
+    "energy": "",
+    "sleep": "",
+    "recovery": "normal",
+    "kps": {
+      "morning": null,
+      "post": null
+    },
+    "notes": ""
+  },
+  {
     "id": 1794403068424,
     "user": "Cas",
     "date": "2026-11-08",
