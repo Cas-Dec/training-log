@@ -1,5 +1,46 @@
 [
   {
+    "id": 1794403015419,
+    "user": "Cas",
+    "date": "2026-11-05",
+    "type": "Upper body",
+    "exercises": [
+      {
+        "name": "pull-ups",
+        "loading": "3x8",
+        "rpe": "RPE7"
+      },
+      {
+        "name": "pike push-ups",
+        "loading": "3x12",
+        "rpe": ""
+      },
+      {
+        "name": "bicep curls",
+        "loading": "3x10@18kg",
+        "rpe": "RPE8.5"
+      },
+      {
+        "name": "standing cable triceps extensions",
+        "loading": "3x10@30kg",
+        "rpe": "RPE8.5"
+      },
+      {
+        "name": "dips",
+        "loading": "3x6@40kg",
+        "rpe": "RPE9"
+      }
+    ],
+    "energy": "",
+    "sleep": "",
+    "recovery": "normal",
+    "kps": {
+      "morning": null,
+      "post": null
+    },
+    "notes": ""
+  },
+  {
     "id": 1794402785211,
     "user": "Cas",
     "date": "2026-11-04",
