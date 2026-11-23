@@ -139,6 +139,15 @@ function pendingIds() {
   try { return new Set(JSON.parse(localStorage.getItem('tl_pending') || '[]')); } catch(e) { return new Set(); }
 }
 
+// Sessions deleted locally but not yet removed from GitHub.
+function deletedIds() {
+  try { return new Set(JSON.parse(localStorage.getItem('tl_deleted') || '[]')); } catch(e) { return new Set(); }
+}
+
+function setDeletedIds(ids) {
+  localStorage.setItem('tl_deleted', JSON.stringify([...ids]));
+}
+
 function setPendingIds(ids) {
   localStorage.setItem('tl_pending', JSON.stringify([...ids]));
 }
@@ -153,8 +162,11 @@ function markPending(id) {
 // (of any user — another user's pending ones are kept until they log in here).
 function mergeWithRemote(remote) {
   const pending = pendingIds();
-  const remoteIds = new Set(remote.map(s => s.id));
-  const merged = [...sessions.filter(s => pending.has(s.id) && !remoteIds.has(s.id)), ...remote];
+  // Pending local copies win over remote ones with the same id (edited sessions).
+  const local = sessions.filter(s => pending.has(s.id));
+  const localIds = new Set(local.map(s => s.id));
+  const deleted = deletedIds();
+  const merged = [...local, ...remote.filter(s => !localIds.has(s.id) && !deleted.has(s.id))];
   merged.sort((a,b) => b.date.localeCompare(a.date));
   sessions = merged;
   localStorage.setItem('tl_sessions', JSON.stringify(sessions));
@@ -177,6 +189,9 @@ async function syncToGitHub() {
       const pending = pendingIds();
       mine.forEach(s => pending.delete(s.id));
       setPendingIds(pending);
+      const deleted = deletedIds();
+      remote.forEach(s => deleted.delete(s.id));
+      setDeletedIds(deleted);
     }
     return putRes.ok;
   } catch(e) { return false; }

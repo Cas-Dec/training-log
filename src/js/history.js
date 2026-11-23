@@ -111,7 +111,8 @@ function renderHistory() {
     <div class="session-card">
       <div class="card-top">
         <span class="card-date">${s.date}</span>
-        <span class="badge badge-${s.type.replace(/\s+/g,'')}">${s.type}</span>
+        <span><button class="edit-btn" onclick="editSession(${s.id})">Edit</button><button class="edit-btn" onclick="deleteSession(${s.id})">Delete</button>
+        <span class="badge badge-${s.type.replace(/\s+/g,'')}">${s.type}</span></span>
       </div>
       ${activityHtml}
       <div class="card-meta">

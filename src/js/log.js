@@ -1,4 +1,50 @@
 // ── LOG ────────────────────────────────────────────────────────────
+let editingId = null; // id of the history session being edited in the log form
+
+// Loads a logged session into the log form; saving then replaces it.
+function editSession(id) {
+  const s = sessions.find(x => x.id === id);
+  if (!s) return;
+  showPage('log');
+  renderProgramBanner(''); // its slot is already done; saveSession keeps s.program
+  const set = (el, v) => { document.getElementById(el).value = v ?? ''; };
+  set('date', s.date);
+  set('session-type', s.type);
+  onTypeChange();
+  set('cardio-duration', s.duration); set('cardio-intensity', s.intensity || 'medium');
+  set('cardio-hr-avg', s.hr?.avg);    set('cardio-hr-max', s.hr?.max);
+  set('cardio-speed-avg', s.speed?.avg); set('cardio-speed-max', s.speed?.max);
+  document.getElementById('exercises').innerHTML = '';
+  exCount = 0;
+  (s.exercises?.length ? s.exercises : [{}]).forEach(e => addExercise(e));
+  if (s.energy) set('energy', s.energy);
+  if (s.sleep) set('sleep', s.sleep);
+  set('recovery', s.recovery || 'normal');
+  set('kps-morning', s.kps?.morning); set('kps-post', s.kps?.post);
+  set('notes', s.notes);
+  editingId = id;
+  document.getElementById('save-btn').textContent = 'Update session';
+  document.getElementById('cancel-edit-btn').style.display = '';
+  setStatus(`Editing session of ${s.date}`, 'pending');
+  window.scrollTo(0, 0);
+}
+
+async function deleteSession(id) {
+  const s = sessions.find(x => x.id === id);
+  if (!s || !confirm(`Delete ${s.type} session of ${s.date}?`)) return;
+  const del = deletedIds(); del.add(id); setDeletedIds(del);
+  const pending = pendingIds(); pending.delete(id); setPendingIds(pending);
+  sessions = sessions.filter(x => x.id !== id);
+  localStorage.setItem('tl_sessions', JSON.stringify(sessions));
+  if (editingId === id) resetForm();
+  renderHistory();
+  if (!await syncToGitHub().catch(() => false)) alert('Deleted locally. GitHub sync failed — will retry on next save.');
+}
+
+function cancelEdit() {
+  resetForm();
+  setStatus('', 'ok');
+}
 function saveBodyweight() {
   const date = document.getElementById('bw-date').value;
   const weight = parseFloat(document.getElementById('bw-weight').value);
@@ -75,7 +121,7 @@ async function saveSession() {
   }
 
   const session = {
-    id: Date.now(),
+    id: editingId || Date.now(),
     user: currentUser,
     date,
     type,
@@ -106,7 +152,9 @@ async function saveSession() {
     notes: document.getElementById('notes').value.trim(),
   };
   const slot = document.getElementById('program-slot').value;
+  const original = editingId && sessions.find(s => s.id === editingId);
   if (slot && program && !isCardio) session.program = { id: program.id, slot };
+  else if (original?.program) session.program = original.program;
 
   // Detect never-logged exercises before this session joins `sessions`.
   const toCalibrate = newPatellarCandidates(session.exercises);
@@ -124,7 +172,8 @@ async function saveSession() {
   }
 
   // Save locally first
-  sessions.unshift(session);
+  sessions = [session, ...sessions.filter(s => s.id !== session.id)];
+  sessions.sort((a, b) => b.date.localeCompare(a.date));
   localStorage.setItem('tl_sessions', JSON.stringify(sessions));
   markPending(session.id);
   setStatus('Saved locally…', 'pending');
@@ -145,6 +194,9 @@ function setStatus(msg, type) {
 }
 
 function resetForm() {
+  editingId = null;
+  document.getElementById('save-btn').textContent = 'Save session';
+  document.getElementById('cancel-edit-btn').style.display = 'none';
   document.getElementById('recovery').value = 'normal';
   document.getElementById('notes').value = '';
   document.getElementById('kps-morning').value = '';

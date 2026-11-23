@@ -130,6 +130,7 @@
   .session-card:hover { border-color: var(--bg3); }
   .card-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
   .card-date { font-family: var(--font-mono); font-size: 13px; color: var(--muted); }
+  .edit-btn { background: none; border: 1px solid var(--border); color: var(--muted); border-radius: 20px; font-size: 11px; padding: 2px 9px; margin-right: 6px; cursor: pointer; }
   .badge { font-size: 11px; font-family: var(--font-mono); padding: 2px 9px; border-radius: 20px; font-weight: 500; }
   .badge-Pull  { background: rgba(59,130,246,.18); color: #93c5fd; }
   .badge-Push  { background: rgba(236,72,153,.18); color: #f9a8d4; }
@@ -536,6 +537,7 @@
   </div>
 
   <button class="btn btn-primary btn-full" id="save-btn" onclick="saveSession()">Save session</button>
+  <button class="btn btn-secondary btn-full" id="cancel-edit-btn" onclick="cancelEdit()" style="display:none;margin-top:8px">Cancel edit</button>
   <div id="save-status"></div>
 
   <hr class="divider" style="margin-top:24px">
@@ -937,6 +939,15 @@ function pendingIds() {
   try { return new Set(JSON.parse(localStorage.getItem('tl_pending') || '[]')); } catch(e) { return new Set(); }
 }
 
+// Sessions deleted locally but not yet removed from GitHub.
+function deletedIds() {
+  try { return new Set(JSON.parse(localStorage.getItem('tl_deleted') || '[]')); } catch(e) { return new Set(); }
+}
+
+function setDeletedIds(ids) {
+  localStorage.setItem('tl_deleted', JSON.stringify([...ids]));
+}
+
 function setPendingIds(ids) {
   localStorage.setItem('tl_pending', JSON.stringify([...ids]));
 }
@@ -951,8 +962,11 @@ function markPending(id) {
 // (of any user — another user's pending ones are kept until they log in here).
 function mergeWithRemote(remote) {
   const pending = pendingIds();
-  const remoteIds = new Set(remote.map(s => s.id));
-  const merged = [...sessions.filter(s => pending.has(s.id) && !remoteIds.has(s.id)), ...remote];
+  // Pending local copies win over remote ones with the same id (edited sessions).
+  const local = sessions.filter(s => pending.has(s.id));
+  const localIds = new Set(local.map(s => s.id));
+  const deleted = deletedIds();
+  const merged = [...local, ...remote.filter(s => !localIds.has(s.id) && !deleted.has(s.id))];
   merged.sort((a,b) => b.date.localeCompare(a.date));
   sessions = merged;
   localStorage.setItem('tl_sessions', JSON.stringify(sessions));
@@ -975,6 +989,9 @@ async function syncToGitHub() {
       const pending = pendingIds();
       mine.forEach(s => pending.delete(s.id));
       setPendingIds(pending);
+      const deleted = deletedIds();
+      remote.forEach(s => deleted.delete(s.id));
+      setDeletedIds(deleted);
     }
     return putRes.ok;
   } catch(e) { return false; }
@@ -1331,6 +1348,52 @@ function getExercises() {
 }
 
 // ── LOG ────────────────────────────────────────────────────────────
+let editingId = null; // id of the history session being edited in the log form
+
+// Loads a logged session into the log form; saving then replaces it.
+function editSession(id) {
+  const s = sessions.find(x => x.id === id);
+  if (!s) return;
+  showPage('log');
+  renderProgramBanner(''); // its slot is already done; saveSession keeps s.program
+  const set = (el, v) => { document.getElementById(el).value = v ?? ''; };
+  set('date', s.date);
+  set('session-type', s.type);
+  onTypeChange();
+  set('cardio-duration', s.duration); set('cardio-intensity', s.intensity || 'medium');
+  set('cardio-hr-avg', s.hr?.avg);    set('cardio-hr-max', s.hr?.max);
+  set('cardio-speed-avg', s.speed?.avg); set('cardio-speed-max', s.speed?.max);
+  document.getElementById('exercises').innerHTML = '';
+  exCount = 0;
+  (s.exercises?.length ? s.exercises : [{}]).forEach(e => addExercise(e));
+  if (s.energy) set('energy', s.energy);
+  if (s.sleep) set('sleep', s.sleep);
+  set('recovery', s.recovery || 'normal');
+  set('kps-morning', s.kps?.morning); set('kps-post', s.kps?.post);
+  set('notes', s.notes);
+  editingId = id;
+  document.getElementById('save-btn').textContent = 'Update session';
+  document.getElementById('cancel-edit-btn').style.display = '';
+  setStatus(`Editing session of ${s.date}`, 'pending');
+  window.scrollTo(0, 0);
+}
+
+async function deleteSession(id) {
+  const s = sessions.find(x => x.id === id);
+  if (!s || !confirm(`Delete ${s.type} session of ${s.date}?`)) return;
+  const del = deletedIds(); del.add(id); setDeletedIds(del);
+  const pending = pendingIds(); pending.delete(id); setPendingIds(pending);
+  sessions = sessions.filter(x => x.id !== id);
+  localStorage.setItem('tl_sessions', JSON.stringify(sessions));
+  if (editingId === id) resetForm();
+  renderHistory();
+  if (!await syncToGitHub().catch(() => false)) alert('Deleted locally. GitHub sync failed — will retry on next save.');
+}
+
+function cancelEdit() {
+  resetForm();
+  setStatus('', 'ok');
+}
 function saveBodyweight() {
   const date = document.getElementById('bw-date').value;
   const weight = parseFloat(document.getElementById('bw-weight').value);
@@ -1407,7 +1470,7 @@ async function saveSession() {
   }
 
   const session = {
-    id: Date.now(),
+    id: editingId || Date.now(),
     user: currentUser,
     date,
     type,
@@ -1438,7 +1501,9 @@ async function saveSession() {
     notes: document.getElementById('notes').value.trim(),
   };
   const slot = document.getElementById('program-slot').value;
+  const original = editingId && sessions.find(s => s.id === editingId);
   if (slot && program && !isCardio) session.program = { id: program.id, slot };
+  else if (original?.program) session.program = original.program;
 
   // Detect never-logged exercises before this session joins `sessions`.
   const toCalibrate = newPatellarCandidates(session.exercises);
@@ -1456,7 +1521,8 @@ async function saveSession() {
   }
 
   // Save locally first
-  sessions.unshift(session);
+  sessions = [session, ...sessions.filter(s => s.id !== session.id)];
+  sessions.sort((a, b) => b.date.localeCompare(a.date));
   localStorage.setItem('tl_sessions', JSON.stringify(sessions));
   markPending(session.id);
   setStatus('Saved locally…', 'pending');
@@ -1477,6 +1543,9 @@ function setStatus(msg, type) {
 }
 
 function resetForm() {
+  editingId = null;
+  document.getElementById('save-btn').textContent = 'Save session';
+  document.getElementById('cancel-edit-btn').style.display = 'none';
   document.getElementById('recovery').value = 'normal';
   document.getElementById('notes').value = '';
   document.getElementById('kps-morning').value = '';
@@ -1604,7 +1673,8 @@ function renderHistory() {
     <div class="session-card">
       <div class="card-top">
         <span class="card-date">${s.date}</span>
-        <span class="badge badge-${s.type.replace(/\s+/g,'')}">${s.type}</span>
+        <span><button class="edit-btn" onclick="editSession(${s.id})">Edit</button><button class="edit-btn" onclick="deleteSession(${s.id})">Delete</button>
+        <span class="badge badge-${s.type.replace(/\s+/g,'')}">${s.type}</span></span>
       </div>
       ${activityHtml}
       <div class="card-meta">
