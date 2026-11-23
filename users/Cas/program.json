@@ -261,7 +261,7 @@
               "note": ""
             },
             {
-              "name": "cable triceps extensions",
+              "name": "standing cable triceps extensions",
               "loading": "3x12@36kg",
               "rpe": "RPE7",
               "note": ""
@@ -321,18 +321,6 @@
               "loading": "3x10@16kg",
               "rpe": "RPE7",
               "note": ""
-            },
-            {
-              "name": "romanian deadlifts",
-              "loading": "3x10@105kg",
-              "rpe": "RPE7",
-              "note": "slow negative"
-            },
-            {
-              "name": "squats",
-              "loading": "3x10@45kg",
-              "rpe": "RPE6",
-              "note": "slow tempo, rehab loading"
             }
           ],
           "skipped": false
@@ -369,18 +357,6 @@
             {
               "name": "rear delt machine fly",
               "loading": "3x12@90kg",
-              "rpe": "RPE7",
-              "note": ""
-            },
-            {
-              "name": "nordic hamstring falls",
-              "loading": "3x6@0kg",
-              "rpe": "RPE7",
-              "note": ""
-            },
-            {
-              "name": "back extensions",
-              "loading": "3x10@53kg",
               "rpe": "RPE7",
               "note": ""
             }
@@ -429,8 +405,20 @@
               "note": ""
             },
             {
-              "name": "single leg calf raises",
-              "loading": "3x12@22.5kg",
+              "name": "standing calf raises",
+              "loading": "3x12@105kg",
+              "rpe": "RPE7",
+              "note": ""
+            },
+            {
+              "name": "nordic hamstring falls",
+              "loading": "3x6@0kg",
+              "rpe": "RPE7",
+              "note": ""
+            },
+            {
+              "name": "back extensions",
+              "loading": "3x10@50kg",
               "rpe": "RPE7",
               "note": ""
             }
@@ -479,7 +467,7 @@
               "note": ""
             },
             {
-              "name": "cable triceps extensions",
+              "name": "standing cable triceps extensions",
               "loading": "3x12@38kg",
               "rpe": "RPE8",
               "note": ""
@@ -539,18 +527,6 @@
               "loading": "3x10@18kg",
               "rpe": "RPE7",
               "note": ""
-            },
-            {
-              "name": "romanian deadlifts",
-              "loading": "3x10@110kg",
-              "rpe": "RPE7",
-              "note": "slow negative"
-            },
-            {
-              "name": "squats",
-              "loading": "3x10@50kg",
-              "rpe": "RPE6",
-              "note": "slow tempo, rehab loading"
             }
           ],
           "skipped": false
@@ -587,18 +563,6 @@
             {
               "name": "rear delt machine fly",
               "loading": "3x12@93kg",
-              "rpe": "RPE7",
-              "note": ""
-            },
-            {
-              "name": "nordic hamstring falls",
-              "loading": "3x8@0kg",
-              "rpe": "RPE7",
-              "note": ""
-            },
-            {
-              "name": "back extensions",
-              "loading": "3x10@56kg",
               "rpe": "RPE7",
               "note": ""
             }
@@ -647,8 +611,20 @@
               "note": ""
             },
             {
-              "name": "single leg calf raises",
-              "loading": "3x12@25kg",
+              "name": "standing calf raises",
+              "loading": "3x12@110kg",
+              "rpe": "RPE7",
+              "note": ""
+            },
+            {
+              "name": "nordic hamstring falls",
+              "loading": "3x8@0kg",
+              "rpe": "RPE7",
+              "note": ""
+            },
+            {
+              "name": "back extensions",
+              "loading": "3x10@53kg",
               "rpe": "RPE7",
               "note": ""
             }
@@ -697,7 +673,7 @@
               "note": ""
             },
             {
-              "name": "cable triceps extensions",
+              "name": "standing cable triceps extensions",
               "loading": "3x12@38kg",
               "rpe": "RPE8",
               "note": ""
@@ -757,18 +733,6 @@
               "loading": "3x10@18kg",
               "rpe": "RPE8",
               "note": ""
-            },
-            {
-              "name": "romanian deadlifts",
-              "loading": "3x10@115kg",
-              "rpe": "RPE8",
-              "note": "slow negative"
-            },
-            {
-              "name": "squats",
-              "loading": "3x10@55kg",
-              "rpe": "RPE7",
-              "note": "slow tempo, rehab loading"
             }
           ],
           "skipped": false
@@ -805,18 +769,6 @@
             {
               "name": "rear delt machine fly",
               "loading": "3x12@97kg",
-              "rpe": "RPE8",
-              "note": ""
-            },
-            {
-              "name": "nordic hamstring falls",
-              "loading": "3x8@0kg",
-              "rpe": "RPE8",
-              "note": ""
-            },
-            {
-              "name": "back extensions",
-              "loading": "3x10@60kg",
               "rpe": "RPE8",
               "note": ""
             }
@@ -865,9 +817,21 @@
               "note": ""
             },
             {
-              "name": "single leg calf raises",
-              "loading": "3x12@27.5kg",
+              "name": "standing calf raises",
+              "loading": "3x12@110kg",
               "rpe": "RPE7",
+              "note": ""
+            },
+            {
+              "name": "nordic hamstring falls",
+              "loading": "3x8@0kg",
+              "rpe": "RPE8",
+              "note": ""
+            },
+            {
+              "name": "back extensions",
+              "loading": "3x10@60kg",
+              "rpe": "RPE8",
               "note": ""
             }
           ],
@@ -915,7 +879,7 @@
               "note": ""
             },
             {
-              "name": "cable triceps extensions",
+              "name": "standing cable triceps extensions",
               "loading": "3x10@38kg",
               "rpe": "RPE8",
               "note": ""
@@ -975,18 +939,6 @@
               "loading": "3x8@20kg",
               "rpe": "RPE8",
               "note": ""
-            },
-            {
-              "name": "romanian deadlifts",
-              "loading": "3x8@120kg",
-              "rpe": "RPE8",
-              "note": ""
-            },
-            {
-              "name": "squats",
-              "loading": "3x10@60kg",
-              "rpe": "RPE7",
-              "note": "slow tempo, rehab loading"
             }
           ],
           "skipped": false
@@ -1023,18 +975,6 @@
             {
               "name": "rear delt machine fly",
               "loading": "3x10@100kg",
-              "rpe": "RPE8",
-              "note": ""
-            },
-            {
-              "name": "nordic hamstring falls",
-              "loading": "3x8@0kg",
-              "rpe": "RPE8",
-              "note": ""
-            },
-            {
-              "name": "back extensions",
-              "loading": "3x10@63kg",
               "rpe": "RPE8",
               "note": ""
             }
@@ -1083,8 +1023,20 @@
               "note": ""
             },
             {
-              "name": "single leg calf raises",
-              "loading": "3x10@30kg",
+              "name": "standing calf raises",
+              "loading": "3x10@115kg",
+              "rpe": "RPE8",
+              "note": ""
+            },
+            {
+              "name": "nordic hamstring falls",
+              "loading": "3x8@0kg",
+              "rpe": "RPE8",
+              "note": ""
+            },
+            {
+              "name": "back extensions",
+              "loading": "3x10@63kg",
               "rpe": "RPE8",
               "note": ""
             }
@@ -1133,7 +1085,7 @@
               "note": ""
             },
             {
-              "name": "cable triceps extensions",
+              "name": "standing cable triceps extensions",
               "loading": "3x10@40kg",
               "rpe": "RPE8",
               "note": ""
@@ -1193,18 +1145,6 @@
               "loading": "3x8@20kg",
               "rpe": "RPE8",
               "note": ""
-            },
-            {
-              "name": "romanian deadlifts",
-              "loading": "3x8@125kg",
-              "rpe": "RPE8",
-              "note": ""
-            },
-            {
-              "name": "squats",
-              "loading": "3x10@65kg",
-              "rpe": "RPE7",
-              "note": "slow tempo, rehab loading"
             }
           ],
           "skipped": false
@@ -1241,18 +1181,6 @@
             {
               "name": "rear delt machine fly",
               "loading": "3x10@100kg",
-              "rpe": "RPE8",
-              "note": ""
-            },
-            {
-              "name": "nordic hamstring falls",
-              "loading": "3x8@0kg",
-              "rpe": "RPE8",
-              "note": ""
-            },
-            {
-              "name": "back extensions",
-              "loading": "3x10@66kg",
               "rpe": "RPE8",
               "note": ""
             }
@@ -1301,8 +1229,20 @@
               "note": ""
             },
             {
-              "name": "single leg calf raises",
-              "loading": "3x10@32.5kg",
+              "name": "standing calf raises",
+              "loading": "3x10@120kg",
+              "rpe": "RPE8",
+              "note": ""
+            },
+            {
+              "name": "nordic hamstring falls",
+              "loading": "3x8@0kg",
+              "rpe": "RPE8",
+              "note": ""
+            },
+            {
+              "name": "back extensions",
+              "loading": "3x10@66kg",
               "rpe": "RPE8",
               "note": ""
             }
@@ -1351,7 +1291,7 @@
               "note": ""
             },
             {
-              "name": "cable triceps extensions",
+              "name": "standing cable triceps extensions",
               "loading": "3x10@40.8kg",
               "rpe": "RPE8",
               "note": ""
@@ -1411,18 +1351,6 @@
               "loading": "3x8@20kg",
               "rpe": "RPE8.5",
               "note": ""
-            },
-            {
-              "name": "romanian deadlifts",
-              "loading": "3x8@130kg",
-              "rpe": "RPE8",
-              "note": ""
-            },
-            {
-              "name": "squats",
-              "loading": "3x8@70kg",
-              "rpe": "RPE7",
-              "note": "slow tempo, rehab loading"
             }
           ],
           "skipped": false
@@ -1459,18 +1387,6 @@
             {
               "name": "rear delt machine fly",
               "loading": "3x10@103kg",
-              "rpe": "RPE8",
-              "note": ""
-            },
-            {
-              "name": "nordic hamstring falls",
-              "loading": "3x8@0kg",
-              "rpe": "RPE8",
-              "note": ""
-            },
-            {
-              "name": "back extensions",
-              "loading": "3x10@70kg",
               "rpe": "RPE8",
               "note": ""
             }
@@ -1519,8 +1435,20 @@
               "note": ""
             },
             {
-              "name": "single leg calf raises",
-              "loading": "3x10@35kg",
+              "name": "standing calf raises",
+              "loading": "3x10@120kg",
+              "rpe": "RPE8",
+              "note": ""
+            },
+            {
+              "name": "nordic hamstring falls",
+              "loading": "3x8@0kg",
+              "rpe": "RPE8",
+              "note": ""
+            },
+            {
+              "name": "back extensions",
+              "loading": "3x10@70kg",
               "rpe": "RPE8",
               "note": ""
             }
@@ -1569,7 +1497,7 @@
               "note": ""
             },
             {
-              "name": "cable triceps extensions",
+              "name": "standing cable triceps extensions",
               "loading": "3x10@40.8kg",
               "rpe": "RPE8.5",
               "note": ""
@@ -1629,18 +1557,6 @@
               "loading": "3x8@20kg",
               "rpe": "RPE8.5",
               "note": ""
-            },
-            {
-              "name": "romanian deadlifts",
-              "loading": "3x8@135kg",
-              "rpe": "RPE8.5",
-              "note": ""
-            },
-            {
-              "name": "squats",
-              "loading": "3x8@75kg",
-              "rpe": "RPE7",
-              "note": "slow tempo, rehab loading"
             }
           ],
           "skipped": false
@@ -1678,18 +1594,6 @@
               "name": "rear delt machine fly",
               "loading": "3x10@105kg",
               "rpe": "RPE8.5",
-              "note": ""
-            },
-            {
-              "name": "nordic hamstring falls",
-              "loading": "3x8@0kg",
-              "rpe": "RPE8",
-              "note": ""
-            },
-            {
-              "name": "back extensions",
-              "loading": "3x10@73kg",
-              "rpe": "RPE8",
               "note": ""
             }
           ],
@@ -1737,8 +1641,20 @@
               "note": ""
             },
             {
-              "name": "single leg calf raises",
-              "loading": "3x10@37.5kg",
+              "name": "standing calf raises",
+              "loading": "3x10@120kg",
+              "rpe": "RPE8",
+              "note": ""
+            },
+            {
+              "name": "nordic hamstring falls",
+              "loading": "3x8@0kg",
+              "rpe": "RPE8",
+              "note": ""
+            },
+            {
+              "name": "back extensions",
+              "loading": "3x10@73kg",
               "rpe": "RPE8",
               "note": ""
             }
@@ -1787,7 +1703,7 @@
               "note": ""
             },
             {
-              "name": "cable triceps extensions",
+              "name": "standing cable triceps extensions",
               "loading": "3x8@40.8kg",
               "rpe": "RPE8.5",
               "note": ""
@@ -1847,18 +1763,6 @@
               "loading": "3x6@20kg",
               "rpe": "RPE8.5",
               "note": ""
-            },
-            {
-              "name": "romanian deadlifts",
-              "loading": "3x6@135kg",
-              "rpe": "RPE8.5",
-              "note": ""
-            },
-            {
-              "name": "squats",
-              "loading": "3x8@80kg",
-              "rpe": "RPE7",
-              "note": "slow tempo, rehab loading"
             }
           ],
           "skipped": false
@@ -1895,18 +1799,6 @@
             {
               "name": "rear delt machine fly",
               "loading": "3x8@107kg",
-              "rpe": "RPE8.5",
-              "note": ""
-            },
-            {
-              "name": "nordic hamstring falls",
-              "loading": "3x8@0kg",
-              "rpe": "RPE8",
-              "note": ""
-            },
-            {
-              "name": "back extensions",
-              "loading": "3x8@73kg",
               "rpe": "RPE8.5",
               "note": ""
             }
@@ -1955,8 +1847,20 @@
               "note": ""
             },
             {
-              "name": "single leg calf raises",
-              "loading": "3x8@40kg",
+              "name": "standing calf raises",
+              "loading": "3x8@120kg",
+              "rpe": "RPE8.5",
+              "note": ""
+            },
+            {
+              "name": "nordic hamstring falls",
+              "loading": "3x8@0kg",
+              "rpe": "RPE8",
+              "note": ""
+            },
+            {
+              "name": "back extensions",
+              "loading": "3x8@73kg",
               "rpe": "RPE8.5",
               "note": ""
             }
@@ -2005,7 +1909,7 @@
               "note": ""
             },
             {
-              "name": "cable triceps extensions",
+              "name": "standing cable triceps extensions",
               "loading": "3x8@40.8kg",
               "rpe": "RPE8.5",
               "note": ""
@@ -2065,18 +1969,6 @@
               "loading": "3x6@20kg",
               "rpe": "RPE8.5",
               "note": ""
-            },
-            {
-              "name": "romanian deadlifts",
-              "loading": "3x6@140kg",
-              "rpe": "RPE8.5",
-              "note": ""
-            },
-            {
-              "name": "squats",
-              "loading": "3x8@85kg",
-              "rpe": "RPE7",
-              "note": "slow tempo, rehab loading"
             }
           ],
           "skipped": false
@@ -2113,18 +2005,6 @@
             {
               "name": "rear delt machine fly",
               "loading": "3x8@107kg",
-              "rpe": "RPE8.5",
-              "note": ""
-            },
-            {
-              "name": "nordic hamstring falls",
-              "loading": "3x8@0kg",
-              "rpe": "RPE8",
-              "note": ""
-            },
-            {
-              "name": "back extensions",
-              "loading": "3x8@76kg",
               "rpe": "RPE8.5",
               "note": ""
             }
@@ -2173,8 +2053,20 @@
               "note": ""
             },
             {
-              "name": "single leg calf raises",
-              "loading": "3x8@42.5kg",
+              "name": "standing calf raises",
+              "loading": "3x8@120kg",
+              "rpe": "RPE8.5",
+              "note": ""
+            },
+            {
+              "name": "nordic hamstring falls",
+              "loading": "3x8@0kg",
+              "rpe": "RPE8",
+              "note": ""
+            },
+            {
+              "name": "back extensions",
+              "loading": "3x8@76kg",
               "rpe": "RPE8.5",
               "note": ""
             }
@@ -2223,7 +2115,7 @@
               "note": ""
             },
             {
-              "name": "cable triceps extensions",
+              "name": "standing cable triceps extensions",
               "loading": "3x8@40.8kg",
               "rpe": "RPE9",
               "note": ""
@@ -2283,18 +2175,6 @@
               "loading": "3x6@22kg",
               "rpe": "RPE9",
               "note": ""
-            },
-            {
-              "name": "romanian deadlifts",
-              "loading": "3x5@140kg",
-              "rpe": "RPE9",
-              "note": ""
-            },
-            {
-              "name": "squats",
-              "loading": "3x6@90kg",
-              "rpe": "RPE7",
-              "note": "slow tempo, rehab loading"
             }
           ],
           "skipped": false
@@ -2331,18 +2211,6 @@
             {
               "name": "rear delt machine fly",
               "loading": "3x8@107kg",
-              "rpe": "RPE9",
-              "note": ""
-            },
-            {
-              "name": "nordic hamstring falls",
-              "loading": "3x8@0kg",
-              "rpe": "RPE8",
-              "note": ""
-            },
-            {
-              "name": "back extensions",
-              "loading": "3x8@80kg",
               "rpe": "RPE9",
               "note": ""
             }
@@ -2391,8 +2259,20 @@
               "note": ""
             },
             {
-              "name": "single leg calf raises",
-              "loading": "3x8@45kg",
+              "name": "standing calf raises",
+              "loading": "3x8@120kg",
+              "rpe": "RPE9",
+              "note": ""
+            },
+            {
+              "name": "nordic hamstring falls",
+              "loading": "3x8@0kg",
+              "rpe": "RPE8",
+              "note": ""
+            },
+            {
+              "name": "back extensions",
+              "loading": "3x8@80kg",
               "rpe": "RPE9",
               "note": ""
             }
@@ -2441,7 +2321,7 @@
               "note": ""
             },
             {
-              "name": "cable triceps extensions",
+              "name": "standing cable triceps extensions",
               "loading": "2x10@34kg",
               "rpe": "RPE6",
               "note": ""
@@ -2501,18 +2381,6 @@
               "loading": "2x8@16kg",
               "rpe": "RPE6",
               "note": ""
-            },
-            {
-              "name": "romanian deadlifts",
-              "loading": "2x8@100kg",
-              "rpe": "RPE6",
-              "note": ""
-            },
-            {
-              "name": "squats",
-              "loading": "2x8@60kg",
-              "rpe": "RPE6",
-              "note": "slow tempo"
             }
           ],
           "skipped": false
@@ -2549,18 +2417,6 @@
             {
               "name": "rear delt machine fly",
               "loading": "2x10@86kg",
-              "rpe": "RPE6",
-              "note": ""
-            },
-            {
-              "name": "nordic hamstring falls",
-              "loading": "2x6@0kg",
-              "rpe": "RPE6",
-              "note": ""
-            },
-            {
-              "name": "back extensions",
-              "loading": "2x8@60kg",
               "rpe": "RPE6",
               "note": ""
             }
@@ -2609,8 +2465,20 @@
               "note": ""
             },
             {
-              "name": "single leg calf raises",
-              "loading": "2x10@30kg",
+              "name": "standing calf raises",
+              "loading": "2x10@100kg",
+              "rpe": "RPE6",
+              "note": ""
+            },
+            {
+              "name": "nordic hamstring falls",
+              "loading": "2x6@0kg",
+              "rpe": "RPE6",
+              "note": ""
+            },
+            {
+              "name": "back extensions",
+              "loading": "2x8@60kg",
               "rpe": "RPE6",
               "note": ""
             }
